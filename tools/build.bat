@@ -13,8 +13,8 @@ if not exist etc mkdir etc
 if not exist obj mkdir obj
 if not exist bin mkdir bin
 
-del /S /Q obj\*.* > nul
-del /S /Q bin\*.* > nul
+:: del /S /Q obj\*.* > nul
+:: del /S /Q bin\*.* > nul
 
 rem/||(
     Store the absolute ^path of the project root directory in a variable 
@@ -34,7 +34,7 @@ for /r ..\src %%f in (*.c) do (
 )
 
 rem Compile *.c files
-cl /c -Zi /std:c11 %srcs:~1%
+cl /c -Zi -W4 -Wall -I"..\include" /std:c11 %srcs:~1%
 
 popd
 pushd bin

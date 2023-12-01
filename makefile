@@ -1,5 +1,5 @@
 CC=clang
-CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors -std=c17
+CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors -I./include -std=c17
 
 SRCDIR=src
 OBJDIR=obj
