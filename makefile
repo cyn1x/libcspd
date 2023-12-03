@@ -1,6 +1,8 @@
 CC=clang
-INCLUDE=$(shell find ./include -type f -name '*.h')
-CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors $(addprefix -I,$(dir $(INCLUDE))) -std=c17
+HEADERS=$(shell find ./include -type f -name '*.h' | sort -r)
+INCLUDE=$(addprefix -I,$(dir $(HEADERS)))
+CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors $(INCLUDE) -std=c17
+CFLAGSTXT=$(subst -I,-I ,$(INCLUDE))
 
 SRCDIR=src
 OBJDIR=obj
@@ -21,6 +23,8 @@ tests/bin/libturboc: $(TESTS)
 	$(CC) $(CFLAGS) -o $@ $^ -L$(BINDIR) -lturboc
 
 $(BINDIR)/libturboc.so: $(OBJS)
+	$(shell cp /dev/null compile_flags.txt)
+	$(foreach i,$(CFLAGSTXT),$(file >> compile_flags.txt,$(i)))
 	$(CC) $(CFLAGS) -fPIC -shared $(addprefix $(OBJDIR)/, $(notdir $(OBJS))) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

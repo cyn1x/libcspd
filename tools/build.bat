@@ -27,6 +27,7 @@ if %arg%==clean (
 
 set dll=turboc.dll
 set exe=turboc.exe
+set flags=compile_flags.txt
 
 rem/||(
 Store the absolute ^path of the project root directory in a variable 
@@ -36,11 +37,19 @@ functions ^for splitting strings. ^)
 set root=%cd%\
 set cmp=!root:~0,-1!
 
+echo | set /p clear="" > %flags%
+
 rem Recursively set all relative include directory paths
-for /r include %%d in (.) do ( 
-    set "abspath=%%d"
+for /r include %%f in (*.h) do (
+
+    set "abspath=%%~dpf"
     set "relpath=!abspath:%cmp%=!"
-    call set "incs=%%incs%% -I..!relpath:~0,-2!"
+    call set "incs=%%incs%% -I..!relpath:~0,-1!"
+
+    rem Invert slashes for include paths to be compatible with the LSP
+    set cpath=!relpath:\=/!
+    echo -I>> %flags%
+    echo .!cpath!>> %flags%
 )
 
 pushd obj
