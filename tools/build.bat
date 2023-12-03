@@ -1,6 +1,7 @@
 @echo off
 
 setlocal enabledelayedexpansion
+set arg=%1
 
 if not defined DevEnvDir (
     call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
@@ -14,13 +15,18 @@ if not exist bin mkdir bin
 if not exist tests\obj mkdir tests\obj
 if not exist tests\bin mkdir tests\bin
 
-:: del /S /Q obj\*.* > nul
-:: del /S /Q bin\*.* > nul
-del /S /Q tests\obj*.* > nul
-del /S /Q tests\bin*.* > nul
+if not defined arg goto :main
 
-set dll=turbo.dll
-set exe=turbo.exe
+if %arg%==clean (
+    del /S /Q bin\*.dll bin\*.exe bin\*.lib bin\*.pdb bin\*.ilk bin\*.exp > nul 2>&1
+    del /S /Q obj\*.obj obj\*.pdb > nul 2>&1
+    del /S /Q tests\obj\*.obj tests\bin\*.dll tests\bin\*.exe > nul 2>&1
+)
+
+:main
+
+set dll=turboc.dll
+set exe=turboc.exe
 
 rem/||(
 Store the absolute ^path of the project root directory in a variable 
@@ -58,12 +64,13 @@ for /r ..\obj %%f in (*.obj) do (
 )
 
 rem Link *.obj object files
-LINK /DEBUG %objs:~1% /DLL /OUT:%dll%
+LINK /nologo /DEBUG %objs:~1% /DLL /OUT:%dll%
+
 rem Copy DLL to where the test executable will be built
-copy ..\bin\turbo.dll ..\tests\bin\turbo.dll
+copy ..\bin\%dll% ..\tests\bin\%dll% > nul
 
 rem Store all *.test.c source files in a variable
-for /r ..\tests %%f in (*.c) do ( 
+for /r ..\tests %%f in (*.test.c) do ( 
     call set "testsrcs=%%testsrcs%% %%~nxf"
 )
 
@@ -71,14 +78,14 @@ popd
 pushd tests
 
 rem Compile *.test.c files
-cl /Fo"obj\\" /Fd"obj\\" /c -Zi -W4 -Wall %testsrcs% %incs%
+cl /nologo /Fo"obj\\" /Fd"obj\\" /c -Zi -W4 -Wall %testsrcs% %incs%
 
-rem Store all *test.obj file names only for the linker
-for /r obj %%f in (*.obj) do (
+rem Store all *.test.obj file names only for the linker
+for /r obj %%f in (*.test.obj) do (
     call set "testobjs=%%testobjs%% obj\%%~nxf"
 )
 
 rem Link *.test.obj object files
-LINK %testobjs:~1% /OUT:bin\%exe% ..\bin\turbo.lib
+LINK %testobjs:~1% /OUT:bin\%exe% ..\bin\turboc.lib
 
 popd
