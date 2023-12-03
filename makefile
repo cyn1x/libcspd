@@ -1,32 +1,30 @@
 CC=clang
-INCLUDE=-I./include -I./include/dsa/vector
-CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors $(INCLUDE) -std=c17
+INCLUDE=$(shell find ./include -type f -name '*.h')
+CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors $(addprefix -I,$(dir $(INCLUDE))) -std=c17
 
 SRCDIR=src
 OBJDIR=obj
 BINDIR=bin
-TESTDIR=tests
-TESTBINDIR=tests/bin
+TESTS=$(shell find $(TESTDIR) -type f -name '*.c')
 SRCS=$(shell find $(SRCDIR) -type f -name '*.c')
-TESTSRCS=$(shell find $(TESTDIR) -type f -name '*.c')
 OBJS=$(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
-BINS=$(BINDIR)/libturbo.so $(TESTBINDIR)/libturbo
-ZIP=$(BINDIR)/turbo.tar.gz $(BINDIR)/turbo.so.tar.gz
+BINS=$(BINDIR)/libturboc.so tests/bin/libturboc
+ZIPS=$(BINDIR)/turboc.tar.gz $(BINDIR)/turboc.so.tar.gz
 
 all: $(BINS)
 
 release: CFLAGS=-Wall -pedantic -O2 -DNDEBUG -std=c17
 release: clean
-release: $(BIN)
+release: $(BINS)
 
-$(TESTBINDIR)/libturbo: $(TESTSRCS) 
-	$(CC) $(CFLAGS) -o $@ $^ -L$(BINDIR) -lturbo
+tests/bin/libturboc: $(TESTS)
+	$(CC) $(CFLAGS) -o $@ $^ -L$(BINDIR) -lturboc
 
-$(BINDIR)/libturbo.so: $(OBJS)
+$(BINDIR)/libturboc.so: $(OBJS)
 	$(CC) $(CFLAGS) -fPIC -shared $(addprefix $(OBJDIR)/, $(notdir $(OBJS))) -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$(notdir $@)
 
 clean:
-	$(RM) $(BINDIR)/*.o $(BINDIR)/*.so $(OBJDIR)/*.o $(TESTBINDIR)/libturbo
+	$(RM) $(BINDIR)/*.o $(BINDIR)/*.so $(OBJDIR)/*.o tests/bin/libturboc
