@@ -25,8 +25,8 @@ if %arg%==clean (
 
 :main
 
-set dll=turboc.dll
-set exe=turboc.exe
+set dll=libcspd.dll
+set exe=libcspd.exe
 set flags=compile_flags.txt
 
 rem/||(
@@ -95,6 +95,6 @@ for /r obj %%f in (*.test.obj) do (
 )
 
 rem Link *.test.obj object files
-LINK %testobjs:~1% /OUT:bin\%exe% ..\bin\turboc.lib
+LINK %testobjs:~1% /OUT:bin\%exe% ..\bin\libcspd.lib
 
 popd
