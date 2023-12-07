@@ -95,6 +95,6 @@ for /r obj %%f in (*.test.obj) do (
 )
 
 rem Link *.test.obj object files
-LINK %testobjs:~1% /OUT:bin\%exe% ..\bin\libcspd.lib
+LINK /DEBUG %testobjs:~1% /OUT:bin\%exe% ..\bin\libcspd.lib
 
 popd
