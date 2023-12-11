@@ -33,12 +33,14 @@
  *
  * @var vector::_cmp
  * Comparator function used for sorting or searching. The library contains some
- * basic types as seen below, which can be assigned to the `_cmp` variable.
+ * basic types as seen below, which can be assigned to the `_cmp` variable. You
+ * can also provide your own comparator functions.
  *
  * @b Example
- * You can define these in a header file.
+ * The provided comparator functions can be defined in a header file.
  * @include defs.test.h
- * Then assign the address of them to the comparator function pointer.
+ * Once defined, assign the address of the defined functions from the header
+ * file to the comparator function pointer.
  * @snippet vector.test.c Comparator function
  */
 
@@ -64,10 +66,12 @@
  *
  * @brief Retrieves an element from the vector
  *
- * Retrieves an element from the vector.
+ * Retrieves an element from the vector at the specified index.
  *
  * @param vec The vector to retrieve an element from.
  * @param idx The index of the elment to retrieve.
+ *
+ * @returns A void pointer to the element.
  *
  * @b Example
  * @snippet vector.test.c Get element
@@ -171,6 +175,9 @@
  * @param vec The vector to be searched
  * @param key The value to be searched for
  *
+ * @returns An index of `size_t` of the element that was found or SIZE_MAX if
+ * not found.
+ *
  * @b Example
  * @snippet vector.test.c Linear search
  *
@@ -182,7 +189,7 @@
  *
  * @brief Checks if an element exists in the vector.
  *
- * @brief Finds an element equal to the element pointed to by `key` using the
+ * Finds an element equal to the element pointed to by `key` using the
  * binary search algorithm. Use of this function requires the comparator
  * function pointer to be set.
  *
@@ -191,6 +198,9 @@
  *
  * @param vec The vector to be searched.
  * @param key The value to be searched for.
+ *
+ * @returns Pointer to an element in the array that compares equal to `*key`, or
+ * `NULL` if such element has not been found.
  *
  * @see https://en.cppreference.com/w/c/algorithm/bsearch
  */
@@ -212,6 +222,9 @@
  * @param vec The vector to be searched
  * @param data The value to be searched for
  *
+ * @returns An index of `size_t` of the element that was found or SIZE_MAX if
+ * not found.
+ *
  * @b Example
  * @snippet vector.test.c Custom binary search
  *
@@ -227,6 +240,8 @@
  * helper function for other operations and should not be directly used.
  *
  * @param vec The vector to be resized.
+ *
+ * @returns The resized vector.
  */
 
 /**
@@ -234,7 +249,8 @@
  *
  * @brief Updates the front and back pointers.
  *
- * Updates the front and back pointers if they have been changed.
+ * Helper function that updates the front and back pointers if the calling
+ * function deems them necessary to be updated.
  *
  * @param vec The vector to be updated.
  */
@@ -281,7 +297,7 @@
  *
  * @brief Sorts a vector using the quicksort algorithm.
  *
- * Sorts a vector using the quicksort algorithm.
+ *
  *
  * @param vec The vector to be sorted.
  *

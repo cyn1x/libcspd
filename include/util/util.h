@@ -7,7 +7,8 @@
  *
  * @brief Performs an in-place bytewise swap between two pointers.
  *
- * Performs an in-place bytewise swap between two pointers.
+ * Iterates through each byte of the given size in bytes and performs an
+ *in-place bytewise swap of each byte.
  *
  * @param
  */
