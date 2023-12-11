@@ -1,4 +1,5 @@
 #include "vector.test.h"
+#include "defs.test.h"
 #include "vector.h"
 
 void print_vector(vector *vec)
@@ -124,7 +125,9 @@ void vector_test(void)
     // -17, }
 
     //! [Bubble sort]
+    //! [Comparator function]
     vec._cmp = &int32_cmp; // Set comparator function pointer
+    //! [Comparator function]
     vector_bsort(&vec);
     // print_vector(&vec);
     // Output:{ -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4,

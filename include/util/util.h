@@ -5,9 +5,9 @@
 /**
  *@fn swap(void *pa, void *pb, size_t size)
  *
- * @brief
+ * @brief Performs an in-place bytewise swap between two pointers.
  *
- *
+ * Performs an in-place bytewise swap between two pointers.
  *
  * @param
  */

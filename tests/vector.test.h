@@ -2,7 +2,6 @@
 #define VECTOR_TEST_H
 
 #include <assert.h>
-#include <cmp.h>
 #include <vector.h>
 
 void vector_test(void);

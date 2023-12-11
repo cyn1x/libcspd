@@ -3,6 +3,46 @@
  */
 
 /**
+ * @def MIN_VECTOR_CAPACITY
+ *
+ * @brief The minimum capacity of the vector upon initialization.
+ */
+
+/**
+ * @typedef struct vector
+ *
+ * @brief Data structure for the vector.
+ *
+ * @var vector::data_size
+ * The size of the data in bytes being stored in the vector.
+ *
+ * @var vector::capacity
+ * The total capacity of the vector.
+ *
+ * @var vector::size
+ * The total size of the vector.
+ *
+ * @var vector::data
+ * Memory which has been allocated for the vector to store data.
+ *
+ * @var vector::front
+ * Pointer to the first element in the vector.
+ *
+ * @var vector::back
+ * Pointer to the last element in the vector.
+ *
+ * @var vector::_cmp
+ * Comparator function used for sorting or searching. The library contains some
+ * basic types as seen below, which can be assigned to the `_cmp` variable.
+ *
+ * @b Example
+ * You can define these in a header file.
+ * @include defs.test.h
+ * Then assign the address of them to the comparator function pointer.
+ * @snippet vector.test.c Comparator function
+ */
+
+/**
  * @fn void vector_init(vector *vec, size_t data_size)
  *
  * @brief Initializes a new vector.
@@ -121,7 +161,7 @@
  */
 
 /**
- * @fn vector_lsearch(vector *vec, void *key)
+ * @fn vector_lsearch(vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
@@ -138,12 +178,16 @@
  */
 
 /**
- * @fn vector_bsearch(vector *vec, void *key)
+ * @fn vector_bsearch(vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
  * @brief Finds an element equal to the element pointed to by `key` using the
- * binary search algorithm.
+ * binary search algorithm. Use of this function requires the comparator
+ * function pointer to be set.
+ *
+ * @warning The `_cmp` function pointer in the `vector` struct must be assigned
+ * before calling this function.
  *
  * @param vec The vector to be searched.
  * @param key The value to be searched for.
@@ -152,12 +196,16 @@
  */
 
 /**
- * @fn _vector_bsearch(vector *vec, void *key)
+ * @fn _vector_bsearch(vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
  * Uses a divide-and-conquer approach in checking whether an element exists in
- * the vector.
+ * the vector. Use of this function requires the comparator function pointer to
+ * be set.
+ *
+ * @warning The `_cmp` function pointer in the `vector` struct must be assigned
+ * before calling this function.
  *
  * @warning This function assumes that the vector is sorted before being called.
  *
@@ -198,7 +246,11 @@
  *
  * Sorts a vector using the bubble sort algorithm. It is not recommended to use
  * this algorithm over the others available. However, it remains in the library
- * for demonstration purposes.
+ * for demonstration purposes. Use of this function requires the comparator
+ * function pointer to be set.
+ *
+ * @warning The `_cmp` function pointer in the `vector` struct must be assigned
+ * before calling this function.
  *
  * @param vec The vector to be sorted.
  *
@@ -213,7 +265,11 @@
  *
  * @brief Sorts a vector using the quicksort algorithm.
  *
- * Sorts a vector using `qsort` in the C standard library.
+ * Sorts a vector using `qsort` in the C standard library. Use of this function
+ * requires the comparator function pointer to be set.
+ *
+ * @warning The `_cmp` function pointer in the `vector` struct must be assigned
+ * before calling this function.
  *
  * @param vec The vector to be sorted.
  *

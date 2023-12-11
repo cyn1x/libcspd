@@ -20,7 +20,11 @@ if not defined arg goto :main
 if %arg%==clean (
     del /S /Q bin\*.dll bin\*.exe bin\*.lib bin\*.pdb bin\*.ilk bin\*.exp > nul 2>&1
     del /S /Q obj\*.obj obj\*.pdb > nul 2>&1
-    del /S /Q tests\obj\*.obj tests\bin\*.dll tests\bin\*.exe > nul 2>&1
+    del /S /Q tests\obj\*.obj tests\obj\*.pdb > nul 2>&1 
+    del /S /Q tests\bin\*.dll tests\bin\*.exe tests\bin\*.lib tests\bin\*.pdb^
+        tests\bin\*.ilk tests\bin\*.exp > nul 2>&1
+
+    goto :eof
 )
 
 :main

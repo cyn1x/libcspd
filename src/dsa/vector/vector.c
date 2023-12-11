@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #define LIBCSPD_EXPORTS
 
 #include "vector.h"
