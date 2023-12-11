@@ -1,6 +1,6 @@
 CC=clang
 HEADERS=$(shell find ./include -type f -name '*.h' | sort -r)
-INCLUDE=$(addprefix -I,$(dir $(HEADERS)))
+INCLUDE=$(sort $(addprefix -I,$(dir $(HEADERS))))
 CFLAGS=-g -Wall -Wextra -Werror -pedantic -pedantic-errors $(INCLUDE) -std=c17
 CFLAGSTXT=$(subst -I,-I ,$(INCLUDE))
 

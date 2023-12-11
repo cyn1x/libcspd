@@ -48,12 +48,19 @@ for /r include %%f in (*.h) do (
 
     set "abspath=%%~dpf"
     set "relpath=!abspath:%cmp%=!"
-    call set "incs=%%incs%% -I..!relpath:~0,-1!"
 
-    rem Invert slashes for include paths to be compatible with the LSP
-    set cpath=!relpath:\=/!
-    echo -I>> %flags%
-    echo .!cpath!>> %flags%
+    rem Prevent duplicate include directories
+    if !prev! neq !relpath! (
+        call set "incs=%%incs%% -I..!relpath:~0,-1!"
+
+        rem Invert slashes for include paths to be compatible with the LSP
+        set cpath=!relpath:\=/!
+        echo -I>> %flags%
+        echo .!cpath!>> %flags%
+
+        set "prev=!relpath!"
+    )
+
 )
 
 pushd obj
