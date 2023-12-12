@@ -30,6 +30,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "defs.h"
 #include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,18 +38,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
-#ifdef _WIN32
-#ifdef LIBCSPD_EXPORTS
-#define LIBCSPD_API __declspec(dllexport)
-#else
-#define LIBCSPD_API __declspec(dllimport)
-#endif // LIBCSPD_EXPORTS
-#elif __linux__
-#define LIBCSPD_API __attribute__((visibility("default")))
-#else
-#define LIBCSPD_API
-#endif // _WIN32
 
 void             swap(void *pa, void *pb, size_t size);
 LIBCSPD_API void print_binary(void *data, size_t size);

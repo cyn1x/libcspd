@@ -308,6 +308,7 @@
 #define VECTOR_H
 
 #include "cmp.h"
+#include "defs.h"
 #include "types.h"
 #include "util.h"
 #include <stdbool.h>
@@ -319,18 +320,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
-#ifdef _WIN32
-#ifdef LIBCSPD_EXPORTS
-#define LIBCSPD_API __declspec(dllexport)
-#else
-#define LIBCSPD_API __declspec(dllimport)
-#endif // LIBCSPD_EXPORTS
-#elif __linux__
-#define LIBCSPD_API __attribute__((visibility("default")))
-#else
-#define LIBCSPD_API
-#endif // _WIN32
 
 #define MIN_CAPACITY 32
 
@@ -361,6 +350,7 @@ LIBCSPD_API size_t vector_lsearch(vector *vec, const void *key);
 LIBCSPD_API void  *vector_bsearch(vector *vec, const void *key);
 LIBCSPD_API size_t _vector_bsearch(vector *vec, const void *key);
 LIBCSPD_API void  *vector_resize(vector *vec);
+LIBCSPD_API void   vector_reverse(vector *vec);
 LIBCSPD_API void   vector_update(vector *vec);
 LIBCSPD_API void   vector_bsort(vector *vec);
 LIBCSPD_API void   vector_qsort(vector *vec);

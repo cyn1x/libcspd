@@ -2,8 +2,8 @@
  * @file defs.test.h
  */
 
-#ifndef DEFS_H
-#define DEFS_H
+#ifndef DEFS_TEST_H
+#define DEFS_TEST_H
 
 #include <cmp.h>
 

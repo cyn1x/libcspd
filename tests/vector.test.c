@@ -1,6 +1,5 @@
 #include "vector.test.h"
 #include "defs.test.h"
-#include "vector.h"
 
 void print_vector(vector *vec)
 {
