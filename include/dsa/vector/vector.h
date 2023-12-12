@@ -307,14 +307,14 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <cmp.h>
+#include "cmp.h"
+#include "types.h"
+#include "util.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <types.h>
-#include <util.h>
 
 #ifdef __cplusplus
 extern "C" {

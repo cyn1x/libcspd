@@ -5,7 +5,7 @@
 #ifndef CMP_H
 #define CMP_H
 
-#include <types.h>
+#include "types.h"
 
 #define cmp(T)                                                                 \
     int T##_cmp(const void *a, const void *b)                                  \

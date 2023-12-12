@@ -30,9 +30,9 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "types.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <types.h>
 
 #ifdef __cplusplus
 extern "C" {
