@@ -5,6 +5,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#pragma warning(disable : 5045)
+
 #include <stdint.h>
 
 typedef int8_t   int8;

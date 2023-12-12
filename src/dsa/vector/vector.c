@@ -102,7 +102,7 @@ void vector_clear(vector *vec)
 
 size_t vector_lsearch(vector *vec, const void *key)
 {
-    for (size_t idx = 0; idx != vec->size; idx++) {
+    for (size_t idx = 0; idx < vec->size; idx++) {
         void *cmp    = vector_get(vec, idx);
         int   exists = memcmp(cmp, key, vec->data_size);
 
@@ -171,8 +171,8 @@ void vector_update(vector *vec)
 
 void vector_bsort(vector *vec)
 {
-    for (size_t i = 0; i != vec->size; i++) {
-        for (size_t j = 0; j != vec->size - 1 - i; j++) {
+    for (size_t i = 0; i < vec->size; i++) {
+        for (size_t j = 0; j < vec->size - 1 - i; j++) {
             void *a   = vector_get(vec, j);
             void *b   = vector_get(vec, j + 1);
             int   cmp = vec->_cmp(a, b);

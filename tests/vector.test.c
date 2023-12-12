@@ -5,7 +5,7 @@
 void print_vector(vector *vec)
 {
     printf("{ ");
-    for (size_t i = 0; i != vec->size; ++i) {
+    for (size_t i = 0; i < vec->size; ++i) {
         printf("%d ", *(int32 *)vector_get(vec, i));
     }
     printf("} \n");
