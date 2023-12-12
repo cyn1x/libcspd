@@ -64,7 +64,7 @@
 /**
  * @fn *vector_get(const vector *vec, size_t idx)
  *
- * @brief Retrieves an element from the vector
+ * @brief Retrieves an element from the vector.
  *
  * Retrieves an element from the vector at the specified index.
  *
@@ -124,9 +124,9 @@
  * Inserts data at the specified index after calculating the amount of data to
  * be moved ahead, if any, in preparation for the resulting memory copy.
  *
- * @param vec The vector to insert the data
- * @param idx The vector index where to insert data
- * @param size The size of the data being inserted in bytes
+ * @param vec The vector to insert the data.
+ * @param idx The vector index where to insert data.
+ * @param size The size of the data being inserted in bytes.
  * @param data The data being inserted.
  *
  * @b Example
@@ -143,8 +143,8 @@
  * updated in addition.
  *
  * @param vec The vector to erase data from.
- * @param begin The starting position of the erasure
- * @param end The end position of the erasure
+ * @param begin The starting position of the erasure.
+ * @param end The end position of the erasure.
  *
  * @b Example
  * @snippet vector.test.c Erasing data
@@ -172,8 +172,8 @@
  * Sequentially checks all elements until a match is found or the entire length
  * of the vector has been traversed.
  *
- * @param vec The vector to be searched
- * @param key The value to be searched for
+ * @param vec The vector to be searched.
+ * @param key The value to be searched for.
  *
  * @returns An index of `size_t` of the element that was found or SIZE_MAX if
  * not found.
@@ -219,8 +219,8 @@
  *
  * @warning This function assumes that the vector is sorted before being called.
  *
- * @param vec The vector to be searched
- * @param data The value to be searched for
+ * @param vec The vector to be searched.
+ * @param data The value to be searched for.
  *
  * @returns An index of `size_t` of the element that was found or SIZE_MAX if
  * not found.

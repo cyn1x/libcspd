@@ -143,24 +143,8 @@ void vector_test(void)
 
     int32 key  = 4;
     void *addr = (int32 *)vector_bsearch(&vec, &key);
-    printf("Key found at: %p\n", addr);
-
-    /*int32 i32_a = 2;
-    int32 i32_b = -2;
-
-    printf("Decimal: %d \n", i32_a);
-    printf("Hexadecimal: %08x \n", i32_a);
-    printf("Octal: %011o \n", i32_a);
-    printf("\n");
-    printf("Decimal: %d \n", i32_b);
-    printf("Hexadecimal: %08x \n", i32_b);
-    printf("Octal: %011o \n", i32_b);
-
-    for (size_t i = 0; i < sizeof(int32); i++) {
-        int8 byte = *(int8 *)&i32_a;
-        for (size_t j = 0; j < 8; j++) {
-        }
-    }*/
+    // printf("Key found at: %p\n", addr);
+    assert(addr != NULL);
 
     vector_clear(&vec);
     assert(vec.data == NULL);
