@@ -5,7 +5,9 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#ifdef _WIN32
 #pragma warning(disable : 5045)
+#endif // _WIN32
 
 #include <stdint.h>
 
