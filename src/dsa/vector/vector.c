@@ -152,6 +152,16 @@ void *vector_resize(vector *vec)
     return vec;
 }
 
+void vector_reverse(vector *vec)
+{
+    for (size_t i = 0; i < vec->size / 2; i++) {
+        void *src = vector_get(vec, i);
+        void *dst = vector_get(vec, vec->size - 1 - i);
+
+        swap(src, dst, vec->data_size);
+    }
+}
+
 void vector_update(vector *vec)
 {
     void *front = vector_get(vec, 0);
@@ -189,11 +199,40 @@ void vector_qsort(vector *vec)
     qsort(vec, vec->size, vec->data_size, vec->_cmp);
 }
 
-void _vector_qsort(vector *vec)
+void _vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 {
-    (void)vec;
+    if (lo >= hi) {
+        return;
+    }
 
-    return;
+    ptrdiff_t pvt_idx = vector_partition(vec, lo, hi);
+
+    _vector_qsort(vec, lo, pvt_idx - 1);
+    _vector_qsort(vec, pvt_idx + 1, hi);
+}
+
+ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+{
+    void     *pvt = vector_get(vec, hi);
+    void     *tmp;
+    ptrdiff_t idx = lo - 1;
+
+    for (ptrdiff_t i = lo; i < hi; ++i) {
+        void *curr = vector_get(vec, i);
+
+        int   cmp  = vec->_cmp(curr, pvt);
+        if (cmp != 1) {
+            idx++;
+            tmp = vector_get(vec, idx);
+            swap(curr, tmp, vec->data_size);
+        }
+    }
+
+    idx++;
+    tmp = vector_get(vec, idx);
+    swap(tmp, pvt, vec->data_size);
+
+    return idx;
 }
 
 void vector_msort(vector *vec)

@@ -44,6 +44,7 @@ void vector_test(void)
     }
     // print_vector(&vec);
     // Output: { 3, 5, 6, 1, 0, 1, 2, 3, 4, 5, 6, 7 }
+    assert(vec.size == 12);
     value = ((int32 *)vec.data)[10];
     assert(value == 6);
 
@@ -109,19 +110,13 @@ void vector_test(void)
     assert(*(int32 *)vec.back == 18);
 
     // Reverse the vector
-    for (size_t i = 0; i != vec.size / 2; i++) {
-        int32 *src = &((int32 *)vec.data)[i];
-        int32 *dst = &((int32 *)vec.data)[vec.size - 1 - i];
-        int32  tmp;
-
-        tmp  = *dst;
-        *dst = *src;
-        *src = tmp;
-    }
+    vector_reverse(&vec);
     // print_vector(&vec);
     // Output: { 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
     // 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16,
-    // -17, }
+    // -17 }
+    assert(*(int32 *)vec.front == 18);
+    assert(*(int32 *)vec.back == -17);
 
     //! [Bubble sort]
     //! [Comparator function]
@@ -144,6 +139,17 @@ void vector_test(void)
     void *addr = (int32 *)vector_bsearch(&vec, &key);
     // printf("Key found at: %p\n", addr);
     assert(addr != NULL);
+
+    // TODO: Shuffle the items instead
+    // Reverse the vector
+    vector_reverse(&vec);
+    // print_vector(&vec);
+
+    _vector_qsort(&vec, 0, vec.size - 1);
+    print_vector(&vec);
+    // Output:{ -17, -16, -15, -14, -13, -12, -11, -10, -9, -8, -7, -6, -5, -4,
+    // -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
+    // 18 }
 
     vector_clear(&vec);
     assert(vec.data == NULL);

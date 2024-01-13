@@ -293,15 +293,33 @@
  */
 
 /**
- * @fn _vector_qsort(vector *vec)
+ * @fn _vector_qsort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
  *
  * @brief Sorts a vector using the quicksort algorithm.
  *
- *
+ * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
+ * use of the Lomuto partition scheme.
  *
  * @param vec The vector to be sorted.
+ * @param lo Index of the first element in the vector
+ * @param hi Index of the last element of in the vector
  *
  * @see https://en.wikipedia.org/wiki/Quicksort
+ */
+
+/**
+ * @fn partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+ *
+ * @brief Divides the vector into two partitions.
+ *
+ * Divides the vector into two partitions and moves all elements to the left of
+ * the pivot if they are less than or equal to the pivot.
+ *
+ * @param vec The vector to be partitioned.
+ * @param lo Index of the first element in the vector
+ * @param hi Index of the last element of in the vector
+ *
+ * @returns The index of the next pivot point.
  */
 
 #ifndef VECTOR_H
@@ -337,25 +355,26 @@ typedef struct vector
 
 } vector;
 
-LIBCSPD_API void   vector_init(vector *vec, size_t data_size);
-LIBCSPD_API void  *vector_get(const vector *vec, size_t idx);
-LIBCSPD_API void   vector_set(vector *vec, size_t idx, const void *data);
-LIBCSPD_API void   vector_push(vector *vec, const void *data);
-LIBCSPD_API void   vector_pop(vector *vec);
-LIBCSPD_API void   vector_insert(vector *vec, size_t idx, size_t size,
-                                 const void *data);
-LIBCSPD_API void   vector_erase(vector *vec, size_t begin, size_t end);
-LIBCSPD_API void   vector_clear(vector *vec);
-LIBCSPD_API size_t vector_lsearch(vector *vec, const void *key);
-LIBCSPD_API void  *vector_bsearch(vector *vec, const void *key);
-LIBCSPD_API size_t _vector_bsearch(vector *vec, const void *key);
-LIBCSPD_API void  *vector_resize(vector *vec);
-LIBCSPD_API void   vector_reverse(vector *vec);
-LIBCSPD_API void   vector_update(vector *vec);
-LIBCSPD_API void   vector_bsort(vector *vec);
-LIBCSPD_API void   vector_qsort(vector *vec);
-LIBCSPD_API void   _vector_qsort(vector *vec);
-LIBCSPD_API void   vector_msort(vector *vec);
+LIBCSPD_API void      vector_init(vector *vec, size_t data_size);
+LIBCSPD_API void     *vector_get(const vector *vec, size_t idx);
+LIBCSPD_API void      vector_set(vector *vec, size_t idx, const void *data);
+LIBCSPD_API void      vector_push(vector *vec, const void *data);
+LIBCSPD_API void      vector_pop(vector *vec);
+LIBCSPD_API void      vector_insert(vector *vec, size_t idx, size_t size,
+                                    const void *data);
+LIBCSPD_API void      vector_erase(vector *vec, size_t begin, size_t end);
+LIBCSPD_API void      vector_clear(vector *vec);
+LIBCSPD_API size_t    vector_lsearch(vector *vec, const void *key);
+LIBCSPD_API void     *vector_bsearch(vector *vec, const void *key);
+LIBCSPD_API size_t    _vector_bsearch(vector *vec, const void *key);
+LIBCSPD_API void     *vector_resize(vector *vec);
+LIBCSPD_API void      vector_reverse(vector *vec);
+LIBCSPD_API void      vector_update(vector *vec);
+LIBCSPD_API void      vector_bsort(vector *vec);
+LIBCSPD_API void      vector_qsort(vector *vec);
+LIBCSPD_API void      _vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+LIBCSPD_API ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+LIBCSPD_API void      vector_msort(vector *vec);
 
 #ifdef __cplusplus
 }
