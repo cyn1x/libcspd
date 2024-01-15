@@ -98,7 +98,7 @@ popd
 pushd tests
 
 rem Compile *.test.c files
-cl /nologo /Fo"obj\\" /Fd"obj\\" /c -Zi -W4 -Wall %testsrcs% %incs%
+cl /nologo /Fo"obj\\" /Fd"obj\\" /c -Zi -W4 -Wall /std:c11 %testsrcs% %incs%
 
 rem Store all *.test.obj file names only for the linker
 for /r obj %%f in (*.test.obj) do (

@@ -1,6 +1,7 @@
 #ifndef VECTOR_TEST_H
 #define VECTOR_TEST_H
 
+#include "print.h"
 #include <assert.h>
 #include <vector.h>
 
