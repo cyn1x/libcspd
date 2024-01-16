@@ -1,5 +1,29 @@
 /**
  * @file print.h
+ * Generic `printf()` wrapper.
+ */
+
+/**
+ * @def print_any(T)
+ *
+ * @brief Determines the format specifier of a data type.
+ *
+ * Dynamically infers the `printf()` format specifier.
+ *
+ * @param T The data type to be inferred.
+ */
+
+/**
+ * @def print(T, S)
+ *
+ * @brief Generic print function.
+ *
+ * Generic print function that takes the data to be printed `T` and a string `S`
+ * to output after `T`, which could be a newline, blank space, or something
+ * else.
+ *
+ * @param T The data to be printed.
+ * @param S The string to output after the data has been printed.
  */
 
 #ifndef PRINT_H

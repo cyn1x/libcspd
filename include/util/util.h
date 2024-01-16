@@ -1,5 +1,6 @@
 /**
  * @file util.h
+ * General utilities not specific to the purpose of any other header file.
  */
 
 /**
@@ -16,7 +17,7 @@
  */
 
 /**
- * @fn swap(void *data, size_t size)
+ * @fn print_binary(void *data, size_t size)
  *
  * @brief Prints out the binary representation of the given data.
  *

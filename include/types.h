@@ -1,5 +1,7 @@
 /**
  * @file types.h
+ * Custom type definitions.
+ * More readable type definitions for types in `stdint.h`.
  */
 
 #ifndef TYPES_H

@@ -1,3 +1,10 @@
+/**
+ * @file defs.h
+ * Abstraction of library import and export definitions.
+ * Used to include in other header files which require their functions to be
+ * exported, or source files for functions to be imported.
+ */
+
 #ifndef DEFS_H
 #define DEFS_H
 
