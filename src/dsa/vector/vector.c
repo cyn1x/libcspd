@@ -1,3 +1,4 @@
+#include <string.h>
 #define LIBCSPD_EXPORTS
 
 #include "vector.h"
@@ -22,7 +23,7 @@ void vector_set(vector *vec, size_t idx, const void *data)
     void *dst = (int8 *)vec->data + idx * vec->data_size;
     memcpy(dst, data, vec->data_size);
 
-    vector_update(vec);
+    update_pointers(vec);
 }
 
 void vector_push(vector *vec, const void *data)
@@ -47,7 +48,7 @@ void vector_insert(vector *vec, size_t idx, size_t size, const void *data)
 
     vec->size += amt;
     if (vec->size >= vec->capacity) {
-        vec = vector_resize(vec);
+        vec = vector_resize(vec, 0);
     }
     void *src = vector_get(vec, idx);
     void *dst = vector_get(vec, idx + amt);
@@ -60,7 +61,7 @@ void vector_insert(vector *vec, size_t idx, size_t size, const void *data)
     memmove(dst, src, mv_amt * vec->data_size);
     memcpy(src, data, amt * vec->data_size);
 
-    vector_update(vec);
+    update_pointers(vec);
 }
 
 void vector_erase(vector *vec, size_t begin, size_t end)
@@ -86,7 +87,7 @@ void vector_erase(vector *vec, size_t begin, size_t end)
         return;
     }
 
-    vector_update(vec);
+    update_pointers(vec);
 }
 
 void vector_clear(vector *vec)
@@ -98,6 +99,38 @@ void vector_clear(vector *vec)
     vec->data      = NULL;
     vec->front     = NULL;
     vec->back      = NULL;
+}
+
+void *vector_resize(vector *vec, size_t size)
+{
+    if (size == 0) {
+        vec->capacity *= 2;
+    } else {
+        vec->capacity = size;
+    }
+
+    // TODO: check if realloc was valid
+    vec->data = realloc(vec->data, vec->data_size * vec->capacity);
+
+    return vec;
+}
+
+void vector_copy(vector *dst, vector *src)
+{
+    // The destination vector is assumed to be empty
+    vector_resize(dst, src->capacity);
+    dst->size = src->size;
+    memcpy(dst->data, src->data, src->size * src->data_size);
+}
+
+void vector_reverse(vector *vec)
+{
+    for (size_t i = 0; i < vec->size / 2; i++) {
+        void *src = vector_get(vec, i);
+        void *dst = vector_get(vec, vec->size - 1 - i);
+
+        swap(src, dst, vec->data_size);
+    }
 }
 
 size_t vector_lsearch(vector *vec, const void *key)
@@ -143,42 +176,6 @@ size_t vector_binary_search(vector *vec, const void *key)
     return SIZE_MAX;
 }
 
-void *vector_resize(vector *vec)
-{
-    // TODO: check if realloc was valid
-    vec->capacity *= 2;
-    vec->data = realloc(vec->data, vec->data_size * vec->capacity);
-
-    return vec;
-}
-
-void vector_reverse(vector *vec)
-{
-    for (size_t i = 0; i < vec->size / 2; i++) {
-        void *src = vector_get(vec, i);
-        void *dst = vector_get(vec, vec->size - 1 - i);
-
-        swap(src, dst, vec->data_size);
-    }
-}
-
-void vector_update(vector *vec)
-{
-    void *front = vector_get(vec, 0);
-    void *back  = vector_get(vec, vec->size - 1);
-    if (vec->size == 1) {
-        vec->front = vec->back = front;
-        return;
-    }
-
-    if (vec->front != front) {
-        vec->front = front;
-    }
-    if (vec->back != back) {
-        vec->back = back;
-    }
-}
-
 void vector_bsort(vector *vec)
 {
     for (size_t i = 0; i < vec->size; i++) {
@@ -199,19 +196,25 @@ void vector_qsort(vector *vec)
     qsort(vec, vec->size, vec->data_size, vec->_cmp);
 }
 
+void vector_msort(vector *vec_a, vector *vec_b, size_t size)
+{
+    vector_copy(vec_b, vec_a);
+    split_merge(vec_a, 0, size, vec_b);
+}
+
 void vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 {
     if (lo >= hi) {
         return;
     }
 
-    ptrdiff_t pvt_idx = vector_partition(vec, lo, hi);
+    ptrdiff_t pvt_idx = partition(vec, lo, hi);
 
     vector_quicksort(vec, lo, pvt_idx - 1);
     vector_quicksort(vec, pvt_idx + 1, hi);
 }
 
-ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+static ptrdiff_t partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 {
     void     *pvt = vector_get(vec, hi);
     void     *tmp;
@@ -235,9 +238,55 @@ ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
     return idx;
 }
 
-void vector_msort(vector *vec)
+static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a)
 {
-    (void)vec;
+    if (end - begin <= 1) {
+        return;
+    }
 
-    return;
+    size_t mid = (end + begin) / 2;
+
+    split_merge(vec_a, begin, mid, vec_b);
+    split_merge(vec_a, mid, end, vec_b);
+
+    merge(vec_b, begin, mid, end, vec_a);
+}
+
+static void merge(vector *vec_b, size_t begin, size_t mid, size_t end,
+                  vector *vec_a)
+{
+    size_t i = begin;
+    size_t j = mid;
+
+    for (size_t k = begin; k < end; k++) {
+        void *lrh = vector_get(vec_a, i); // left run head
+        void *rhh = vector_get(vec_a, j); // right run head
+        int   cmp = vec_a->_cmp(lrh, rhh);
+
+        void *new = vector_get(vec_b, k); // pointer to place sorted element
+        if (i < mid && (j >= end || cmp != 1)) {
+            swap(lrh, new, vec_b->data_size);
+            i = i + 1;
+        } else {
+            swap(rhh, new, vec_b->data_size);
+            j = j + 1;
+        }
+    }
+}
+
+static void update_pointers(vector *vec)
+{
+    void *front = vector_get(vec, 0);
+    void *back  = vector_get(vec, vec->size - 1);
+    if (vec->size == 1) {
+        vec->front = vec->back = front;
+        return;
+    }
+
+    if (vec->front != front) {
+        vec->front = front;
+    }
+    if (vec->back != back) {
+        vec->back = back;
+    }
 }

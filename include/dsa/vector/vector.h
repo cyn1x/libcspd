@@ -165,6 +165,40 @@
  */
 
 /**
+ * @fn *vector_resize(vector *vec)
+ *
+ * @brief Resizes the vector.
+ *
+ * Increases the size of a vector by doubling the current capacity. This is a
+ * helper function for other operations and should not be directly used.
+ *
+ * @param vec The vector to be resized.
+ *
+ * @returns The resized vector.
+ */
+
+/**
+ * @fn *vector_copy(vector *dst, vector *src)
+ *
+ * @brief Copies data from one vector to the other.
+ *
+ * Copies data from vector `src` heap memory to vector `dst` heap memory.
+ *
+ * @param dst The destination for the datasource to be copied to.
+ * @param src The datasource for the copy.
+ */
+
+/**
+ * @fn *vector_reverse(vector *vec)
+ *
+ * @brief Reverses the order of elements in a vector
+ *
+ * Reverses the order of elements in the given vector.
+ *
+ * @param vec The vector to be reversed.
+ */
+
+/**
  * @fn vector_lsearch(vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
@@ -232,30 +266,6 @@
  */
 
 /**
- * @fn *vector_resize(vector *vec)
- *
- * @brief Resizes the vector.
- *
- * Increases the size of a vector by doubling the current capacity. This is a
- * helper function for other operations and should not be directly used.
- *
- * @param vec The vector to be resized.
- *
- * @returns The resized vector.
- */
-
-/**
- * @fn vector_update(vector *vec)
- *
- * @brief Updates the front and back pointers.
- *
- * Helper function that updates the front and back pointers if the calling
- * function deems them necessary to be updated.
- *
- * @param vec The vector to be updated.
- */
-
-/**
  * @fn vector_bsort(vector *vec)
  *
  * @brief Sorts a vector using the bubblesort algorithm.
@@ -293,6 +303,19 @@
  */
 
 /**
+ * @fn vector_msort(vector *vec)
+ *
+ * @brief Sorts a vector using the mergesort algorithm.
+ *
+ * Sorts a vector using the top-down implementation of the mergesort algorithm.
+ * Use of this function requires the comparator function to be set.
+ *
+ * @param vec The vector to be sorted.
+ *
+ * @see https://en.wikipedia.org/wiki/Merge_sort
+ */
+
+/**
  * @fn vector_quicksort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
  *
  * @brief Sorts a vector using the quicksort algorithm.
@@ -320,6 +343,46 @@
  * @param hi Index of the last element of in the vector
  *
  * @returns The index of the next pivot point.
+ */
+
+/**
+ * @fn split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a)
+ *
+ * @brief Merges split runs from `vec_b` to `vec_a`.
+ *
+ * Splits `vec_a` into 2 runs, then sorts both runs into `vec_b`, then merges
+ * both runs from `vec_b` to `vec_a`.
+ *
+ * @param vec_b The work vector
+ * @param begin Index of the starter of the vector
+ * @param end Index of the end of the vector
+ * @param vec_a The vector to be sorted
+ */
+
+/**
+ * @fn merge(vector *vec_b, size_t begin, size_t mid, size_t end, vector *vec_a)
+ *
+ * @brief Helper function for mergesort that performs the sort.
+ *
+ * Helper function for `vector_msort()` that performs the sorting by use of the
+ * vector comparator function.
+ *
+ * @param vec_b The work vector
+ * @param begin Index of the starter of the vector
+ * @param mid Index of the middle of the vector
+ * @param end Index of the end of the vector
+ * @param vec_a The vector to be sorted
+ */
+
+/**
+ * @fn update_pointers(vector *vec)
+ *
+ * @brief Updates the front and back pointers.
+ *
+ * Helper function that updates the front and back pointers if the calling
+ * function deems them necessary to be updated.
+ *
+ * @param vec The vector to be updated.
  */
 
 #ifndef VECTOR_H
@@ -355,26 +418,31 @@ typedef struct vector
 
 } vector;
 
-LIBCSPD_API void      vector_init(vector *vec, size_t data_size);
-LIBCSPD_API void     *vector_get(const vector *vec, size_t idx);
-LIBCSPD_API void      vector_set(vector *vec, size_t idx, const void *data);
-LIBCSPD_API void      vector_push(vector *vec, const void *data);
-LIBCSPD_API void      vector_pop(vector *vec);
-LIBCSPD_API void      vector_insert(vector *vec, size_t idx, size_t size,
-                                    const void *data);
-LIBCSPD_API void      vector_erase(vector *vec, size_t begin, size_t end);
-LIBCSPD_API void      vector_clear(vector *vec);
-LIBCSPD_API size_t    vector_lsearch(vector *vec, const void *key);
-LIBCSPD_API void     *vector_bsearch(vector *vec, const void *key);
-LIBCSPD_API size_t    vector_binary_search(vector *vec, const void *key);
-LIBCSPD_API void     *vector_resize(vector *vec);
-LIBCSPD_API void      vector_reverse(vector *vec);
-LIBCSPD_API void      vector_update(vector *vec);
-LIBCSPD_API void      vector_bsort(vector *vec);
-LIBCSPD_API void      vector_qsort(vector *vec);
-LIBCSPD_API void      vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
-LIBCSPD_API ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
-LIBCSPD_API void      vector_msort(vector *vec);
+LIBCSPD_API void   vector_init(vector *vec, size_t data_size);
+LIBCSPD_API void  *vector_get(const vector *vec, size_t idx);
+LIBCSPD_API void   vector_set(vector *vec, size_t idx, const void *data);
+LIBCSPD_API void   vector_push(vector *vec, const void *data);
+LIBCSPD_API void   vector_pop(vector *vec);
+LIBCSPD_API void   vector_insert(vector *vec, size_t idx, size_t size,
+                                 const void *data);
+LIBCSPD_API void   vector_erase(vector *vec, size_t begin, size_t end);
+LIBCSPD_API void   vector_clear(vector *vec);
+LIBCSPD_API void  *vector_resize(vector *vec, size_t size);
+LIBCSPD_API void   vector_copy(vector *dst, vector *src);
+LIBCSPD_API void   vector_reverse(vector *vec);
+LIBCSPD_API size_t vector_lsearch(vector *vec, const void *key);
+LIBCSPD_API void  *vector_bsearch(vector *vec, const void *key);
+LIBCSPD_API size_t vector_binary_search(vector *vec, const void *key);
+LIBCSPD_API void   vector_bsort(vector *vec);
+LIBCSPD_API void   vector_qsort(vector *vec);
+LIBCSPD_API void   vector_msort(vector *vec_a, vector *vec_b, size_t size);
+LIBCSPD_API void   vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+
+static ptrdiff_t   partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a);
+static void merge(vector *vec_b, size_t begin, size_t mid, size_t end,
+                  vector *vec_a);
+static void update_pointers(vector *vec);
 
 #ifdef __cplusplus
 }
