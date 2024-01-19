@@ -187,7 +187,7 @@
 /**
  * @fn vector_bsearch(vector *vec, const void *key)
  *
- * @brief Checks if an element exists in the vector.
+ * @brief Wrapper for the libc `bsearch()` function.
  *
  * Finds an element equal to the element pointed to by `key` using the
  * binary search algorithm. Use of this function requires the comparator
@@ -206,7 +206,7 @@
  */
 
 /**
- * @fn _vector_bsearch(vector *vec, const void *key)
+ * @fn vector_binary_search(vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
@@ -279,10 +279,10 @@
 /**
  * @fn vector_qsort(vector *vec)
  *
- * @brief Sorts a vector using the quicksort algorithm.
+ * @brief Wrapper for the libc `qsort()` function.
  *
- * Sorts a vector using `qsort` in the C standard library. Use of this function
- * requires the comparator function pointer to be set.
+ * Sorts a vector using `qsort` from the C Standard General Utilities Library.
+ * Use of this function requires the comparator function pointer to be set.
  *
  * @warning The `_cmp` function pointer in the `vector` struct must be assigned
  * before calling this function.
@@ -293,7 +293,7 @@
  */
 
 /**
- * @fn _vector_qsort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
+ * @fn vector_quicksort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
  *
  * @brief Sorts a vector using the quicksort algorithm.
  *
@@ -366,13 +366,13 @@ LIBCSPD_API void      vector_erase(vector *vec, size_t begin, size_t end);
 LIBCSPD_API void      vector_clear(vector *vec);
 LIBCSPD_API size_t    vector_lsearch(vector *vec, const void *key);
 LIBCSPD_API void     *vector_bsearch(vector *vec, const void *key);
-LIBCSPD_API size_t    _vector_bsearch(vector *vec, const void *key);
+LIBCSPD_API size_t    vector_binary_search(vector *vec, const void *key);
 LIBCSPD_API void     *vector_resize(vector *vec);
 LIBCSPD_API void      vector_reverse(vector *vec);
 LIBCSPD_API void      vector_update(vector *vec);
 LIBCSPD_API void      vector_bsort(vector *vec);
 LIBCSPD_API void      vector_qsort(vector *vec);
-LIBCSPD_API void      _vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+LIBCSPD_API void      vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 LIBCSPD_API ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 LIBCSPD_API void      vector_msort(vector *vec);
 

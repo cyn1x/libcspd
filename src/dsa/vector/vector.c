@@ -121,7 +121,7 @@ void *vector_bsearch(vector *vec, const void *key)
     return res;
 }
 
-size_t _vector_bsearch(vector *vec, const void *key)
+size_t vector_binary_search(vector *vec, const void *key)
 {
     size_t lo = 0;
     size_t hi = vec->size - 1;
@@ -199,7 +199,7 @@ void vector_qsort(vector *vec)
     qsort(vec, vec->size, vec->data_size, vec->_cmp);
 }
 
-void _vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+void vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 {
     if (lo >= hi) {
         return;
@@ -207,8 +207,8 @@ void _vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 
     ptrdiff_t pvt_idx = vector_partition(vec, lo, hi);
 
-    _vector_qsort(vec, lo, pvt_idx - 1);
-    _vector_qsort(vec, pvt_idx + 1, hi);
+    vector_quicksort(vec, lo, pvt_idx - 1);
+    vector_quicksort(vec, pvt_idx + 1, hi);
 }
 
 ptrdiff_t vector_partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)

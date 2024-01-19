@@ -1,6 +1,8 @@
 /**
  * @file print.h
  * Generic `printf()` wrapper.
+ *
+ * @see http://www.robertgamble.net/2012/01/c11-generic-selections.html
  */
 
 /**
