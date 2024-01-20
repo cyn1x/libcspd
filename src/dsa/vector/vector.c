@@ -260,15 +260,15 @@ static void merge(vector *vec_b, size_t begin, size_t mid, size_t end,
 
     for (size_t k = begin; k < end; k++) {
         void *lrh = vector_get(vec_a, i); // left run head
-        void *rhh = vector_get(vec_a, j); // right run head
-        int   cmp = vec_a->_cmp(lrh, rhh);
+        void *rrh = vector_get(vec_a, j); // right run head
+        int   cmp = vec_a->_cmp(lrh, rrh);
 
-        void *new = vector_get(vec_b, k); // pointer to place sorted element
+        void *tmp = vector_get(vec_b, k); // pointer to place sorted element
         if (i < mid && (j >= end || cmp != 1)) {
-            swap(lrh, new, vec_b->data_size);
+            swap(lrh, tmp, vec_b->data_size);
             i = i + 1;
         } else {
-            swap(rhh, new, vec_b->data_size);
+            swap(rrh, tmp, vec_b->data_size);
             j = j + 1;
         }
     }
