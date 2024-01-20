@@ -438,12 +438,6 @@ LIBCSPD_API void   vector_qsort(vector *vec);
 LIBCSPD_API void   vector_msort(vector *vec_a, vector *vec_b, size_t size);
 LIBCSPD_API void   vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 
-static ptrdiff_t   partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
-static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a);
-static void merge(vector *vec_b, size_t begin, size_t mid, size_t end,
-                  vector *vec_a);
-static void update_pointers(vector *vec);
-
 #ifdef __cplusplus
 }
 #endif // __cplusplus

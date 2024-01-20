@@ -1,8 +1,11 @@
 #include "vector.test.h"
-#include "defs.test.h"
-#include "vector.h"
 
-void print_vector(vector *vec)
+static void unit_tests(void);
+static void integration_tests(void);
+static void qsort_test(void);
+static void msort_test(void);
+
+void        print_vector(vector *vec)
 {
     printf("{ ");
     for (size_t i = 0; i < vec->size; ++i) {
@@ -17,13 +20,13 @@ void vector_test(void)
     integration_tests();
 }
 
-void unit_tests(void)
+static void unit_tests(void)
 {
     qsort_test();
     msort_test();
 }
 
-void qsort_test(void)
+static void qsort_test(void)
 {
     vector vec;
     vector_init(&vec, sizeof(int32));
@@ -57,7 +60,7 @@ void qsort_test(void)
     assert(vec.data == NULL);
 }
 
-void msort_test(void)
+static void msort_test(void)
 {
     vector vec_a;
     vector vec_b;
@@ -101,7 +104,7 @@ void msort_test(void)
     assert(vec_b.data == NULL);
 }
 
-void integration_tests(void)
+static void integration_tests(void)
 {
     //! [Initialize]
     int32  value;

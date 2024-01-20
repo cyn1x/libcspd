@@ -1,9 +1,14 @@
-#include <string.h>
 #define LIBCSPD_EXPORTS
 
 #include "vector.h"
 
-void vector_init(vector *vec, size_t data_size)
+static ptrdiff_t partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a);
+static void merge(vector *vec_b, size_t begin, size_t mid, size_t end,
+                  vector *vec_a);
+static void update_pointers(vector *vec);
+
+void        vector_init(vector *vec, size_t data_size)
 {
     vec->data_size = data_size;
     vec->capacity  = MIN_CAPACITY;

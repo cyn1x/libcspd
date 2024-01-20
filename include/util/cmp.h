@@ -37,7 +37,7 @@
      *                                                                         \
      * @returns `-1` if `a < b`, `1` if `a > b`, or `0` if `a == b`.           \
      */                                                                        \
-    int T##_cmp(const void *a, const void *b)                                  \
+    static inline int T##_cmp(const void *a, const void *b)                    \
     {                                                                          \
         T arg1 = *(const T *)a;                                                \
         T arg2 = *(const T *)b;                                                \
