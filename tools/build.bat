@@ -36,7 +36,7 @@ set flags=compile_flags.txt
 rem/||(
 Store the absolute ^path of the project root directory in a variable 
 followed by a slash to stay consistent with `~dp0` when using 
-functions ^for splitting strings. ^)
+functions ^for splitting strings and ^set the comparator variable. ^)
 )
 set root=%cd%\
 set cmp=!root:~0,-1!
@@ -44,9 +44,10 @@ set cmp=!root:~0,-1!
 echo | set /p clear="" > %flags%
 
 rem Recursively set all relative include directory paths
-for /r include %%f in (*.h) do (
+for /r include %%F in (*.h) do (
 
-    set "abspath=%%~dpf"
+    rem Reference the absolute and relative paths of the header file
+    set "abspath=%%~dpF"
     set "relpath=!abspath:%cmp%=!"
 
     rem Prevent duplicate include directories
@@ -66,8 +67,8 @@ for /r include %%f in (*.h) do (
 pushd obj
 
 rem Recursively set all relative file paths of *.c source files
-for /r ..\src %%f in (*.c) do ( 
-    set "abspath=%%f"
+for /r ..\src %%F in (*.c) do ( 
+    set "abspath=%%F"
     set "relpath=!abspath:%cmp%=!"
     call set "srcs=%%srcs%% ..!relpath!"
 )
@@ -79,8 +80,8 @@ popd
 pushd bin
 
 rem Store all *.obj file names only for the linker
-for /r ..\obj %%f in (*.obj) do (
-    call set "objs=%%objs%% ..\obj\%%~nxf"
+for /r ..\obj %%F in (*.obj) do (
+    call set "objs=%%objs%% ..\obj\%%~nxF"
 )
 
 rem Link *.obj object files
@@ -90,8 +91,8 @@ rem Copy DLL to where the test executable will be built
 copy ..\bin\%dll% ..\tests\bin\%dll% > nul
 
 rem Store all *.test.c source files in a variable
-for /r ..\tests %%f in (*.test.c) do ( 
-    call set "testsrcs=%%testsrcs%% %%~nxf"
+for /r ..\tests %%F in (*.test.c) do ( 
+    call set "testsrcs=%%testsrcs%% %%~nxF"
 )
 
 popd
@@ -101,8 +102,8 @@ rem Compile *.test.c files
 cl /nologo /Fo"obj\\" /Fd"obj\\" /c -Zi -W4 -Wall /std:c11 %testsrcs% %incs%
 
 rem Store all *.test.obj file names only for the linker
-for /r obj %%f in (*.test.obj) do (
-    call set "testobjs=%%testobjs%% obj\%%~nxf"
+for /r obj %%F in (*.test.obj) do (
+    call set "testobjs=%%testobjs%% obj\%%~nxF"
 )
 
 rem Link *.test.obj object files
