@@ -388,15 +388,9 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include "cmp.h"
 #include "defs.h"
-#include "types.h"
-#include "util.h"
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -414,7 +408,7 @@ typedef struct vector
     void  *front;
     void  *back;
 
-    int (*_cmp)(const void *, const void *);
+    int    (*_cmp)(const void *, const void *);
 
 } vector;
 

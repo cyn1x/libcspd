@@ -1,6 +1,8 @@
 #define LIBCSPD_EXPORTS
 
 #include "util.h"
+#include "types.h"
+#include <stdio.h>
 
 void swap(void *pa, void *pb, size_t size)
 {

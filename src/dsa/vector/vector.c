@@ -1,6 +1,11 @@
 #define LIBCSPD_EXPORTS
 
 #include "vector.h"
+#include "types.h"
+#include "util.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 static ptrdiff_t partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a);

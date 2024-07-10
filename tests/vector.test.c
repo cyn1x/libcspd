@@ -1,4 +1,8 @@
 #include "vector.test.h"
+#include "defs.test.h"
+#include <assert.h>
+#include <print.h>
+#include <stdio.h>
 
 static void unit_tests(void);
 static void integration_tests(void);

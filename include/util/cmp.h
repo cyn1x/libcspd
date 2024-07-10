@@ -24,8 +24,6 @@
 #ifndef CMP_H
 #define CMP_H
 
-#include "types.h"
-
 #define cmp(T)                                                                 \
     /*                                                                         \
      * @brief Compares two variables for equality and inequality.              \

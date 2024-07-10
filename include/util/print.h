@@ -31,7 +31,6 @@
 #ifndef PRINT_H
 #define PRINT_H
 
-#include "types.h"
 #include <inttypes.h>
 
 #ifdef __cplusplus

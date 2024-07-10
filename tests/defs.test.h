@@ -6,6 +6,7 @@
 #define DEFS_TEST_H
 
 #include <cmp.h>
+#include <types.h>
 
 //! [Comparator type initialization]
 cmp(int8) cmp(int16) cmp(int32) cmp(int64) cmp(uint8) cmp(uint16) cmp(uint32)
