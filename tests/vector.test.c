@@ -1,6 +1,5 @@
 #include "vector.test.h"
 #include "defs.test.h"
-#include <assert.h>
 #include <print.h>
 #include <stdio.h>
 
@@ -52,6 +51,8 @@ static void qsort_test(void)
     vector_push(&vec, &e);
     vector_push(&vec, &f);
     vector_push(&vec, &g);
+    // print_vector(&vec);
+    // Output: { 7 8 7 4 10 3 5 }
 
     vector_quicksort(&vec, 0, vec.size - 1);
     // print_vector(&vec);
