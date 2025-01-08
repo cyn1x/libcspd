@@ -9,6 +9,10 @@
 #define DEFS_H
 
 #ifdef _WIN32
+#pragma warning(disable : 5045)
+#endif // _WIN32
+
+#ifdef _WIN32
 #ifdef LIBCSPD_EXPORTS
 #define LIBCSPD_API __declspec(dllexport)
 #else
