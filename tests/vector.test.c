@@ -17,19 +17,7 @@ void        print_vector(vector *vec)
     printf("} \n");
 }
 
-void vector_test(void)
-{
-    unit_tests();
-    integration_tests();
-}
-
-static void unit_tests(void)
-{
-    qsort_test();
-    msort_test();
-}
-
-static void qsort_test(void)
+vector setup(void)
 {
     vector vec;
     vector_init(&vec, sizeof(int32));
@@ -51,65 +39,17 @@ static void qsort_test(void)
     vector_push(&vec, &e);
     vector_push(&vec, &f);
     vector_push(&vec, &g);
-    // print_vector(&vec);
-    // Output: { 7 8 7 4 10 3 5 }
 
-    vector_quicksort(&vec, 0, vec.size - 1);
-    // print_vector(&vec);
-    // Output: { 3 4 5 7 7 8 10 }
-
-    assert(*(int32 *)vec.front == 3);
-    assert(*(int32 *)vec.back == 10);
-
-    vector_clear(&vec);
-    assert(vec.data == NULL);
+    return vec;
 }
 
-static void msort_test(void)
+void vector_test(void)
 {
-    vector vec_a;
-    vector vec_b;
-    vector_init(&vec_a, sizeof(int32));
-    vector_init(&vec_b, sizeof(int32));
-
-    // Set comparator function pointers
-    vec_a._cmp = &int32_cmp;
-    vec_b._cmp = &int32_cmp;
-
-    int32 a    = 6;
-    int32 b    = 5;
-    int32 c    = 3;
-    int32 d    = 1;
-    int32 e    = 8;
-    int32 f    = 7;
-    int32 g    = 2;
-    int32 h    = 4;
-
-    vector_push(&vec_a, &a);
-    vector_push(&vec_a, &b);
-    vector_push(&vec_a, &c);
-    vector_push(&vec_a, &d);
-    vector_push(&vec_a, &e);
-    vector_push(&vec_a, &f);
-    vector_push(&vec_a, &g);
-    vector_push(&vec_a, &h);
-
-    vector_msort(&vec_a, &vec_b, vec_a.size);
-    // print_vector(&vec_a);
-    // Output: { 1 2 3 4 5 6 7 8 }
-
-    for (size_t i = 0; i < vec_a.size - 1; i++) {
-        assert(*(int32 *)vector_get(&vec_a, i) <=
-               *(int32 *)vector_get(&vec_a, i + 1));
-    }
-
-    vector_clear(&vec_a);
-    vector_clear(&vec_b);
-    assert(vec_a.data == NULL);
-    assert(vec_b.data == NULL);
+    unit_tests();
+    integration_tests();
 }
 
-static void integration_tests(void)
+static void unit_tests(void)
 {
     //! [Initialize]
     int32  value;
@@ -245,4 +185,71 @@ static void integration_tests(void)
 
     vector_clear(&vec);
     assert(vec.data == NULL);
+}
+
+static void integration_tests(void)
+{
+    qsort_test();
+    msort_test();
+}
+
+static void qsort_test(void)
+{
+    vector vec = setup();
+    print_vector(&vec);
+    // Output: { 7 8 7 4 10 3 5 }
+
+    vector_quicksort(&vec, 0, vec.size - 1);
+    print_vector(&vec);
+    // Output: { 3 4 5 7 7 8 10 }
+
+    assert(*(int32 *)vec.front == 3);
+    assert(*(int32 *)vec.back == 10);
+
+    vector_clear(&vec);
+    assert(vec.data == NULL);
+}
+
+static void msort_test(void)
+{
+    vector vec_a;
+    vector vec_b;
+    vector_init(&vec_a, sizeof(int32));
+    vector_init(&vec_b, sizeof(int32));
+
+    // Set comparator function pointers
+    vec_a._cmp = &int32_cmp;
+    vec_b._cmp = &int32_cmp;
+
+    int32 a    = 6;
+    int32 b    = 5;
+    int32 c    = 3;
+    int32 d    = 1;
+    int32 e    = 8;
+    int32 f    = 7;
+    int32 g    = 2;
+    int32 h    = 4;
+
+    vector_push(&vec_a, &a);
+    vector_push(&vec_a, &b);
+    vector_push(&vec_a, &c);
+    vector_push(&vec_a, &d);
+    vector_push(&vec_a, &e);
+    vector_push(&vec_a, &f);
+    vector_push(&vec_a, &g);
+    vector_push(&vec_a, &h);
+
+    vector_msort(&vec_a, &vec_b, vec_a.size);
+    // print_vector(&vec_a);
+    // Output: { 1 2 3 4 5 6 7 8 }
+
+    for (size_t i = 0; i < vec_a.size - 1; i++) {
+        assert(*(int32 *)vector_get(&vec_a, i) <=
+               *(int32 *)vector_get(&vec_a, i + 1));
+    }
+
+    vector_clear(&vec_a);
+    vector_clear(&vec_b);
+    assert(vec_a.data == NULL);
+    assert(vec_b.data == NULL);
 }
