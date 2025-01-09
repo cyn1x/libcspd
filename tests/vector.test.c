@@ -196,11 +196,11 @@ static void integration_tests(void)
 static void qsort_test(void)
 {
     vector vec = setup();
-    print_vector(&vec);
+    // print_vector(&vec);
     // Output: { 7 8 7 4 10 3 5 }
 
     vector_quicksort(&vec, 0, vec.size - 1);
-    print_vector(&vec);
+    // print_vector(&vec);
     // Output: { 3 4 5 7 7 8 10 }
 
     assert(*(int32 *)vec.front == 3);
