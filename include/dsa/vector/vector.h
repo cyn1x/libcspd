@@ -389,6 +389,7 @@
 #define VECTOR_H
 
 #include "defs.h"
+#include "types.h"
 #include <stdbool.h>
 #include <stddef.h>
 
@@ -408,7 +409,7 @@ typedef struct vector
     void  *front;
     void  *back;
 
-    int    (*_cmp)(const void *, const void *);
+    int (*_cmp)(const void *, const void *);
 
 } vector;
 
@@ -429,7 +430,7 @@ LIBCSPD_API void  *vector_bsearch(vector *vec, const void *key);
 LIBCSPD_API size_t vector_binary_search(vector *vec, const void *key);
 LIBCSPD_API void   vector_bsort(vector *vec);
 LIBCSPD_API void   vector_qsort(vector *vec);
-LIBCSPD_API void   vector_msort(vector *vec_a, vector *vec_b, size_t size);
+LIBCSPD_API void   vector_msort(vector *vec_a, size_t size, cmp_t cmp);
 LIBCSPD_API void   vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 
 #ifdef __cplusplus

@@ -213,13 +213,10 @@ static void qsort_test(void)
 static void msort_test(void)
 {
     vector vec_a;
-    vector vec_b;
     vector_init(&vec_a, sizeof(int32));
-    vector_init(&vec_b, sizeof(int32));
 
     // Set comparator function pointers
     vec_a._cmp = &int32_cmp;
-    vec_b._cmp = &int32_cmp;
 
     int32 a    = 6;
     int32 b    = 5;
@@ -239,7 +236,10 @@ static void msort_test(void)
     vector_push(&vec_a, &g);
     vector_push(&vec_a, &h);
 
-    vector_msort(&vec_a, &vec_b, vec_a.size);
+    // print_vector(&vec_a);
+    // Output: { 1 2 3 4 5 6 7 8 }
+
+    vector_msort(&vec_a, vec_a.size, int32_cmp);
     // print_vector(&vec_a);
     // Output: { 1 2 3 4 5 6 7 8 }
 
@@ -249,7 +249,5 @@ static void msort_test(void)
     }
 
     vector_clear(&vec_a);
-    vector_clear(&vec_b);
     assert(vec_a.data == NULL);
-    assert(vec_b.data == NULL);
 }

@@ -1,7 +1,6 @@
 #define LIBCSPD_EXPORTS
 
 #include "vector.h"
-#include "types.h"
 #include "util.h"
 #include <stdlib.h>
 #include <string.h>
@@ -205,10 +204,16 @@ void vector_qsort(vector *vec)
     qsort(vec, vec->size, vec->data_size, vec->_cmp);
 }
 
-void vector_msort(vector *vec_a, vector *vec_b, size_t size)
+void vector_msort(vector *vec_a, size_t size, cmp_t cmp)
 {
-    vector_copy(vec_b, vec_a);
-    split_merge(vec_a, 0, size, vec_b);
+    vector vec_b;
+    vector_init(&vec_b, sizeof(int32));
+    vec_b._cmp = cmp;
+
+    vector_copy(&vec_b, vec_a);
+    split_merge(vec_a, 0, size, &vec_b);
+
+    vector_clear(&vec_b);
 }
 
 void vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
@@ -246,6 +251,9 @@ static ptrdiff_t partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 
     return idx;
 }
+
+#include <stdio.h>
+#include <types.h>
 
 static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a)
 {
