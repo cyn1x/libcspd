@@ -1,3 +1,4 @@
+#include "linked_list.test.h"
 #include "vector.test.h"
 
 int main(int argc, char *argv[])
@@ -6,6 +7,7 @@ int main(int argc, char *argv[])
     (void)argv;
 
     vector_test();
+    linked_list_test();
 
     return 0;
 }

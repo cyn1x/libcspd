@@ -9,6 +9,8 @@
 
 #include <stdint.h>
 
+typedef int (*cmp_t)(const void *, const void *);
+
 typedef int8_t   int8;
 typedef int16_t  int16;
 typedef int32_t  int32;
