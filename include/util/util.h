@@ -33,6 +33,10 @@
 
 #include "defs.h"
 
+#ifdef __clang__
+#include <stddef.h>
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
