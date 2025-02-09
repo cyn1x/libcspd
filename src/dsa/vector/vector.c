@@ -129,6 +129,7 @@ void vector_copy(vector *dst, vector *src)
     vector_resize(dst, src->capacity);
     dst->size = src->size;
     memcpy(dst->data, src->data, src->size * src->data_size);
+    update_pointers(dst);
 }
 
 void vector_reverse(vector *vec)
@@ -155,14 +156,7 @@ size_t vector_lsearch(vector *vec, const void *key)
     return SIZE_MAX;
 }
 
-void *vector_bsearch(vector *vec, const void *key)
-{
-    void *res = bsearch(key, vec->data, vec->size, vec->data_size, vec->_cmp);
-
-    return res;
-}
-
-size_t vector_binary_search(vector *vec, const void *key)
+size_t vector_bsearch(vector *vec, const void *key)
 {
     size_t lo = 0;
     size_t hi = vec->size - 1;
@@ -199,11 +193,6 @@ void vector_bsort(vector *vec)
     }
 }
 
-void vector_qsort(vector *vec)
-{
-    qsort(vec, vec->size, vec->data_size, vec->_cmp);
-}
-
 void vector_msort(vector *vec_a, size_t size, cmp_t cmp)
 {
     vector vec_b;
@@ -216,7 +205,7 @@ void vector_msort(vector *vec_a, size_t size, cmp_t cmp)
     vector_clear(&vec_b);
 }
 
-void vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+void vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 {
     if (lo >= hi) {
         return;
@@ -224,8 +213,8 @@ void vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 
     ptrdiff_t pvt_idx = partition(vec, lo, hi);
 
-    vector_quicksort(vec, lo, pvt_idx - 1);
-    vector_quicksort(vec, pvt_idx + 1, hi);
+    vector_qsort(vec, lo, pvt_idx - 1);
+    vector_qsort(vec, pvt_idx + 1, hi);
 }
 
 static ptrdiff_t partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
@@ -251,9 +240,6 @@ static ptrdiff_t partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 
     return idx;
 }
-
-#include <stdio.h>
-#include <types.h>
 
 static void split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a)
 {

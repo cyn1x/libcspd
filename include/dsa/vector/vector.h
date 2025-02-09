@@ -221,27 +221,6 @@
 /**
  * @fn vector_bsearch(vector *vec, const void *key)
  *
- * @brief Wrapper for the libc `bsearch()` function.
- *
- * Finds an element equal to the element pointed to by `key` using the
- * binary search algorithm. Use of this function requires the comparator
- * function pointer to be set.
- *
- * @warning The `_cmp` function pointer in the `vector` struct must be assigned
- * before calling this function.
- *
- * @param vec The vector to be searched.
- * @param key The value to be searched for.
- *
- * @returns Pointer to an element in the array that compares equal to `*key`, or
- * `NULL` if such element has not been found.
- *
- * @see https://en.cppreference.com/w/c/algorithm/bsearch
- */
-
-/**
- * @fn vector_binary_search(vector *vec, const void *key)
- *
  * @brief Checks if an element exists in the vector.
  *
  * Uses a divide-and-conquer approach in checking whether an element exists in
@@ -287,19 +266,18 @@
  */
 
 /**
- * @fn vector_qsort(vector *vec)
+ * @fn vector_qsort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
  *
- * @brief Wrapper for the libc `qsort()` function.
+ * @brief Sorts a vector using the quicksort algorithm.
  *
- * Sorts a vector using `qsort` from the C Standard General Utilities Library.
- * Use of this function requires the comparator function pointer to be set.
- *
- * @warning The `_cmp` function pointer in the `vector` struct must be assigned
- * before calling this function.
+ * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
+ * use of the Lomuto partition scheme.
  *
  * @param vec The vector to be sorted.
+ * @param lo Index of the first element in the vector
+ * @param hi Index of the last element of in the vector
  *
- * @see https://en.cppreference.com/w/c/algorithm/qsort
+ * @see https://en.wikipedia.org/wiki/Quicksort
  */
 
 /**
@@ -313,21 +291,6 @@
  * @param vec The vector to be sorted.
  *
  * @see https://en.wikipedia.org/wiki/Merge_sort
- */
-
-/**
- * @fn vector_quicksort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
- *
- * @brief Sorts a vector using the quicksort algorithm.
- *
- * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
- * use of the Lomuto partition scheme.
- *
- * @param vec The vector to be sorted.
- * @param lo Index of the first element in the vector
- * @param hi Index of the last element of in the vector
- *
- * @see https://en.wikipedia.org/wiki/Quicksort
  */
 
 /**
@@ -426,12 +389,10 @@ LIBCSPD_API void  *vector_resize(vector *vec, size_t size);
 LIBCSPD_API void   vector_copy(vector *dst, vector *src);
 LIBCSPD_API void   vector_reverse(vector *vec);
 LIBCSPD_API size_t vector_lsearch(vector *vec, const void *key);
-LIBCSPD_API void  *vector_bsearch(vector *vec, const void *key);
-LIBCSPD_API size_t vector_binary_search(vector *vec, const void *key);
+LIBCSPD_API size_t vector_bsearch(vector *vec, const void *key);
 LIBCSPD_API void   vector_bsort(vector *vec);
-LIBCSPD_API void   vector_qsort(vector *vec);
+LIBCSPD_API void   vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 LIBCSPD_API void   vector_msort(vector *vec_a, size_t size, cmp_t cmp);
-LIBCSPD_API void   vector_quicksort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 
 #ifdef __cplusplus
 }

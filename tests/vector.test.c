@@ -1,10 +1,10 @@
 #include "vector.test.h"
 #include "defs.test.h"
+#include "vector.h"
 #include <print.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-static void qsort_test(void);
-static void msort_test(void);
 static void sort_test(void);
 
 void        print_vector(vector *vec)
@@ -45,7 +45,6 @@ vector setup(void)
 void vector_test(void)
 {
     //! [Initialize]
-    int32  value;
     vector vec;
     vector_init(&vec, sizeof(int32));
     //! [Initialize]
@@ -68,37 +67,47 @@ void vector_test(void)
     // Output: { 3 5 6 1 }
     //! [Push elements]
 
-    //! [Get element]
-    int32 e = 5;
-    value   = *(int32 *)vector_get(&vec, 1);
-    assert(value == e);
-    //! [Get element]
-
-    for (int32 i = 0; i < 8; ++i) {
-        int32 k = i;
-        vector_push(&vec, &k);
+    {
+        //! [Get element]
+        int32 value;
+        int32 e = 5;
+        value   = *(int32 *)vector_get(&vec, 1);
+        assert(value == e);
+        //! [Get element]
     }
-    // print_vector(&vec);
-    // Output: { 3 5 6 1 0 1 2 3 4 5 6 7 }
-    assert(vec.size == 12);
-    value = ((int32 *)vec.data)[10];
-    assert(value == 6);
 
-    //! [Linear search]
-    int32  k   = 6;
-    size_t idx = vector_lsearch(&vec, &k);
-    assert(idx == 2);
-    assert(*(int32 *)vec.back == 7);
-    //! [Linear search]
+    {
+        for (int32 i = 0; i < 8; ++i) {
+            int32 k = i;
+            vector_push(&vec, &k);
+        }
 
-    //! [Erasing data]
-    vector_erase(&vec, 5, 8);
-    // print_vector(&vec);
-    // Output: { 3 5 6 1 0 4 5 6 7 }
-    value = *(int32 *)vector_get(&vec, 5);
-    assert(value == 4);
-    assert(*(int32 *)vec.back == 7);
-    assert(vec.size == 9);
+        // print_vector(&vec);
+        // Output: { 3 5 6 1 0 1 2 3 4 5 6 7 }
+        assert(vec.size == 12);
+        int32 value = ((int32 *)vec.data)[10];
+        assert(value == 6);
+    }
+
+    {
+        //! [Linear search]
+        int32  k   = 6;
+        size_t idx = vector_lsearch(&vec, &k);
+        assert(idx == 2);
+        assert(*(int32 *)vec.back == 7);
+        //! [Linear search]
+    }
+
+    {
+        //! [Erasing data]
+        vector_erase(&vec, 5, 8);
+        // print_vector(&vec);
+        // Output: { 3 5 6 1 0 4 5 6 7 }
+        int32 value = *(int32 *)vector_get(&vec, 5);
+        assert(value == 4);
+        assert(*(int32 *)vec.back == 7);
+        assert(vec.size == 9);
+    }
 
     vector_erase(&vec, 4, 0);
     // print_vector(&vec);
@@ -158,11 +167,20 @@ void vector_test(void)
     // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 }
     //! [Bubble sort]
 
-    //! [Custom binary search]
-    int32 n = -2;
-    idx     = vector_binary_search(&vec, &n);
-    assert(idx == 15);
-    //! [Custom binary search]
+    {
+        // built-in binary search
+        int32   k   = 9;
+        size_t *res = bsearch(&k, vec.data, vec.size, vec.data_size, vec._cmp);
+        assert(*(int32 *)res == 9);
+    }
+
+    {
+        //! [Custom binary search]
+        int32  n   = -2;
+        size_t idx = vector_bsearch(&vec, &n);
+        assert(idx == 15);
+        //! [Custom binary search]
+    }
 
     int32 key  = 4;
     void *addr = (int32 *)vector_bsearch(&vec, &key);
@@ -187,53 +205,73 @@ static void sort_test(void)
     vector vec_a = setup();
 
     vector vec_b;
+    vector vec_c;
     vector_init(&vec_b, sizeof(int32));
+    vector_init(&vec_c, sizeof(int32));
 
     // Set comparator function pointers
+    vec_a._cmp = &int32_cmp;
     vec_b._cmp = &int32_cmp;
+    vec_c._cmp = &int32_cmp;
 
-    int32 a    = 6;
-    int32 b    = 5;
-    int32 c    = 3;
-    int32 d    = 1;
-    int32 e    = 8;
-    int32 f    = 7;
-    int32 g    = 2;
-    int32 h    = 4;
+    vector_copy(&vec_b, &vec_a);
 
-    vector_push(&vec_b, &a);
-    vector_push(&vec_b, &b);
-    vector_push(&vec_b, &c);
-    vector_push(&vec_b, &d);
-    vector_push(&vec_b, &e);
-    vector_push(&vec_b, &f);
-    vector_push(&vec_b, &g);
-    vector_push(&vec_b, &h);
+    int32 a = 6;
+    int32 b = 5;
+    int32 c = 3;
+    int32 d = 1;
+    int32 e = 8;
+    int32 f = 7;
+    int32 g = 2;
+    int32 h = 4;
+
+    vector_push(&vec_c, &a);
+    vector_push(&vec_c, &b);
+    vector_push(&vec_c, &c);
+    vector_push(&vec_c, &d);
+    vector_push(&vec_c, &e);
+    vector_push(&vec_c, &f);
+    vector_push(&vec_c, &g);
+    vector_push(&vec_c, &h);
 
     // print_vector(&vec_a);
     // Output: { 7 8 7 4 10 3 5 }
 
-    vector_quicksort(&vec_a, 0, vec_a.size - 1);
-    // print_vector(&vec);
+    // built-in quicksort
+    qsort(vec_a.data, vec_a.size, vec_a.data_size, vec_a._cmp);
+
+    // print_vector(&vec_a);
     // Output: { 3 4 5 7 7 8 10 }
 
     assert(*(int32 *)vec_a.front == 3);
     assert(*(int32 *)vec_a.back == 10);
 
     // print_vector(&vec_b);
-    // Output: { 1 2 3 4 5 6 7 8 }
+    // Output: { 7 8 7 4 10 3 5 }
 
-    vector_msort(&vec_b, vec_b.size, int32_cmp);
+    vector_qsort(&vec_b, 0, vec_b.size - 1);
     // print_vector(&vec_b);
+    // Output: { 3 4 5 7 7 8 10 }
+
+    assert(*(int32 *)vec_b.front == 3);
+    assert(*(int32 *)vec_b.back == 10);
+
+    // print_vector(&vec_c);
     // Output: { 1 2 3 4 5 6 7 8 }
 
-    for (size_t i = 0; i < vec_b.size - 1; i++) {
-        assert(*(int32 *)vector_get(&vec_b, i) <=
-               *(int32 *)vector_get(&vec_b, i + 1));
+    vector_msort(&vec_c, vec_c.size, int32_cmp);
+    // print_vector(&vec_c);
+    // Output: { 1 2 3 4 5 6 7 8 }
+
+    for (size_t i = 0; i < vec_c.size - 1; i++) {
+        assert(*(int32 *)vector_get(&vec_c, i) <=
+               *(int32 *)vector_get(&vec_c, i + 1));
     }
 
     vector_clear(&vec_a);
     vector_clear(&vec_b);
+    vector_clear(&vec_c);
     assert(vec_a.data == NULL);
     assert(vec_b.data == NULL);
+    assert(vec_c.data == NULL);
 }
