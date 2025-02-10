@@ -36,6 +36,7 @@ void llist_append(llist *llist, void *data)
 
     if (llist->head == NULL) {
         llist->head = node;
+        llist->tail = llist->head;
 
         return;
     }
