@@ -3,6 +3,8 @@
 -I
 ./include/dsa/linked_list/
 -I
+./include/dsa/queue/
+-I
 ./include/dsa/vector/
 -I
 ./include/util/
