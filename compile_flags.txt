@@ -5,6 +5,8 @@
 -I
 ./include/dsa/queue/
 -I
+./include/dsa/stack/
+-I
 ./include/dsa/vector/
 -I
 ./include/util/
