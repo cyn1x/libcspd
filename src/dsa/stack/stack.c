@@ -43,7 +43,7 @@ void  stack_clear(stack *stack)
 
 static void update_pointers(stack *stack)
 {
-    if (stack->top == stack->bottom) {
+    if (stack->llist.head == stack->llist.tail) {
         stack->bottom = stack->llist.tail;
     }
     stack->top = stack->llist.head;
