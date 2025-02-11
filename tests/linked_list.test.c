@@ -10,7 +10,7 @@ static void sort_test(void);
 void        print_llist(llist *llist, bool reverse)
 {
     printf("{ ");
-    node_t *curr = !reverse ? llist->head : llist->tail;
+    lnode_t *curr = !reverse ? llist->head : llist->tail;
 
     while (curr != NULL) {
         print(*(int32 *)curr->data, " ");
@@ -94,8 +94,8 @@ void linked_list_test(void)
     // Output: { 5 3 10 9 4 7 8 7 1 }
 
     {
-        int32   k   = 8;
-        node_t *key = llist_lsearch(&llist_a, &k);
+        int32    k   = 8;
+        lnode_t *key = llist_lsearch(&llist_a, &k);
         assert(*(int32 *)key->data == 8);
     }
 
@@ -128,11 +128,11 @@ void linked_list_test(void)
     // print_llist(&llist_a, false);
     // Output: { 4 9 7 8 7 1 }
 
-    int32   start  = 4;
-    int32   end    = 1;
+    int32    start  = 4;
+    int32    end    = 1;
 
-    node_t *node_a = llist_find(&llist_a, &start);
-    node_t *node_b = llist_find(&llist_a, &end);
+    lnode_t *node_a = llist_find(&llist_a, &start);
+    lnode_t *node_b = llist_find(&llist_a, &end);
 
     llist_erase(&llist_a, node_a, node_b);
     assert(*(int32 *)llist_a.head->data == 1);

@@ -22,7 +22,7 @@ void stack_push(stack *stack, void *data)
 
 void stack_pop(stack *stack)
 {
-    node_t *tmp = stack->top->next;
+    lnode_t *tmp = stack->top->next;
 
     free(stack->top->data);
     free(stack->top);

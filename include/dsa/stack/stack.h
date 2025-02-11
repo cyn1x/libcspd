@@ -14,10 +14,10 @@ extern "C" {
 
 typedef struct stack
 {
-    llist   llist;
+    llist    llist;
 
-    node_t *top;
-    node_t *bottom;
+    lnode_t *top;
+    lnode_t *bottom;
 
     int (*_cmp)(const void *, const void *);
 

@@ -4,11 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-static node_t *node_init(size_t data_size);
-static node_t *partition(llist *llist, node_t *lo, node_t *hi);
-static void    delete_node(llist *llist, node_t *node);
+static lnode_t *node_init(size_t data_size);
+static lnode_t *partition(llist *llist, lnode_t *lo, lnode_t *hi);
+static void     delete_node(llist *llist, lnode_t *node);
 
-void           llist_init(llist *llist, size_t data_size)
+void            llist_init(llist *llist, size_t data_size)
 {
     llist->data_size = data_size;
 
@@ -16,21 +16,21 @@ void           llist_init(llist *llist, size_t data_size)
     llist->tail      = NULL;
 }
 
-node_t *node_init(size_t data_size)
+lnode_t *node_init(size_t data_size)
 {
-    node_t *node = malloc(sizeof(node_t));
+    lnode_t *node = malloc(sizeof(lnode_t));
 
-    node->data   = malloc(sizeof(data_size));
-    node->prev   = NULL;
-    node->next   = NULL;
+    node->data    = malloc(sizeof(data_size));
+    node->prev    = NULL;
+    node->next    = NULL;
 
     return node;
 }
 
 void llist_append(llist *llist, void *data)
 {
-    node_t *node = node_init(llist->data_size);
-    node_t *curr = llist->head;
+    lnode_t *node = node_init(llist->data_size);
+    lnode_t *curr = llist->head;
 
     memcpy(node->data, data, llist->data_size);
 
@@ -51,7 +51,7 @@ void llist_append(llist *llist, void *data)
 
 void llist_prepend(llist *llist, void *data)
 {
-    node_t *node = node_init(llist->data_size);
+    lnode_t *node = node_init(llist->data_size);
 
     memcpy(node->data, data, llist->data_size);
 
@@ -62,7 +62,7 @@ void llist_prepend(llist *llist, void *data)
         return;
     }
 
-    node_t *temp = llist->head;
+    lnode_t *temp = llist->head;
     if (llist->head->next != NULL) {
         llist->head->prev = node;
         llist->head       = llist->head->next;
@@ -74,8 +74,8 @@ void llist_prepend(llist *llist, void *data)
 
 void llist_insert(llist *llist, void *data, size_t idx)
 {
-    node_t *node = node_init(llist->data_size);
-    node_t *curr = llist->head;
+    lnode_t *node = node_init(llist->data_size);
+    lnode_t *curr = llist->head;
 
     memcpy(node->data, data, llist->data_size);
 
@@ -95,14 +95,14 @@ void llist_insert(llist *llist, void *data, size_t idx)
         curr = curr->next;
     }
 
-    node_t *temp = curr->prev;
-    temp->next   = node;
-    node->prev   = temp;
-    curr->prev   = node;
-    node->next   = curr;
+    lnode_t *temp = curr->prev;
+    temp->next    = node;
+    node->prev    = temp;
+    curr->prev    = node;
+    node->next    = curr;
 }
 
-void llist_move(llist *llist, node_t *node, node_t *dst, node_t *dst_ptr)
+void llist_move(llist *llist, lnode_t *node, lnode_t *dst, lnode_t *dst_ptr)
 {
     if (node == dst) {
         // TODO: handle same node and target
@@ -157,7 +157,7 @@ void llist_move(llist *llist, node_t *node, node_t *dst, node_t *dst_ptr)
     }
 }
 
-void llist_swap(llist *llist, node_t *a, node_t *b)
+void llist_swap(llist *llist, lnode_t *a, lnode_t *b)
 {
     if (a->next == b || b->next == a) {
 
@@ -166,8 +166,8 @@ void llist_swap(llist *llist, node_t *a, node_t *b)
             return;
         }
 
-        node_t *a_prev = a->prev;
-        node_t *b_next = b->next;
+        lnode_t *a_prev = a->prev;
+        lnode_t *b_next = b->next;
 
         if (a_prev) {
             a_prev->next = b;
@@ -184,8 +184,8 @@ void llist_swap(llist *llist, node_t *a, node_t *b)
 
     } else {
 
-        node_t *a_prev = a->prev;
-        node_t *a_next = a->next;
+        lnode_t *a_prev = a->prev;
+        lnode_t *a_next = a->next;
 
         if (a->prev) {
             a->prev->next = b;
@@ -221,7 +221,7 @@ void llist_swap(llist *llist, node_t *a, node_t *b)
 
 void llist_delete(llist *llist, const void *key)
 {
-    node_t *curr = llist->head;
+    lnode_t *curr = llist->head;
 
     while (curr != NULL) {
         int exists = memcmp(curr->data, key, llist->data_size);
@@ -236,10 +236,10 @@ void llist_delete(llist *llist, const void *key)
     }
 }
 
-void llist_erase(llist *llist, node_t *start, node_t *end)
+void llist_erase(llist *llist, lnode_t *start, lnode_t *end)
 {
     while (start != end) {
-        node_t *temp = start->next;
+        lnode_t *temp = start->next;
         delete_node(llist, start);
         start = temp;
     }
@@ -247,10 +247,10 @@ void llist_erase(llist *llist, node_t *start, node_t *end)
 
 void llist_clear(llist *llist)
 {
-    node_t *curr = llist->head;
+    lnode_t *curr = llist->head;
 
     while (curr != NULL) {
-        node_t *temp = curr->next;
+        lnode_t *temp = curr->next;
         delete_node(llist, curr);
         curr = temp;
     }
@@ -262,11 +262,11 @@ void llist_clear(llist *llist)
 
 void llist_copy(llist *dst, llist *src)
 {
-    node_t *curr = src->head;
-    node_t *temp = {0};
+    lnode_t *curr = src->head;
+    lnode_t *temp = {0};
 
     while (curr != NULL) {
-        node_t *node = node_init(dst->data_size);
+        lnode_t *node = node_init(dst->data_size);
 
         if (dst->head == NULL) {
             dst->head = node;
@@ -288,7 +288,7 @@ void llist_copy(llist *dst, llist *src)
 
 void llist_reverse(llist *llist)
 {
-    node_t *curr = llist->head;
+    lnode_t *curr = llist->head;
 
     if (curr == NULL) {
         // TODO: handle empty list
@@ -297,29 +297,29 @@ void llist_reverse(llist *llist)
     }
 
     while (curr != NULL) {
-        node_t *temp = curr->next;
-        curr->next   = curr->prev;
-        curr->prev   = temp;
-        curr         = temp;
+        lnode_t *temp = curr->next;
+        curr->next    = curr->prev;
+        curr->prev    = temp;
+        curr          = temp;
     }
 
     // swap head and tail pointers
-    node_t *head = llist->head;
-    llist->head  = llist->tail;
-    llist->tail  = head;
+    lnode_t *head = llist->head;
+    llist->head   = llist->tail;
+    llist->tail   = head;
 }
 
-node_t *llist_find(llist *llist, const void *key)
+lnode_t *llist_find(llist *llist, const void *key)
 {
-    node_t *node = llist_lsearch(llist, key);
+    lnode_t *node = llist_lsearch(llist, key);
 
     return node;
 }
 
-size_t llist_index(llist *llist, node_t *node)
+size_t llist_index(llist *llist, lnode_t *node)
 {
-    size_t  idx  = 0;
-    node_t *curr = llist->head;
+    size_t   idx  = 0;
+    lnode_t *curr = llist->head;
     while (curr && curr != node) {
         idx++;
         curr = curr->next;
@@ -328,9 +328,9 @@ size_t llist_index(llist *llist, node_t *node)
     return idx;
 }
 
-node_t *llist_lsearch(llist *llist, const void *key)
+lnode_t *llist_lsearch(llist *llist, const void *key)
 {
-    node_t *curr = llist->head;
+    lnode_t *curr = llist->head;
 
     while (curr != NULL) {
         int exists = memcmp(curr->data, key, llist->data_size);
@@ -347,10 +347,10 @@ node_t *llist_lsearch(llist *llist, const void *key)
 
 void llist_bsort(llist *llist)
 {
-    node_t *a = llist->head;
+    lnode_t *a = llist->head;
     while (a) {
 
-        node_t *b = llist->head;
+        lnode_t *b = llist->head;
         while (b) {
             if (llist->_cmp(a->data, b->data) != 1) {
                 void *tmp = a->data;
@@ -363,24 +363,24 @@ void llist_bsort(llist *llist)
     }
 }
 
-void llist_qsort(llist *llist, node_t *lo, node_t *hi)
+void llist_qsort(llist *llist, lnode_t *lo, lnode_t *hi)
 {
     if (!lo || !hi || lo->prev == hi) {
         return;
     }
 
-    node_t *pvt = partition(llist, lo, hi);
+    lnode_t *pvt = partition(llist, lo, hi);
 
     llist_qsort(llist, lo, pvt->prev);
     llist_qsort(llist, pvt->next, hi);
 }
 
-static node_t *partition(llist *llist, node_t *lo, node_t *hi)
+static lnode_t *partition(llist *llist, lnode_t *lo, lnode_t *hi)
 {
-    node_t *pvt  = hi;
-    node_t *curr = lo;
-    node_t *idx  = lo;
-    void   *tmp;
+    lnode_t *pvt  = hi;
+    lnode_t *curr = lo;
+    lnode_t *idx  = lo;
+    void    *tmp;
 
     while (curr != NULL) {
         int cmp = llist->_cmp(curr->data, pvt->data);
@@ -403,10 +403,10 @@ static node_t *partition(llist *llist, node_t *lo, node_t *hi)
     return idx;
 }
 
-void delete_node(llist *llist, node_t *node)
+void delete_node(llist *llist, lnode_t *node)
 {
-    node_t *prev = node->prev;
-    node_t *next = node->next;
+    lnode_t *prev = node->prev;
+    lnode_t *next = node->next;
 
     if (node->prev != NULL) {
         prev->next = next;

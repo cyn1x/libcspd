@@ -14,10 +14,10 @@ extern "C" {
 
 typedef struct queue
 {
-    llist   llist;
+    llist    llist;
 
-    node_t *front;
-    node_t *back;
+    lnode_t *front;
+    lnode_t *back;
 
     int (*_cmp)(const void *, const void *);
 
