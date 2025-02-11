@@ -24,17 +24,15 @@ void queue_enqueue(queue *queue, void *data)
 
 void queue_deque(queue *queue)
 {
-    node_t *tmp = queue->llist.head->next;
+    node_t *tmp = queue->front->next;
 
-    free(queue->llist.head->data);
-    free(queue->llist.head);
+    free(queue->front->data);
+    free(queue->front);
 
     queue->llist.head = tmp;
-    queue->front      = queue->llist.head;
-    queue->back       = queue->llist.tail;
 
     if (queue->llist.head == queue->llist.tail) {
-        queue->back = queue->llist.tail;
+        queue->back = queue->llist.head;
     }
     queue->front = queue->llist.head;
 }

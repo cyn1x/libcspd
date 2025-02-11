@@ -3,7 +3,7 @@
 #include <print.h>
 #include <stdio.h>
 
-void print_data(void *data)
+static void print_data(void *data)
 {
     printf("{ ");
     print(*(int32 *)data, " ");
