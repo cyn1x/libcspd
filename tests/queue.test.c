@@ -3,6 +3,10 @@
 #include <print.h>
 #include <stdio.h>
 
+#ifdef __clang__
+static void print_data(void *data) __attribute__((unused));
+#endif /* ifdef __clang__ */
+
 static void print_data(void *data)
 {
     printf("{ ");

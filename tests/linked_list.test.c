@@ -7,7 +7,11 @@ static void move_test(void);
 static void swap_test(void);
 static void sort_test(void);
 
-void        print_llist(llist *llist, bool reverse)
+#ifdef __clang__
+static void print_llist(llist *llist, bool reverse) __attribute__((unused));
+#endif /* ifdef __clang__ */
+
+static void print_llist(llist *llist, bool reverse)
 {
     printf("{ ");
     lnode_t *curr = !reverse ? llist->head : llist->tail;

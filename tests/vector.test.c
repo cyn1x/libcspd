@@ -7,7 +7,11 @@
 
 static void sort_test(void);
 
-void        print_vector(vector *vec)
+#ifdef __clang__
+static void print_vector(vector *vec) __attribute__((unused));
+#endif /* ifdef __clang__ */
+
+static void print_vector(vector *vec)
 {
     printf("{ ");
     for (size_t i = 0; i < vec->size; ++i) {
