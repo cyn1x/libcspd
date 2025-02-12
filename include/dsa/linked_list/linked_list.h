@@ -7,7 +7,10 @@
 
 #include "defs.h"
 #include <stdbool.h>
+
+#ifdef __clang__
 #include <stddef.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
