@@ -74,7 +74,7 @@ for /r ..\src %%F in (*.c) do (
 )
 
 rem Compile *.c files
-cl /c /LD -Zi -W4 -Wall %incs% /std:c17 %srcs:~1%
+cl /c /MD -Zi -W4 -Wall %incs% /std:c17 %srcs:~1%
 
 popd
 pushd bin
@@ -99,7 +99,7 @@ popd
 pushd tests
 
 rem Compile *.test.c files
-cl /nologo /Fo"obj\\" /Fd"obj\\" /c -Zi -W4 -Wall /std:c17 %testsrcs% %incs%
+cl /nologo /Fo"obj\\" /Fd"obj\\" /c /MD -Zi -W4 -Wall /std:c17 %testsrcs% %incs%
 
 rem Store all *.test.obj file names only for the linker
 for /r obj %%F in (*.test.obj) do (
