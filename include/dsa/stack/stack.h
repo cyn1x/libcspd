@@ -19,8 +19,6 @@ typedef struct stack
     lnode_t *top;
     lnode_t *bottom;
 
-    int (*_cmp)(const void *, const void *);
-
 } stack;
 
 LIBCSPD_API void  stack_init(stack *stack, size_t data_size);

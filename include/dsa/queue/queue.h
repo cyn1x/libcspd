@@ -19,8 +19,6 @@ typedef struct queue
     lnode_t *front;
     lnode_t *back;
 
-    int (*_cmp)(const void *, const void *);
-
 } queue;
 
 LIBCSPD_API void  queue_init(queue *queue, size_t data_size);
