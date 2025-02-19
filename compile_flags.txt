@@ -10,3 +10,5 @@
 ./include/dsa/vector/
 -I
 ./include/util/
+-I
+./lib/logc/src/

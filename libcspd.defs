@@ -1,0 +1,5 @@
+EXPORTS
+    log_init
+    log_log
+    log_set_lock
+    log_set_level

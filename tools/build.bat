@@ -43,36 +43,64 @@ set cmp=!root:~0,-1!
 
 echo | set /p clear="" > %flags%
 
-rem Recursively set all relative include directory paths
+rem Recursively call all include directories
 for /r include %%F in (*.h) do (
-
-    rem Reference the absolute and relative paths of the header file
-    set "abspath=%%~dpF"
-    set "relpath=!abspath:%cmp%=!"
-
-    rem Prevent duplicate include directories
-    if !prev! neq !relpath! (
-        call set "incs=%%incs%% -I..!relpath:~0,-1!"
-
-        rem Invert slashes for include paths to be compatible with the LSP
-        set cpath=!relpath:\=/!
-        echo -I>> %flags%
-        echo .!cpath!>> %flags%
-
-        set "prev=!relpath!"
-    )
-
+    call :include %%F
 )
 
+rem Recursively call required lib includes
+for /r lib\logc %%F in (*.h) do (
+    call :include %%F
+)
+
+rem End of entry point procedure
+goto :main
+
+rem Set all relative include directory paths
+:include
+rem Reference the absolute and relative paths of the header file
+set "abspath=%~dp1"
+set "relpath=!abspath:%cmp%=!"
+
+rem Prevent duplicate include directories
+if !prev! neq !relpath! (
+    call set "incs=%%incs%% -I..!relpath:~0,-1!"
+
+    rem Invert slashes for include paths to be compatible with the LSP
+    set cpath=!relpath:\=/!
+    echo -I>> %flags%
+    echo .!cpath!>> %flags%
+
+    set "prev=!relpath!"
+)
+
+rem Terminate :include subroutine call
+goto :eof
+
+:main
 pushd obj
 
 rem Recursively set all relative file paths of *.c source files
 for /r ..\src %%F in (*.c) do ( 
-    set "abspath=%%F"
-    set "relpath=!abspath:%cmp%=!"
-    call set "srcs=%%srcs%% ..!relpath!"
+    call :sources %%F
 )
 
+rem Recursively set all relative file paths of *.c lib\logc *c files
+for /r ..\lib\logc %%F in (*.c) do ( 
+    call :sources %%F
+)
+
+goto :compile
+
+:sources
+    set "abspath=%1"
+    set "relpath=!abspath:%cmp%=!"
+    call set "srcs=%%srcs%% ..!relpath!"
+
+rem Terminate :sources subroutine call
+goto :eof
+
+:compile
 rem Compile *.c files
 cl /c /MD -Zi -W4 -Wall %incs% /std:c17 %srcs:~1%
 
@@ -84,8 +112,9 @@ for /r ..\obj %%F in (*.obj) do (
     call set "objs=%%objs%% ..\obj\%%~nxF"
 )
 
+:link
 rem Link *.obj object files
-LINK /nologo /DEBUG %objs:~1% /DLL /OUT:%dll%
+LINK /nologo /DEBUG %objs:~1% /DLL /OUT:%dll% /DEF:..\libcspd.defs
 
 rem Copy DLL to where the test executable will be built
 copy ..\bin\%dll% ..\tests\bin\%dll% > nul
@@ -98,6 +127,8 @@ for /r ..\tests %%F in (*.test.c) do (
 popd
 pushd tests
 
+rem Compile test program and link DLL from the :link subroutine
+
 rem Compile *.test.c files
 cl /nologo /Fo"obj\\" /Fd"obj\\" /c /MD -Zi -W4 -Wall /std:c17 %testsrcs% %incs%
 
@@ -107,6 +138,6 @@ for /r obj %%F in (*.test.obj) do (
 )
 
 rem Link *.test.obj object files
-LINK /DEBUG %testobjs:~1% /OUT:bin\%exe% ..\bin\libcspd.lib
+LINK /DEBUG %testobjs:~1% /OUT:bin\%exe% ..\bin\libcspd.lib 
 
 popd
