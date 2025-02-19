@@ -1,27 +1,10 @@
 #include "linked_list.test.h"
 #include "defs.test.h"
 #include <print.h>
-#include <stdio.h>
 
-static void move_test(void);
-static void swap_test(void);
-static void sort_test(void);
-
-#ifdef __clang__
-static void print_llist(llist *llist, bool reverse) __attribute__((unused));
-#endif /* ifdef __clang__ */
-
-static void print_llist(llist *llist, bool reverse)
-{
-    printf("{ ");
-    lnode_t *curr = !reverse ? llist->head : llist->tail;
-
-    while (curr != NULL) {
-        print(*(int32 *)curr->data, " ");
-        curr = !reverse ? curr->next : curr->prev;
-    }
-    printf("} \n");
-}
+static void  move_test(void);
+static void  swap_test(void);
+static void  sort_test(void);
 
 static llist setup(void)
 {
@@ -70,31 +53,31 @@ void linked_list_test(void)
     llist_b._cmp = &int32_cmp; // Set comparator function pointer
     //! [Comparator function]
 
-    // print_llist(&llist_a, NULL);
+    // print_llist(int32, &llist_a, NULL);
     // Output: { 7 8 7 4 10 3 5 }
-    // print_llist(&llist_a, true);
+    // print_llist(int32, &llist_a, true);
     // Output: { 5 3 10 4 7 8 7 }
 
-    // print_llist(&llist_b, NULL);
+    // print_llist(int32, &llist_b, NULL);
     // Output: { 7 8 7 4 10 3 5 }
-    // print_llist(&llist_b, true);
+    // print_llist(int32, &llist_b, true);
     // Output: { 5 3 10 4 7 8 7 }
 
     int32 h = 1;
     llist_prepend(&llist_a, &h);
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 1 7 8 7 3 10 4 5 }
 
     int32 i = 9;
     llist_insert(&llist_a, &i, 5);
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 1 7 8 7 3 9 10 4 5 }
 
     llist_reverse(&llist_a);
     assert(*(int32 *)llist_a.head->data == 5);
     assert(*(int32 *)llist_a.tail->data == 1);
 
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 5 3 10 9 4 7 8 7 1 }
 
     {
@@ -111,7 +94,7 @@ void linked_list_test(void)
         llist_delete(&llist_a, &k);
     }
 
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 5 3 9 4 7 8 7 1 }
 
     {
@@ -120,7 +103,7 @@ void linked_list_test(void)
         assert(*(int32 *)llist_a.head->data == 5);
     }
 
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 5 9 4 7 8 7 1 }
 
     {
@@ -129,7 +112,7 @@ void linked_list_test(void)
         assert(*(int32 *)llist_a.tail->data == 1);
     }
 
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 4 9 7 8 7 1 }
 
     int32    start  = 4;
@@ -142,7 +125,7 @@ void linked_list_test(void)
     assert(*(int32 *)llist_a.head->data == 1);
     assert(*(int32 *)llist_a.tail->data == 1);
 
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 1 }
 
     move_test();
@@ -161,65 +144,65 @@ void move_test(void)
 
     llist._cmp  = &int32_cmp; // Set comparator function pointer
 
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
 
     llist_move(&llist, llist.head->next, llist.tail->prev,
                llist.tail->prev->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 7 3 10 8 4 5 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 5 4 8 10 3 7 7 }
     assert(*(int32 *)llist.tail->prev->prev->data == 8);
 
     llist_move(&llist, llist.head->next, llist.tail->prev,
                llist.tail->prev->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 3 10 8 4 7 5 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 5 7 4 8 10 3 7 }
     assert(*(int32 *)llist.tail->prev->data == 7);
 
     llist_move(&llist, llist.head->next, llist.tail, llist.tail->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 10 8 4 7 5 3 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 3 5 7 4 8 10 7 }
     assert(*(int32 *)llist.tail->prev->next->data == 3);
 
     llist_move(&llist, llist.head, llist.tail, llist.tail->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 10 8 4 7 5 3 7 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 7 3 5 7 4 8 10 }
     assert(*(int32 *)llist.tail->prev->next->data == 7);
 
     llist_move(&llist, llist.head, llist.tail, llist.tail->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 8 4 7 5 3 10 7 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 7 10 3 5 7 4 8 }
     assert(*(int32 *)llist.tail->prev->data == 10);
 
     llist_move(&llist, llist.tail, llist.head, llist.head->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 8 4 7 5 3 10 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 10 3 5 7 4 8 7 }
     assert(*(int32 *)llist.head->data == 7);
 
     llist_move(&llist, llist.tail, llist.head, llist.head->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 10 8 4 7 5 3 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 3 5 7 4 8 10 7 }
     assert(*(int32 *)llist.head->next->data == 10);
 
     llist_move(&llist, llist.head->next->next->next, llist.head,
                llist.head->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 4 7 10 8 7 5 3 }
-    // print_llist(&llist, true);
+    // print_llist(int32, &llist, true);
     // Output: { 3 5 7 8 10 7 4 }
     assert(*(int32 *)llist.head->data == 4);
 
@@ -233,54 +216,54 @@ void swap_test(void)
 
     llist._cmp  = &int32_cmp; // Set comparator function pointer
 
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
 
     llist_swap(&llist, llist.head->next, llist.tail->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 7 4 7 3 10 8 5 }
     assert(*(int32 *)llist.head->next->data == 4);
 
     llist_swap(&llist, llist.head, llist.tail->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 8 4 7 3 10 7 5 }
     assert(*(int32 *)llist.head->data == 8);
 
     llist_swap(&llist, llist.head, llist.tail);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 5 4 7 3 10 7 8 }
     assert(*(int32 *)llist.head->data == 5);
     assert(*(int32 *)llist.tail->data == 8);
 
     llist_swap(&llist, llist.head->next, llist.head);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 4 5 7 3 10 7 8 }
     assert(*(int32 *)llist.head->data == 4);
 
     llist_swap(&llist, llist.tail, llist.tail->prev);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 4 5 7 3 10 8 7 }
     assert(*(int32 *)llist.tail->data == 7);
 
     llist_swap(&llist, llist.head, llist.head->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 5 4 7 3 10 8 7 }
     assert(*(int32 *)llist.head->data == 5);
 
     llist_swap(&llist, llist.tail->prev, llist.tail);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 5 4 7 3 10 7 8 }
     assert(*(int32 *)llist.tail->data == 8);
 
     llist_swap(&llist, llist.head->next->next->next->next->next->next,
                llist.head->next->next->next->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 5 4 7 3 8 7 10 }
     assert(*(int32 *)llist.tail->data == 10);
 
     llist_swap(&llist, llist.head->next->next->next->next,
                llist.head->next->next->next->next->next->next);
-    // print_llist(&llist, false);
+    // print_llist(int32, &llist, false);
     // Output: { 5 4 7 3 10 7 8 }
     assert(*(int32 *)llist.tail->data == 8);
 
@@ -323,40 +306,40 @@ void sort_test(void)
         llist_insert(&llist_c, &f, 9);
     }
 
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 7 8 7 4 10 3 5 }
 
     llist_bsort(&llist_a);
-    // print_llist(&llist_a, false);
+    // print_llist(int32, &llist_a, false);
     // Output: { 3 4 5 7 7 8 10 }
-    // print_llist(&llist_a, true);
+    // print_llist(int32, &llist_a, true);
     // Output: { 10 8 7 7 5 4 3 }
     assert(*(int32 *)llist_a.head->data == 3);
     assert(*(int32 *)llist_a.tail->data == 10);
 
-    // print_llist(&llist_b, false);
+    // print_llist(int32, &llist_b, false);
     // Output: { 7 8 7 4 10 3 5 }
 
     llist_qsort(&llist_b, llist_b.head, llist_b.tail);
-    // print_llist(&llist_b, false);
+    // print_llist(int32, &llist_b, false);
     // Output: { 3 4 5 7 7 8 10 }
-    // print_llist(&llist_b, true);
+    // print_llist(int32, &llist_b, true);
     // Output: { 10 8 7 7 5 4 3 }
     assert(*(int32 *)llist_b.head->data == 3);
     assert(*(int32 *)llist_b.tail->data == 10);
 
-    // print_llist(&llist_c, false);
+    // print_llist(int32, &llist_c, false);
     // Output: { 5 4 7 10 -1 19 4 3 33 3 7 8 7 }
 
     llist_qsort(&llist_c, llist_c.head, llist_c.tail);
-    // print_llist(&llist_c, false);
+    // print_llist(int32, &llist_c, false);
     // Output: { -1 3 3 4 4 5 7 7 7 8 10 19 33 }
-    // print_llist(&llist_c, true);
+    // print_llist(int32, &llist_c, true);
     // Output: { 33 19 10 8 7 7 7 5 4 4 3 3 -1 }
     assert(*(int32 *)llist_c.head->data == -1);
     assert(*(int32 *)llist_c.tail->data == 33);
 
-    // print_llist(&llist_d, false);
+    // print_llist(int32, &llist_d, false);
     // Output: { 7 8 7 4 10 3 5 }
 
     llist_clear(&llist_a);

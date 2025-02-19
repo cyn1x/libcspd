@@ -32,6 +32,12 @@
 #define PRINT_H
 
 #include <inttypes.h>
+#include <stdarg.h>
+#include <stdio.h>
+
+#ifdef __clang__
+static void print_fn(const char *format, ...) __attribute__((unused));
+#endif /* ifdef __clang__ */
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,7 +55,15 @@ extern "C" {
         uint64: "%" PRIu64,                                                    \
         void *: "%p")
 
-#define print(T, S) printf(print_any(T), T), printf(S);
+static void print_fn(const char *format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+}
+
+#define print(T, S) print_fn(print_any(T), T), print_fn(S);
 
 #ifdef __cplusplus
 }

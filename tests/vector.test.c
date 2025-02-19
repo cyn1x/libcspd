@@ -1,26 +1,12 @@
 #include "vector.test.h"
 #include "defs.test.h"
-#include "vector.h"
-#include <print.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector.h>
 
 static void sort_test(void);
 
-#ifdef __clang__
-static void print_vector(vector *vec) __attribute__((unused));
-#endif /* ifdef __clang__ */
-
-static void print_vector(vector *vec)
-{
-    printf("{ ");
-    for (size_t i = 0; i < vec->size; ++i) {
-        print(*(int32 *)vector_get(vec, i), " ");
-    }
-    printf("} \n");
-}
-
-vector setup(void)
+vector      setup(void)
 {
     vector vec;
     vector_init(&vec, sizeof(int32));
@@ -67,7 +53,7 @@ void vector_test(void)
     vector_push(&vec, &x);
     vector_push(&vec, &y);
     vector_push(&vec, &z);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { 3 5 6 1 }
     //! [Push elements]
 
@@ -86,7 +72,7 @@ void vector_test(void)
             vector_push(&vec, &k);
         }
 
-        // print_vector(&vec);
+        // print_vector(int32, &vec);
         // Output: { 3 5 6 1 0 1 2 3 4 5 6 7 }
         assert(vec.size == 12);
         int32 value = ((int32 *)vec.data)[10];
@@ -105,7 +91,7 @@ void vector_test(void)
     {
         //! [Erasing data]
         vector_erase(&vec, 5, 8);
-        // print_vector(&vec);
+        // print_vector(int32, &vec);
         // Output: { 3 5 6 1 0 4 5 6 7 }
         int32 value = *(int32 *)vector_get(&vec, 5);
         assert(value == 4);
@@ -114,7 +100,7 @@ void vector_test(void)
     }
 
     vector_erase(&vec, 4, 0);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { 0 4 5 6 7 }
     assert(*(int32 *)vec.front == 0);
     assert(*(int32 *)vec.back == 7);
@@ -124,13 +110,13 @@ void vector_test(void)
     //! [Inserting data]
     int32 a_vals[] = {1, 2, 3};
     vector_insert(&vec, 1, sizeof(a_vals), &a_vals);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { 0 1 2 3 4 5 6 7 }
     assert(*(int32 *)vec.front == 0);
 
     int32 b_vals[] = {-3, -2, -1};
     vector_insert(&vec, 0, sizeof(b_vals), &b_vals);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { -3 -2 -1 0 1 2 3 4 5 6 7 }
     // printf("%d\n", *(int32 *)vec.back);
     // Output: 7
@@ -139,7 +125,7 @@ void vector_test(void)
 
     int32 c_vals[] = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
     vector_insert(&vec, 11, sizeof(c_vals), &c_vals);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { -3 -2 -1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
     assert(*(int32 *)vec.back == 19);
     //! [Inserting data]
@@ -147,7 +133,7 @@ void vector_test(void)
     int32 d_vals[] = {-17, -16, -15, -14, -13, -12, -11,
                       -10, -9,  -8,  -7,  -6,  -5,  -4};
     vector_insert(&vec, 0, sizeof(d_vals), &d_vals);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0
     // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
     assert(*(int32 *)vec.front == -17);
@@ -158,7 +144,7 @@ void vector_test(void)
 
     // Reverse the vector
     vector_reverse(&vec);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 -1 -2 -3 -4 -5
     // -6 -7 -8 -9 -10 -11 -12 -13 -14 -15 -16 -17 }
     assert(*(int32 *)vec.front == 18);
@@ -166,7 +152,7 @@ void vector_test(void)
 
     //! [Bubble sort]
     vector_bsort(&vec);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0
     // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 }
     //! [Bubble sort]
@@ -194,7 +180,7 @@ void vector_test(void)
     // TODO: Shuffle the items instead
     // Reverse the vector
     vector_reverse(&vec);
-    // print_vector(&vec);
+    // print_vector(int32, &vec);
     // Output: { 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 -1 -2 -3 -4 -5
     // -6 -7 -8 -9 -10 -11 -12 -13 -14 -15 -16 -17 }
 
@@ -238,33 +224,33 @@ static void sort_test(void)
     vector_push(&vec_c, &g);
     vector_push(&vec_c, &h);
 
-    // print_vector(&vec_a);
+    // print_vector(int32, &vec_a);
     // Output: { 7 8 7 4 10 3 5 }
 
     // built-in quicksort
     qsort(vec_a.data, vec_a.size, vec_a.data_size, vec_a._cmp);
 
-    // print_vector(&vec_a);
+    // print_vector(int32, &vec_a);
     // Output: { 3 4 5 7 7 8 10 }
 
     assert(*(int32 *)vec_a.front == 3);
     assert(*(int32 *)vec_a.back == 10);
 
-    // print_vector(&vec_b);
+    // print_vector(int32, &vec_b);
     // Output: { 7 8 7 4 10 3 5 }
 
     vector_qsort(&vec_b, 0, vec_b.size - 1);
-    // print_vector(&vec_b);
+    // print_vector(int32, &vec_b);
     // Output: { 3 4 5 7 7 8 10 }
 
     assert(*(int32 *)vec_b.front == 3);
     assert(*(int32 *)vec_b.back == 10);
 
-    // print_vector(&vec_c);
+    // print_vector(int32, &vec_c);
     // Output: { 1 2 3 4 5 6 7 8 }
 
     vector_msort(&vec_c, vec_c.size, int32_cmp);
-    // print_vector(&vec_c);
+    // print_vector(int32, &vec_c);
     // Output: { 1 2 3 4 5 6 7 8 }
 
     for (size_t i = 0; i < vec_c.size - 1; i++) {

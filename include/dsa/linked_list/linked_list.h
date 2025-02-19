@@ -53,6 +53,18 @@ LIBCSPD_API lnode_t *llist_lsearch(llist *llist, const void *key);
 LIBCSPD_API void     llist_bsort(llist *llist);
 LIBCSPD_API void     llist_qsort(llist *llist, lnode_t *lo, lnode_t *hi);
 
+#define print_llist(type, llist, reverse)                                      \
+    {                                                                          \
+        printf("{ ");                                                          \
+        lnode_t *curr = !reverse ? (llist)->head : (llist)->tail;              \
+                                                                               \
+        while (curr != NULL) {                                                 \
+            print(*(type *)curr->data, " ");                                   \
+            curr = !reverse ? curr->next : curr->prev;                         \
+        }                                                                      \
+        printf("} \n");                                                        \
+    }
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

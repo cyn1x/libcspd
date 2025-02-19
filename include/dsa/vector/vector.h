@@ -354,7 +354,10 @@
 #include "defs.h"
 #include "types.h"
 #include <stdbool.h>
+
+#ifdef __clang__
 #include <stddef.h>
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -393,6 +396,15 @@ LIBCSPD_API size_t vector_bsearch(vector *vec, const void *key);
 LIBCSPD_API void   vector_bsort(vector *vec);
 LIBCSPD_API void   vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 LIBCSPD_API void   vector_msort(vector *vec_a, size_t size, cmp_t cmp);
+
+#define print_vector(type, vec)                                                \
+    {                                                                          \
+        printf("{ ");                                                          \
+        for (size_t i = 0; i < (vec)->size; ++i) {                             \
+            print((*(type *)vector_get(vec, i)), " ");                         \
+        }                                                                      \
+        printf("} \n");                                                        \
+    }
 
 #ifdef __cplusplus
 }

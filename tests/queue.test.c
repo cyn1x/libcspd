@@ -1,18 +1,6 @@
 #include "queue.test.h"
-#include "types.h"
 #include <print.h>
-#include <stdio.h>
-
-#ifdef __clang__
-static void print_data(void *data) __attribute__((unused));
-#endif /* ifdef __clang__ */
-
-static void print_data(void *data)
-{
-    printf("{ ");
-    print(*(int32 *)data, " ");
-    printf("} \n");
-}
+#include <types.h>
 
 queue queue_setup(void)
 {
@@ -40,8 +28,6 @@ void queue_test(void)
 
     {
         void *data = queue_peek(&queue);
-        // print_data(data);
-        // Output: { 1 }
         assert(*(int32 *)data == 1);
     }
 
