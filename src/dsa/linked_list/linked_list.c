@@ -20,7 +20,7 @@ lnode_t *node_init(size_t data_size)
 {
     lnode_t *node = malloc(sizeof(lnode_t));
 
-    node->data    = malloc(sizeof(data_size));
+    node->data    = malloc(data_size);
     node->prev    = NULL;
     node->next    = NULL;
 
