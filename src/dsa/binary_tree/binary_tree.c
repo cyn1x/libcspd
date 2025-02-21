@@ -63,7 +63,7 @@ btnode_t *bintree_insert(bintree *btree, btnode_t **parent, void *data)
         btnode_t *left   = btnode->left;
         btnode_t *right  = btnode->right;
 
-        if (memcmp(&btnode, &(*parent), sizeof(btnode_t *)) == 0) {
+        if (btnode == (*parent)) {
 
             btnode_t *new_node = btnode_init(data, btree->data_size);
 
