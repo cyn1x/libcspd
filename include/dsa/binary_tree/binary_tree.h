@@ -44,6 +44,16 @@ LIBCSPD_API int32     bintree_height(btnode_t *node);
 LIBCSPD_API size_t    bintree_count(btnode_t *node);
 LIBCSPD_API void      bintree_clear(bintree *btree);
 
+#define print_binary_tree(type, vec)                                           \
+    {                                                                          \
+        printf("{ ");                                                          \
+        for (size_t i = 0; i < (vec)->size; ++i) {                             \
+            btnode_t *btnode = *(btnode_t **)vector_get(vec, i);               \
+            print((*(type *)btnode->data), " ");                               \
+        }                                                                      \
+        printf("} \n");                                                        \
+    }
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus
