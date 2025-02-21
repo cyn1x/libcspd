@@ -1,8 +1,8 @@
 #include "binary_tree.test.h"
-#include "queue.h"
 #include <assert.h>
 #include <binary_tree.h>
 #include <print.h>
+#include <queue.h>
 
 void    bfs_test(void);
 
@@ -80,7 +80,7 @@ void binary_tree_test(void)
         btnode_t *node = *(btnode_t **)vector_get(&vec, 0);
         assert(*(int32 *)node->data == 7);
 
-        // print_vector(int32, &vec);
+        // print_binary_tree(int32, &vec);
         // Output: { 7 23 8 14 5 1 6 2 9 15 }
 
         vector_clear(&vec);
@@ -97,7 +97,7 @@ void binary_tree_test(void)
         btnode_t *node = *(btnode_t **)vector_get(&vec, 0);
         assert(*(int32 *)node->data == 8);
 
-        // print_vector(int32, &vec);
+        // print_binary_tree(int32, &vec);
         // Output: { 8 23 14 7 6 1 2 5 15 9 }
 
         vector_clear(&vec);
@@ -111,7 +111,7 @@ void binary_tree_test(void)
 
         bintree_postorder(btree.root, &vec);
 
-        // print_vector(int32, &vec);
+        // print_binary_tree(int32, &vec);
         // Output: { 8 23 14 6 1 2 5 15 9 7 }
 
         vector_clear(&vec);
@@ -125,7 +125,7 @@ void binary_tree_test(void)
 
         bintree_dfs(btree.root, &vec);
 
-        // print_vector(int32, &vec);
+        // print_binary_tree(int32, &vec);
         // Output: { 7 23 8 14 5 1 6 2 9 15 }
 
         vector_clear(&vec);
@@ -164,7 +164,9 @@ void binary_tree_test(void)
     assert(height == 4);
     //! [Calculating height]
 
+    //! [Clearing the tree]
     bintree_clear(&btree);
+    //! [Clearing the tree]
 }
 
 void bfs_test(void)
