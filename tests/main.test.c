@@ -1,3 +1,4 @@
+#include "binary_tree.test.h"
 #include "linked_list.test.h"
 #include "queue.test.h"
 #include "stack.test.h"
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     linked_list_test();
     queue_test();
     stack_test();
+    binary_tree_test();
 
     return 0;
 }
