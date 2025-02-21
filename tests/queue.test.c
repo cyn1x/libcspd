@@ -1,5 +1,7 @@
 #include "queue.test.h"
+#include <assert.h>
 #include <print.h>
+#include <queue.h>
 #include <types.h>
 
 queue queue_setup(void)

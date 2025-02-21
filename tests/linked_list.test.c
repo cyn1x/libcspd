@@ -1,5 +1,7 @@
 #include "linked_list.test.h"
 #include "defs.test.h"
+#include <assert.h>
+#include <linked_list.h>
 #include <print.h>
 
 static void  move_test(void);

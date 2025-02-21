@@ -1,5 +1,7 @@
 #include "stack.test.h"
+#include <assert.h>
 #include <print.h>
+#include <stack.h>
 #include <types.h>
 
 stack stack_setup(void)

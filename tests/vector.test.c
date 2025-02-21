@@ -1,6 +1,6 @@
 #include "vector.test.h"
 #include "defs.test.h"
-#include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <vector.h>
 
