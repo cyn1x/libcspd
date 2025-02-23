@@ -4,47 +4,47 @@
 #include "linked_list.h"
 #include <stdlib.h>
 
-static void update_pointers(stack *stack);
+static void update_pointers(stack_t *stack_t);
 
-void        stack_init(stack *stack, size_t data_size)
+void        stack_init(stack_t *stack_t, size_t data_size)
 {
-    llist llist;
+    llist_t llist;
     llist_init(&llist, data_size);
 
-    stack->llist = llist;
+    stack_t->llist = llist;
 }
 
-void stack_push(stack *stack, void *data)
+void stack_push(stack_t *stack_t, void *data)
 {
-    llist_prepend(&stack->llist, data);
-    update_pointers(stack);
+    llist_prepend(&stack_t->llist, data);
+    update_pointers(stack_t);
 }
 
-void stack_pop(stack *stack)
+void stack_pop(stack_t *stack_t)
 {
-    lnode_t *tmp = stack->top->next;
+    lnode_t *tmp = stack_t->top->next;
 
-    free(stack->top->data);
-    free(stack->top);
+    free(stack_t->top->data);
+    free(stack_t->top);
 
-    stack->llist.head = tmp;
+    stack_t->llist.head = tmp;
 
-    update_pointers(stack);
+    update_pointers(stack_t);
 }
 
-void *stack_peek(stack *stack) { return stack->top->data; }
+void *stack_peek(stack_t *stack_t) { return stack_t->top->data; }
 
-void  stack_clear(stack *stack)
+void  stack_clear(stack_t *stack_t)
 {
-    while (stack->top != NULL) {
-        stack_pop(stack);
+    while (stack_t->top != NULL) {
+        stack_pop(stack_t);
     }
 }
 
-static void update_pointers(stack *stack)
+static void update_pointers(stack_t *stack_t)
 {
-    if (stack->llist.head == stack->llist.tail) {
-        stack->bottom = stack->llist.tail;
+    if (stack_t->llist.head == stack_t->llist.tail) {
+        stack_t->bottom = stack_t->llist.tail;
     }
-    stack->top = stack->llist.head;
+    stack_t->top = stack_t->llist.head;
 }

@@ -4,17 +4,22 @@
 #include <linked_list.h>
 #include <print.h>
 
-static void  move_test(void);
-static void  swap_test(void);
-static void  sort_test(void);
+static void    move_test(void);
+static void    swap_test(void);
+static void    sort_test(void);
 
-static llist setup(void)
+static llist_t setup(void)
 {
     //! [Initialize]
-    llist llist;
+    llist_t llist;
     llist_init(&llist, sizeof(int32));
     //! [Initialize]
 
+    //! [Comparator function]
+    llist._cmp = &int32_cmp; // Set comparator function pointer
+    //! [Comparator function]
+
+    //! [Appending nodes]
     int32 a = 7;
     int32 b = 8;
     int32 c = 7;
@@ -30,13 +35,14 @@ static llist setup(void)
     llist_append(&llist, &e);
     llist_append(&llist, &f);
     llist_append(&llist, &g);
+    //! [Appending nodes]
 
     return llist;
 }
 
 void linked_list_test(void)
 {
-    llist llist_a = setup();
+    llist_t llist_a = setup();
     assert(*(int32 *)llist_a.head->data == 7);
     assert(*(int32 *)llist_a.tail->data == 5);
 
@@ -44,7 +50,7 @@ void linked_list_test(void)
     llist_a._cmp = &int32_cmp; // Set comparator function pointer
     //! [Comparator function]
 
-    llist llist_b;
+    llist_t llist_b;
 
     llist_init(&llist_b, sizeof(int32));
     llist_copy(&llist_b, &llist_a);
@@ -142,9 +148,9 @@ void linked_list_test(void)
 
 void move_test(void)
 {
-    llist llist = setup();
+    llist_t llist = setup();
 
-    llist._cmp  = &int32_cmp; // Set comparator function pointer
+    llist._cmp    = &int32_cmp; // Set comparator function pointer
 
     // print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
@@ -214,9 +220,9 @@ void move_test(void)
 
 void swap_test(void)
 {
-    llist llist = setup();
+    llist_t llist = setup();
 
-    llist._cmp  = &int32_cmp; // Set comparator function pointer
+    llist._cmp    = &int32_cmp; // Set comparator function pointer
 
     // print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
@@ -275,12 +281,12 @@ void swap_test(void)
 
 void sort_test(void)
 {
-    llist llist_a = setup();
+    llist_t llist_a = setup();
 
-    llist_a._cmp  = &int32_cmp; // Set comparator function pointer
+    llist_a._cmp    = &int32_cmp; // Set comparator function pointer
 
-    llist llist_b;
-    llist llist_c;
+    llist_t llist_b;
+    llist_t llist_c;
 
     llist_init(&llist_b, sizeof(int32));
     llist_init(&llist_c, sizeof(int32));
@@ -300,12 +306,15 @@ void sort_test(void)
         int32 d = 33;
         int32 e = 7;
         int32 f = 3;
+
+        //! [Inserting nodes]
         llist_insert(&llist_c, &a, 3);
         llist_insert(&llist_c, &b, 4);
         llist_insert(&llist_c, &c, 5);
         llist_insert(&llist_c, &d, 7);
         llist_insert(&llist_c, &e, 2);
         llist_insert(&llist_c, &f, 9);
+        //! [Inserting nodes]
     }
 
     // print_llist(int32, &llist_a, false);

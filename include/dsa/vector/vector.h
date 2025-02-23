@@ -9,7 +9,7 @@
  */
 
 /**
- * @typedef struct vector
+ * @typedef struct vector_t
  *
  * @brief Data structure for the vector.
  *
@@ -45,7 +45,7 @@
  */
 
 /**
- * @fn void vector_init(vector *vec, size_t data_size)
+ * @fn void vector_init(vector_t *vec, size_t data_size)
  *
  * @brief Initializes a new vector.
  *
@@ -62,7 +62,7 @@
  */
 
 /**
- * @fn *vector_get(const vector *vec, size_t idx)
+ * @fn *vector_get(const vector_t *vec, size_t idx)
  *
  * @brief Retrieves an element from the vector.
  *
@@ -78,7 +78,7 @@
  */
 
 /**
- * @fn vector_set(vector *vec, size_t idx, const void *data)
+ * @fn vector_set(vector_t *vec, size_t idx, const void *data)
  *
  * @brief Copies data to the vector.
  *
@@ -91,7 +91,7 @@
  */
 
 /**
- * @fn vector_push(vector *vec, const void *data)
+ * @fn vector_push(vector_t *vec, const void *data)
  *
  * @brief Appends an element to the vector.
  *
@@ -106,7 +106,7 @@
  */
 
 /**
- * @fn vector_pop(vector *vec)
+ * @fn vector_pop(vector_t *vec)
  *
  * @brief Removes the last element of the vector.
  *
@@ -117,7 +117,7 @@
  */
 
 /**
- * @fn vector_insert(vector *vec, size_t idx, size_t size, const void *data)
+ * @fn vector_insert(vector_t *vec, size_t idx, size_t size, const void *data)
  *
  * @brief Inserts one or many elements at the specified index.
  *
@@ -134,7 +134,7 @@
  */
 
 /**
- * @fn vector_erase(vector *vec, size_t begin, size_t end)
+ * @fn vector_erase(vector_t *vec, size_t begin, size_t end)
  *
  * @brief Erases one or many elements from a vector.
  *
@@ -151,7 +151,7 @@
  */
 
 /**
- * @fn vector_clear(vector *vec)
+ * @fn vector_clear(vector_t *vec)
  *
  * @brief Removes all items from a vector.
  *
@@ -165,7 +165,7 @@
  */
 
 /**
- * @fn *vector_resize(vector *vec)
+ * @fn *vector_resize(vector_t *vec)
  *
  * @brief Resizes the vector.
  *
@@ -178,7 +178,7 @@
  */
 
 /**
- * @fn *vector_copy(vector *dst, vector *src)
+ * @fn *vector_copy(vector_t *dst, vector *src)
  *
  * @brief Copies data from one vector to the other.
  *
@@ -189,7 +189,7 @@
  */
 
 /**
- * @fn *vector_reverse(vector *vec)
+ * @fn *vector_reverse(vector_t *vec)
  *
  * @brief Reverses the order of elements in a vector
  *
@@ -199,7 +199,7 @@
  */
 
 /**
- * @fn vector_lsearch(vector *vec, const void *key)
+ * @fn vector_lsearch(vector_t *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
@@ -219,7 +219,7 @@
  */
 
 /**
- * @fn vector_bsearch(vector *vec, const void *key)
+ * @fn vector_bsearch(vector_t *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
@@ -245,7 +245,7 @@
  */
 
 /**
- * @fn vector_bsort(vector *vec)
+ * @fn vector_bsort(vector_t *vec)
  *
  * @brief Sorts a vector using the bubblesort algorithm.
  *
@@ -266,7 +266,7 @@
  */
 
 /**
- * @fn vector_qsort(vector *vec ptrdiff_t lo, ptrdiff_t hi)
+ * @fn vector_qsort(vector_t *vec ptrdiff_t lo, ptrdiff_t hi)
  *
  * @brief Sorts a vector using the quicksort algorithm.
  *
@@ -281,7 +281,7 @@
  */
 
 /**
- * @fn vector_msort(vector *vec)
+ * @fn vector_msort(vector_t *vec)
  *
  * @brief Sorts a vector using the mergesort algorithm.
  *
@@ -294,7 +294,7 @@
  */
 
 /**
- * @fn partition(vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+ * @fn partition(vector_t *vec, ptrdiff_t lo, ptrdiff_t hi)
  *
  * @brief Divides the vector into two partitions.
  *
@@ -309,7 +309,7 @@
  */
 
 /**
- * @fn split_merge(vector *vec_b, size_t begin, size_t end, vector *vec_a)
+ * @fn split_merge(vector_t *vec_b, size_t begin, size_t end, vector_t *vec_a)
  *
  * @brief Merges split runs from `vec_b` to `vec_a`.
  *
@@ -323,7 +323,8 @@
  */
 
 /**
- * @fn merge(vector *vec_b, size_t begin, size_t mid, size_t end, vector *vec_a)
+ * @fn merge(vector_t *vec_b, size_t begin, size_t mid, size_t end, vector_t
+ * *vec_a)
  *
  * @brief Helper function for mergesort that performs the sort.
  *
@@ -338,7 +339,7 @@
  */
 
 /**
- * @fn update_pointers(vector *vec)
+ * @fn update_pointers(vector_t *vec)
  *
  * @brief Updates the front and back pointers.
  *
@@ -377,25 +378,25 @@ typedef struct vector
 
     int (*_cmp)(const void *, const void *);
 
-} vector;
+} vector_t;
 
-LIBCSPD_API void   vector_init(vector *vec, size_t data_size);
-LIBCSPD_API void  *vector_get(const vector *vec, size_t idx);
-LIBCSPD_API void   vector_set(vector *vec, size_t idx, const void *data);
-LIBCSPD_API void   vector_push(vector *vec, const void *data);
-LIBCSPD_API void   vector_pop(vector *vec);
-LIBCSPD_API void   vector_insert(vector *vec, size_t idx, size_t size,
+LIBCSPD_API void   vector_init(vector_t *vec, size_t data_size);
+LIBCSPD_API void  *vector_get(const vector_t *vec, size_t idx);
+LIBCSPD_API void   vector_set(vector_t *vec, size_t idx, const void *data);
+LIBCSPD_API void   vector_push(vector_t *vec, const void *data);
+LIBCSPD_API void   vector_pop(vector_t *vec);
+LIBCSPD_API void   vector_insert(vector_t *vec, size_t idx, size_t size,
                                  const void *data);
-LIBCSPD_API void   vector_erase(vector *vec, size_t begin, size_t end);
-LIBCSPD_API void   vector_clear(vector *vec);
-LIBCSPD_API void  *vector_resize(vector *vec, size_t size);
-LIBCSPD_API void   vector_copy(vector *dst, vector *src);
-LIBCSPD_API void   vector_reverse(vector *vec);
-LIBCSPD_API size_t vector_lsearch(vector *vec, const void *key);
-LIBCSPD_API size_t vector_bsearch(vector *vec, const void *key);
-LIBCSPD_API void   vector_bsort(vector *vec);
-LIBCSPD_API void   vector_qsort(vector *vec, ptrdiff_t lo, ptrdiff_t hi);
-LIBCSPD_API void   vector_msort(vector *vec_a, size_t size, cmp_t cmp);
+LIBCSPD_API void   vector_erase(vector_t *vec, size_t begin, size_t end);
+LIBCSPD_API void   vector_clear(vector_t *vec);
+LIBCSPD_API void  *vector_resize(vector_t *vec, size_t size);
+LIBCSPD_API void   vector_copy(vector_t *dst, vector_t *src);
+LIBCSPD_API void   vector_reverse(vector_t *vec);
+LIBCSPD_API size_t vector_lsearch(vector_t *vec, const void *key);
+LIBCSPD_API size_t vector_bsearch(vector_t *vec, const void *key);
+LIBCSPD_API void   vector_bsort(vector_t *vec);
+LIBCSPD_API void   vector_qsort(vector_t *vec, ptrdiff_t lo, ptrdiff_t hi);
+LIBCSPD_API void   vector_msort(vector_t *vec_a, size_t size, cmp_t cmp);
 
 #define print_vector(type, vec)                                                \
     {                                                                          \

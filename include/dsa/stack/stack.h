@@ -12,20 +12,20 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct stack
+typedef struct stack_t
 {
-    llist    llist;
+    llist_t  llist;
 
     lnode_t *top;
     lnode_t *bottom;
 
-} stack;
+} stack_t;
 
-LIBCSPD_API void  stack_init(stack *stack, size_t data_size);
-LIBCSPD_API void  stack_push(stack *stack, void *data);
-LIBCSPD_API void  stack_pop(stack *stack);
-LIBCSPD_API void *stack_peek(stack *stack);
-LIBCSPD_API void  stack_clear(stack *stack);
+LIBCSPD_API void  stack_init(stack_t *stack_t, size_t data_size);
+LIBCSPD_API void  stack_push(stack_t *stack_t, void *data);
+LIBCSPD_API void  stack_pop(stack_t *stack_t);
+LIBCSPD_API void *stack_peek(stack_t *stack_t);
+LIBCSPD_API void  stack_clear(stack_t *stack_t);
 
 #ifdef __cplusplus
 }

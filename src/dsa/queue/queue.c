@@ -4,44 +4,44 @@
 #include "linked_list.h"
 #include <stdlib.h>
 
-void queue_init(queue *queue, size_t data_size)
+void queue_init(queue_t *queue_t, size_t data_size)
 {
-    llist llist;
+    llist_t llist;
     llist_init(&llist, data_size);
 
-    queue->llist = llist;
+    queue_t->llist = llist;
 }
 
-void queue_enqueue(queue *queue, void *data)
+void queue_enqueue(queue_t *queue_t, void *data)
 {
-    llist_append(&queue->llist, data);
+    llist_append(&queue_t->llist, data);
 
-    if (queue->llist.head == queue->llist.tail) {
-        queue->front = queue->llist.head;
+    if (queue_t->llist.head == queue_t->llist.tail) {
+        queue_t->front = queue_t->llist.head;
     }
-    queue->back = queue->llist.tail;
+    queue_t->back = queue_t->llist.tail;
 }
 
-void queue_deque(queue *queue)
+void queue_deque(queue_t *queue_t)
 {
-    lnode_t *tmp = queue->front->next;
+    lnode_t *tmp = queue_t->front->next;
 
-    free(queue->front->data);
-    free(queue->front);
+    free(queue_t->front->data);
+    free(queue_t->front);
 
-    queue->llist.head = tmp;
+    queue_t->llist.head = tmp;
 
-    if (queue->llist.head == queue->llist.tail) {
-        queue->back = queue->llist.head;
+    if (queue_t->llist.head == queue_t->llist.tail) {
+        queue_t->back = queue_t->llist.head;
     }
-    queue->front = queue->llist.head;
+    queue_t->front = queue_t->llist.head;
 }
 
-void *queue_peek(queue *queue) { return queue->front->data; }
+void *queue_peek(queue_t *queue_t) { return queue_t->front->data; }
 
-void  queue_clear(queue *queue)
+void  queue_clear(queue_t *queue_t)
 {
-    while (queue->front != NULL) {
-        queue_deque(queue);
+    while (queue_t->front != NULL) {
+        queue_deque(queue_t);
     }
 }

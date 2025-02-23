@@ -4,12 +4,12 @@
 #include <print.h>
 #include <queue.h>
 
-void    bfs_test(void);
+void      bfs_test(void);
 
-bintree bintree_setup(void)
+bintree_t bintree_setup(void)
 {
     //! [Adding nodes]
-    bintree btree;
+    bintree_t btree;
 
     bintree_init(&btree, sizeof(int32));
 
@@ -63,7 +63,7 @@ bintree bintree_setup(void)
 
 void binary_tree_test(void)
 {
-    bintree btree = bintree_setup();
+    bintree_t btree = bintree_setup();
 
     //! [Retrieving node count]
     size_t count = bintree_count(btree.root);
@@ -72,7 +72,7 @@ void binary_tree_test(void)
 
     {
         //! [Preorder traversal]
-        vector vec;
+        vector_t vec;
         vector_init(&vec, sizeof(btnode_t *));
 
         bintree_preorder(btree.root, &vec);
@@ -89,7 +89,7 @@ void binary_tree_test(void)
 
     {
         //! [Inorder traversal]
-        vector vec;
+        vector_t vec;
         vector_init(&vec, sizeof(btnode_t *));
 
         bintree_inorder(btree.root, &vec);
@@ -106,7 +106,7 @@ void binary_tree_test(void)
 
     {
         //! [Postorder traversal]
-        vector vec;
+        vector_t vec;
         vector_init(&vec, sizeof(btnode_t *));
 
         bintree_postorder(btree.root, &vec);
@@ -120,7 +120,7 @@ void binary_tree_test(void)
 
     {
         //! [Depth-first search]
-        vector vec;
+        vector_t vec;
         vector_init(&vec, btree.data_size);
 
         bintree_dfs(btree.root, &vec);
@@ -172,75 +172,75 @@ void binary_tree_test(void)
 void bfs_test(void)
 {
     //! [Breadth-first search]
-    bintree btree = bintree_setup();
+    bintree_t btree = bintree_setup();
 
     {
-        queue queue;
-        queue_init(&queue, sizeof(btnode_t *));
+        queue_t queue_t;
+        queue_init(&queue_t, sizeof(btnode_t *));
 
-        bintree_bfs(btree.root, &queue);
+        bintree_bfs(btree.root, &queue_t);
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 7);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 23);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 5);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 8);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 14);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 1);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 9);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 6);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 2);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
         {
-            btnode_t *btnode = *(btnode_t **)queue_peek(&queue);
+            btnode_t *btnode = *(btnode_t **)queue_peek(&queue_t);
             assert(*(int32 *)btnode->data == 15);
-            queue_deque(&queue);
+            queue_deque(&queue_t);
         }
 
-        queue_clear(&queue);
+        queue_clear(&queue_t);
         bintree_clear(&btree);
     }
     //! [Breadth-first search]

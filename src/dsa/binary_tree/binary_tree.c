@@ -7,7 +7,7 @@
 static void recursive_delete(btnode_t *node);
 static void delete_node(btnode_t *node);
 
-void        bintree_init(bintree *btree, size_t data_size)
+void        bintree_init(bintree_t *btree, size_t data_size)
 {
     btree->root      = NULL;
     btree->data_size = data_size;
@@ -26,7 +26,7 @@ static btnode_t *btnode_init(void *data, size_t data_size)
     return node;
 }
 
-btnode_t *bintree_add(bintree *btree, btnode_t **leaf, void *data)
+btnode_t *bintree_add(bintree_t *btree, btnode_t **leaf, void *data)
 {
     btnode_t *node = btnode_init(data, btree->data_size);
 
@@ -47,16 +47,16 @@ btnode_t *bintree_add(bintree *btree, btnode_t **leaf, void *data)
     return node;
 }
 
-btnode_t *bintree_insert(bintree *btree, btnode_t **parent, void *data)
+btnode_t *bintree_insert(bintree_t *btree, btnode_t **parent, void *data)
 {
     (void)parent;
     (void)data;
-    queue queue;
-    queue_init(&queue, sizeof(btnode_t *));
+    queue_t queue_t;
+    queue_init(&queue_t, sizeof(btnode_t *));
 
-    queue_enqueue(&queue, &btree->root);
+    queue_enqueue(&queue_t, &btree->root);
 
-    lnode_t *curr = queue.front;
+    lnode_t *curr = queue_t.front;
 
     while (curr) {
         btnode_t *btnode = *(btnode_t **)curr->data;
@@ -76,27 +76,27 @@ btnode_t *bintree_insert(bintree *btree, btnode_t **parent, void *data)
                 new_node->left  = btnode->left;
                 (*parent)->left = new_node;
             }
-            queue_clear(&queue);
+            queue_clear(&queue_t);
 
             return new_node;
         }
 
         if (left) {
-            queue_enqueue(&queue, &left);
+            queue_enqueue(&queue_t, &left);
         }
         if (right) {
-            queue_enqueue(&queue, &right);
+            queue_enqueue(&queue_t, &right);
         }
 
         curr = curr->next;
     }
 
-    queue_clear(&queue);
+    queue_clear(&queue_t);
 
     return NULL;
 }
 
-void bintree_preorder(btnode_t *node, vector *vec)
+void bintree_preorder(btnode_t *node, vector_t *vec)
 {
     if (!node) {
         return;
@@ -108,7 +108,7 @@ void bintree_preorder(btnode_t *node, vector *vec)
     bintree_preorder(node->right, vec);
 }
 
-void bintree_inorder(btnode_t *node, vector *vec)
+void bintree_inorder(btnode_t *node, vector_t *vec)
 {
     if (!node) {
         return;
@@ -119,7 +119,7 @@ void bintree_inorder(btnode_t *node, vector *vec)
     bintree_inorder(node->right, vec);
 }
 
-void bintree_postorder(btnode_t *node, vector *vec)
+void bintree_postorder(btnode_t *node, vector_t *vec)
 {
     if (!node) {
         return;
@@ -130,13 +130,13 @@ void bintree_postorder(btnode_t *node, vector *vec)
     vector_push(vec, &node);
 }
 
-void bintree_dfs(btnode_t *node, vector *vec) { bintree_preorder(node, vec); }
+void bintree_dfs(btnode_t *node, vector_t *vec) { bintree_preorder(node, vec); }
 
-void bintree_bfs(btnode_t *node, queue *queue)
+void bintree_bfs(btnode_t *node, queue_t *queue_t)
 {
-    queue_enqueue(queue, &node);
+    queue_enqueue(queue_t, &node);
 
-    lnode_t *curr = queue->front;
+    lnode_t *curr = queue_t->front;
 
     while (curr) {
         btnode_t *btnode = *(btnode_t **)curr->data;
@@ -144,10 +144,10 @@ void bintree_bfs(btnode_t *node, queue *queue)
         btnode_t *right  = btnode->right;
 
         if (left) {
-            queue_enqueue(queue, &left);
+            queue_enqueue(queue_t, &left);
         }
         if (right) {
-            queue_enqueue(queue, &right);
+            queue_enqueue(queue_t, &right);
         }
 
         curr = curr->next;
@@ -168,7 +168,7 @@ int32 bintree_height(btnode_t *node)
 
 size_t bintree_count(btnode_t *node)
 {
-    vector vec;
+    vector_t vec;
     vector_init(&vec, sizeof(btnode_t *));
     bintree_preorder(node, &vec);
 
@@ -178,7 +178,7 @@ size_t bintree_count(btnode_t *node)
     return size;
 }
 
-void bintree_clear(bintree *btree)
+void bintree_clear(bintree_t *btree)
 {
     recursive_delete(btree->root);
 

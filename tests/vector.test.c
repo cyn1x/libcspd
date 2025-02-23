@@ -7,20 +7,22 @@
 
 static void sort_test(void);
 
-vector      setup(void)
+vector_t    setup(void)
 {
-    vector vec;
+    vector_t vec;
     vector_init(&vec, sizeof(int32));
 
+    //! [Comparator function]
     vec._cmp = &int32_cmp; // Set comparator function pointer
+    //! [Comparator function]
 
-    int32 a  = 7;
-    int32 b  = 8;
-    int32 c  = 7;
-    int32 d  = 4;
-    int32 e  = 10;
-    int32 f  = 3;
-    int32 g  = 5;
+    int32 a = 7;
+    int32 b = 8;
+    int32 c = 7;
+    int32 d = 4;
+    int32 e = 10;
+    int32 f = 3;
+    int32 g = 5;
 
     vector_push(&vec, &a);
     vector_push(&vec, &b);
@@ -36,13 +38,11 @@ vector      setup(void)
 void vector_test(void)
 {
     //! [Initialize]
-    vector vec;
+    vector_t vec;
     vector_init(&vec, sizeof(int32));
     //! [Initialize]
 
-    //! [Comparator function]
     vec._cmp = &int32_cmp; // Set comparator function pointer
-    //! [Comparator function]
 
     //! [Push elements]
     int32 w = 3;
@@ -54,9 +54,9 @@ void vector_test(void)
     vector_push(&vec, &x);
     vector_push(&vec, &y);
     vector_push(&vec, &z);
+
     // print_vector(int32, &vec);
     // Output: { 3 5 6 1 }
-    //! [Push elements]
 
     {
         //! [Get element]
@@ -68,6 +68,7 @@ void vector_test(void)
     }
 
     {
+        //! [Push elements]
         for (int32 i = 0; i < 8; ++i) {
             int32 k = i;
             vector_push(&vec, &k);
@@ -75,9 +76,11 @@ void vector_test(void)
 
         // print_vector(int32, &vec);
         // Output: { 3 5 6 1 0 1 2 3 4 5 6 7 }
+
         assert(vec.size == 12);
         int32 value = ((int32 *)vec.data)[10];
         assert(value == 6);
+        //! [Push elements]
     }
 
     {
@@ -92,8 +95,10 @@ void vector_test(void)
     {
         //! [Erasing data]
         vector_erase(&vec, 5, 8);
+
         // print_vector(int32, &vec);
         // Output: { 3 5 6 1 0 4 5 6 7 }
+
         int32 value = *(int32 *)vector_get(&vec, 5);
         assert(value == 4);
         assert(*(int32 *)vec.back == 7);
@@ -193,10 +198,10 @@ void vector_test(void)
 
 static void sort_test(void)
 {
-    vector vec_a = setup();
+    vector_t vec_a = setup();
 
-    vector vec_b;
-    vector vec_c;
+    vector_t vec_b;
+    vector_t vec_c;
     vector_init(&vec_b, sizeof(int32));
     vector_init(&vec_c, sizeof(int32));
 
