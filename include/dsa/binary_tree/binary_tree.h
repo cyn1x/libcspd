@@ -27,8 +27,11 @@ typedef struct btnode
 
 typedef struct bintree
 {
-    btnode_t *root;
     size_t    data_size;
+    btnode_t *root;
+
+    int (*_cmp)(const void *, const void *);
+
 } bintree_t;
 
 LIBCSPD_API void      bintree_init(bintree_t *btree, size_t data_size);
