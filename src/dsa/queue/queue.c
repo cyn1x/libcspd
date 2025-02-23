@@ -24,7 +24,7 @@ void queue_enqueue(queue_t *queue_t, void *data)
 
 void queue_deque(queue_t *queue_t)
 {
-    lnode_t *tmp = queue_t->front->next;
+    llnode_t *tmp = queue_t->front->next;
 
     free(queue_t->front->data);
     free(queue_t->front);

@@ -56,7 +56,7 @@ btnode_t *bintree_insert(bintree_t *btree, btnode_t **parent, void *data)
 
     queue_enqueue(&queue_t, &btree->root);
 
-    lnode_t *curr = queue_t.front;
+    llnode_t *curr = queue_t.front;
 
     while (curr) {
         btnode_t *btnode = *(btnode_t **)curr->data;
@@ -136,7 +136,7 @@ void bintree_bfs(btnode_t *node, queue_t *queue_t)
 {
     queue_enqueue(queue_t, &node);
 
-    lnode_t *curr = queue_t->front;
+    llnode_t *curr = queue_t->front;
 
     while (curr) {
         btnode_t *btnode = *(btnode_t **)curr->data;
