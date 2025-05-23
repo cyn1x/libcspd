@@ -9,6 +9,18 @@
  */
 
 /**
+ * @def print_vector(type, vec)
+ *
+ * @brief Prints the contents of the vector.
+ *
+ * Basic print function for C types residing in a vector by casting each element
+ * to the specified type.
+ *
+ * @param type Type of data to be casted.
+ * @param vec The vector to be printed out.
+ */
+
+/**
  * @typedef struct vector_t
  *
  * @brief Data structure for the vector.
