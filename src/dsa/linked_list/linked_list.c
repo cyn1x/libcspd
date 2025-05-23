@@ -167,10 +167,13 @@ void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
 {
     if (a->next == b || b->next == a) {
         // Handle swapping adjacent nodes
+
         if (a->prev == b) {
-            //
-            // llist_swap(llist, b, a);
-            // return;
+            // The order of operations is important here. The pointer to `a`
+            // must always precede `b` in the linked list since the `next` and
+            // `prev` pointers for `a` are changed first.
+            llist_swap(llist, b, a);
+            return;
         }
 
         llnode_t *a_prev = a->prev;
@@ -183,6 +186,7 @@ void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
             b_next->prev = a;
         }
 
+        // Change the `next` and `prev` pointers for a first
         a->prev = b;
         a->next = b_next;
 

@@ -152,6 +152,7 @@ void move_test(void)
 
     llist._cmp    = &int32_cmp; // Set comparator function pointer
 
+    //! [Moving nodes]
     // print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
 
@@ -162,6 +163,7 @@ void move_test(void)
     // print_llist(int32, &llist, true);
     // Output: { 5 4 8 10 3 7 7 }
     assert(*(int32 *)llist.tail->prev->prev->data == 8);
+    //! [Moving nodes]
 
     llist_move(&llist, llist.head->next, llist.tail->prev,
                llist.tail->prev->next);
@@ -224,6 +226,7 @@ void swap_test(void)
 
     llist._cmp    = &int32_cmp; // Set comparator function pointer
 
+    //! [Swapping nodes]
     // print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
 
@@ -231,6 +234,7 @@ void swap_test(void)
     // print_llist(int32, &llist, false);
     // Output: { 7 4 7 3 10 8 5 }
     assert(*(int32 *)llist.head->next->data == 4);
+    //! [Swapping nodes]
 
     llist_swap(&llist, llist.head, llist.tail->prev);
     // print_llist(int32, &llist, false);
