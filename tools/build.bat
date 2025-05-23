@@ -127,7 +127,7 @@ for /r ..\tests %%F in (*.test.c) do (
 popd
 pushd tests
 
-rem Compile test program and link DLL from the :link subroutine
+rem Compile test program and link DLL
 
 rem Compile *.test.c files
 cl /nologo /Fo"obj\\" /Fd"obj\\" /c /MD -Zi -W4 -Wall /std:c17 %testsrcs% %incs%
