@@ -2,6 +2,54 @@
  * @file binary_tree.h
  */
 
+/**
+ * @typedef struct btnode_t
+ *
+ * @brief Data structure for nodes residing in a binary tree.
+ *
+ * @var btnode::data
+ * Memory which has been allocated for the binary tree node to store data.
+ *
+ * @var btnode::left
+ * The binary tree node's left pointer.
+ *
+ * @var btnode::right
+ * The binary tree node's right pointer.
+ */
+
+/**
+ * @typedef struct bintree_t
+ *
+ * @brief Data structure for binary tree.
+ *
+ * @var bintree::data_size
+ * The size of the data in bytes being stored in the nodes that reside in the
+ * binary tree.
+ *
+ * @var bintree::root
+ * Pointer to the first node in the binary tree.
+ *
+ * @var bintree::_cmp
+ * Comparator function used for sorting or searching. The library contains some
+ * basic types as seen below, which can be assigned to the `_cmp` variable. You
+ * can also provide your own comparator functions.
+ */
+
+/**
+ * @fn void function_name(bintree_t *btree)
+ *
+ * @brief .
+ *
+ *
+ *
+ * @param btree Pointer to the binary tree structure
+ *
+ * @returns
+ *
+ * @b Example
+ * @snippet binary_tree.test.c Example
+ */
+
 #ifndef BINARY_TREE_H
 #define BINARY_TREE_H
 
