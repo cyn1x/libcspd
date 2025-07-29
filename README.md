@@ -2,6 +2,44 @@
 
 Collection of utilities used to write C programs quickly and efficiently.
 
+The purpose of the utilities are to teach data structures and algorithms, as well as provide a simple interface for leveraging common data structures. Here is a simple example of what this means.
+
+```c
+#include "print.h"
+#include "vector.h"
+#include <log.h>
+
+int main(int argc, char *argv[])
+{
+    // Simple program demonstrating the usage of one of the many utilities 
+    // available in the libcspd library
+    
+    log_init(LOG_TRACE, stdout, NULL);
+
+    // Create a vector to store a contiguous array of elements
+    vector_t vec;
+    vector_init(&vec, sizeof(int32));
+
+    // Create 10 elements and push them into the vector
+    for (int32 i = 0; i < 10; ++i) {
+        int32 k = i;
+        vector_push(&vec, &k);
+    }
+
+    print_vector(int32, &vec);
+    // Output: { 0 1 2 3 4 5 6 7 8 9 }
+
+    // Insert data into the vector
+    int32 data[] = {10, 11, 12};
+    vector_insert(&vec, 4, sizeof(data), &data);
+
+    print_vector(int32, &vec);
+    // Output: { 0 1 2 3 10 11 12 4 5 6 7 8 9 }
+
+    return 0;
+}
+```
+
 ## Installation
 
 This program can be installed on both Windows and Linux by cloning the repository and running the respective build scripts after installing the required dependencies.
@@ -92,3 +130,31 @@ tools\doc.bat
 ```
 
 ```
+
+## Roadmap
+
+The following serves as a rough outline of what features will be implemented.
+
+Data structures and algorithms
+- [x] Vector
+- [x] Linked List
+- [x] Stack
+- [x] Queue
+- [x] Binary Tree
+- [ ] Binary Search Tree
+- [ ] Hash map
+- [ ] Heap
+- [ ] B-tree
+- [ ] R-tree
+- [ ] AVL Tree
+
+Performance
+- [ ] Performance profiling
+- [ ] Optimised versions of algorithms
+
+GUI
+- [ ] UI for visualising algorithms
+
+Housekeeping
+- [ ] Basic demo application
+- [ ] Host Doxygen documentation online
