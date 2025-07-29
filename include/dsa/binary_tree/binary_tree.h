@@ -92,6 +92,7 @@ LIBCSPD_API void      bintree_inorder(btnode_t *node, vector_t *vec);
 LIBCSPD_API void      bintree_postorder(btnode_t *node, vector_t *vec);
 LIBCSPD_API void      bintree_dfs(btnode_t *node, vector_t *vec);
 LIBCSPD_API void      bintree_bfs(btnode_t *node, queue_t *queue);
+LIBCSPD_API void      bintree_invert(btnode_t *node);
 LIBCSPD_API int32     bintree_height(btnode_t *node);
 LIBCSPD_API size_t    bintree_count(btnode_t *node);
 LIBCSPD_API void      bintree_clear(bintree_t *btree);

@@ -159,6 +159,52 @@ void binary_tree_test(void)
         //! [Insertion]
     }
 
+    {
+        //! [Inversion]
+
+        //                      (7)
+        //             /--------------------\
+        //            |                     |
+        //           (5)                   (23)
+        //     /-------------\          /-------\
+        //     |             |         |        |
+        //    (9)          (10)      (14)      (8)
+        //    /             /
+        //   |             /
+        // (15)          (1)
+        //             /-----\
+        //            |      |
+        //           (2)    (6)
+
+        bintree_invert(btree.root);
+
+        vector_t vec;
+        vector_init(&vec, sizeof(btnode_t *));
+
+        bintree_preorder(btree.root, &vec);
+
+        {
+            btnode_t *node = *(btnode_t **)vector_get(&vec, 2);
+            assert(*(int32 *)node->data == 9);
+        }
+
+        {
+            btnode_t *node = *(btnode_t **)vector_get(&vec, 7);
+            assert(*(int32 *)node->data == 6);
+        }
+
+        {
+            btnode_t *node = *(btnode_t **)vector_get(&vec, vec.size - 1);
+            assert(*(int32 *)node->data == 8);
+        }
+
+        // print_binary_tree(int32, &vec);
+        // Output: { 7 5 9 15 10 1 2 6 23 14 8 }
+
+        vector_clear(&vec);
+        //! [Inversion]
+    }
+
     //! [Calculating height]
     uint32 height = bintree_height(btree.root);
     assert(height == 4);

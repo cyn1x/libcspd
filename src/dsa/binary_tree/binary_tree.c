@@ -130,7 +130,10 @@ void bintree_postorder(btnode_t *node, vector_t *vec)
     vector_push(vec, &node);
 }
 
-void bintree_dfs(btnode_t *node, vector_t *vec) { bintree_preorder(node, vec); }
+void bintree_dfs(btnode_t *node, vector_t *vec)
+{
+    bintree_preorder(node, vec);
+}
 
 void bintree_bfs(btnode_t *node, queue_t *queue_t)
 {
@@ -152,6 +155,20 @@ void bintree_bfs(btnode_t *node, queue_t *queue_t)
 
         curr = curr->next;
     }
+}
+
+void bintree_invert(btnode_t *node)
+{
+    if (node == NULL) {
+        return;
+    }
+
+    bintree_invert(node->left);
+    bintree_invert(node->right);
+
+    btnode_t *tmp = node->left;
+    node->left    = node->right;
+    node->right   = tmp;
 }
 
 int32 bintree_height(btnode_t *node)
