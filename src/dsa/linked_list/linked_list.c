@@ -277,6 +277,10 @@ void llist_copy(llist_t *dst, llist_t *src)
     llnode_t *curr = src->head;
     llnode_t *temp = {0};
 
+    if (dst->head != NULL) {
+        llist_clear(dst);
+    }
+
     while (curr != NULL) {
         llnode_t *node = node_init(dst->data_size);
 
