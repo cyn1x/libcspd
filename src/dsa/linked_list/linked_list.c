@@ -267,9 +267,8 @@ void llist_clear(llist_t *llist)
         curr = temp;
     }
 
-    llist->data_size = 0;
-    llist->head      = NULL;
-    llist->tail      = NULL;
+    llist->head = NULL;
+    llist->tail = NULL;
 }
 
 void llist_copy(llist_t *dst, llist_t *src)
