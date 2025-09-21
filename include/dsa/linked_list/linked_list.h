@@ -49,16 +49,19 @@
  * Comparator function used for sorting or searching. The library contains some
  * basic types as seen below, which can be assigned to the `_cmp` variable. You
  * can also provide your own comparator functions.
+ *
  * @b Example
  * The provided comparator functions can be defined in a header file.
+ *
  * @include defs.test.h
  * Once defined, assign the address of the defined functions from the header
  * file to the comparator function pointer.
+ *
  * @snippet linked_list.test.c Comparator function
  */
 
 /**
- * @fn void llist_init(llist_t *llist_t, size_t data_size)
+ * @fn void llist_init(llist_t *llist, size_t data_size)
  *
  * @brief Initializes a new linked list.
  *
@@ -68,19 +71,21 @@
  * @param vec Pointer to the linked list to be initialized.
  * @param data_size The size of the data type in bytes.
  *
+ * @returns void
+ *
  * @b Example
  * @snippet linked_list.test.c Initialize
  */
 
 /**
- * @fn node *node_init(llist_t *llist_t)
+ * @fn node *node_init(llist_t *llist)
  *
  * @brief Initializes a new node.
  *
  * Memory is allocated for the new node and the data that will reside within the
  * new node structure. The `prev` and `next` pointers are set to `NULL`.
  *
- * @param llist Pointer to the linked list structure
+ * @param llist Pointer to the linked list structure.
  *
  * @returns Pointer to the new node in memory.
  *
@@ -89,7 +94,7 @@
  */
 
 /**
- * @fn void llist_append(llist_t *llist_t, void *data)
+ * @fn void llist_append(llist_t *llist, void *data)
  *
  * @brief Adds a node to the end of the linked list.
  *
@@ -97,15 +102,17 @@
  * pointer is set if the linked list is empty, otherwise the node is added to
  * the end of the linked list with the tail pointer set to the new node.
  *
- * @param llist Pointer to the linked list structure
- * @param data Pointer to the data to be loaded into the node
+ * @param llist Pointer to the linked list structure.
+ * @param data Pointer to the data to be loaded into the node.
+ *
+ * @returns void
  *
  * @b Example
  * @snippet linked_list.test.c Appending nodes
  */
 
 /**
- * @fn void llist_prepend(llist_t *llist_t, void *data)
+ * @fn void llist_prepend(llist_t *llist, void *data)
  *
  * @brief Adds a node to the start of the linked list.
  *
@@ -114,30 +121,34 @@
  * prepended to the current head of the list. The previous head is now the
  * second node in the linked list.
  *
- * @param llist Pointer to the linked list structure
- * @param data Pointer to the data to be loaded into the node
+ * @param llist Pointer to the linked list structure.
+ * @param data Pointer to the data to be loaded into the node.
+ *
+ * @returns void
  *
  * @b Example
  * @snippet linked_list.test.c Prepending nodes
  */
 
 /**
- * @fn void llist_insert(llist_t *llist_t, void *data, size_t idx)
+ * @fn void llist_insert(llist_t *llist, void *data, size_t idx)
  *
  * Initializes a new node and copies the given data into memory. The node is
  * inserted at the position given by `idx`, with the new node preceding the node
- * at position at idx.
+ * at position `idx`.
  *
- * @param llist Pointer to the linked list structure
- * @param data Pointer to the data to be loaded into the node
- * @param size_t Integer that corresponds to the destination position
+ * @param llist Pointer to the linked list structure.
+ * @param data Pointer to the data to be loaded into the node.
+ * @param size_t Integer that corresponds to the destination position.
+ *
+ * @returns void
  *
  * @b Example
  * @snippet linked_list.test.c Inserting nodes
  */
 
 /**
- * @fn void llist_move(llist_t *llist_t, lnode_t *node, lnode_t *dst, lnode_t
+ * @fn void llist_move(llist_t *llist, lnode_t *node, lnode_t *dst, lnode_t
  * *dst_ptr)
  *
  * @brief Moves a node in the linked list to the given destination.
@@ -146,178 +157,232 @@
  * or `prev` pointer. The `dst_ptr` is checked to ensure it belongs to the node
  * given by `dst`.
  *
- * @param llist Pointer to the linked list structure
- * @param node Node to be moved
- * @param dst Destination to move the given node
- * @param dst_ptr Destination node's `next` or `prev` pointer
+ * @param llist Pointer to the linked list structure.
+ * @param node Node to be moved.
+ * @param dst Destination to move the given node.
+ * @param dst_ptr Destination node's `next` or `prev` pointer.
+ *
+ * @returns void
  *
  * @b Example
  * @snippet linked_list.test.c Moving nodes
  */
 
 /**
- * @fn void llist_swap(llist_t *llist_t, lnode_t *a, lnode_t *b)
+ * @fn void llist_swap(llist_t *llist, lnode_t *a, lnode_t *b)
  *
  * @brief Swaps two nodes in a linked list.
  *
+ * Swaps two nodes, `a` and `b` in the given `llist_t`, by changing
+ * `a->prev->next` from `a` to `b` (the next pointer of the node preceding `a`).
+ * The node proceeding `a` has its `prev` pointer changed to point to `b`
+ * (`a->next->prev`). Similarly, the same is done for node `b`
+ * <STRONG>after</STRONG> `a` has been updated. Finally, the `a` node's `prev`
+ * pointer is updated to point to `b`, and `next` pointer is set to the `b`
+ * node's `next` pointer. The same is <STRONG>then</STRONG> done for `b`.
  *
+ * Adjacent nodes are handled in a slightly different manner, with the only
+ * difference being the `a` node's previous pointer being set to `b` instead of
+ * `b->next`, and the `b` node's next pointer being set to node `a`.
  *
- * @param llist_t Pointer to the linked list structure
+ * @param llist Pointer to the linked list structure.
+ * @param a The node to be swapped with node `b`.
+ * @param b The node to be swapped with node `a`.
  *
- * @returns
+ * @returns void
+ *
+ * @remarks The order of operations for swapping adjacent nodes is important. If
+ * `a` does <STRONG>not</STRONG> precede `b`, then the function is called again
+ * with the nodes swapped in the function's arguments.
+ *
+ * @b Example
+ * @snippet linked_list.test.c Swapping nodes
+ */
+
+/**
+ * @fn void llist_delete(llist_t *llist, const void *key)
+ *
+ * @brief Deletes a node in a linked list.
+ *
+ * Deletes a node in a linked list after connecting the nodes `prev` and `next`
+ * nodes together, and freeing the resources associated to it.
+ *
+ * @param llist Pointer to the linked list structure.
+ * @param key Pointer to the node to be deleted.
+ *
+ * @returns void
+ *
+ * @b Example
+ * @snippet linked_list.test.c Deleting nodes
+ */
+
+/**
+ * @fn void llist_erase(llist_t *llist, lnode_t *start, lnode_t *end)
+ *
+ * @brief Erases a range of nodes in a linked list.
+ *
+ * Removes nodes starting from @p start up to (but not including) @p end.
+ *
+ * @param llist Pointer to the linked list structure.
+ * @param start First node to erase (inclusive).
+ * @param end Node marking the end of the range (not erased).
+ *
+ * @returns void
  *
  * @b Example
  * @snippet linked_list.test.c Example
  */
 
 /**
- * @fn void llist_delete(llist_t *llist_t, const void *key)
+ * @fn void llist_clear(llist_t *llist)
  *
- * @brief .
+ * @brief Clears all nodes from a linked list.
  *
+ * Deletes all nodes in the list and frees their associated data.
  *
+ * @param llist Pointer to the linked list structure.
  *
- * @param llist_t Pointer to the linked list structure
+ * @returns void
  *
- * @returns
+ * @remarks After this call, @p llist will be empty.
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Clearing lists
  */
 
 /**
- * @fn void llist_erase(llist_t *llist_t, lnode_t *start, lnode_t *end)
+ * @fn void llist_copy(llist_t *dst, llist *src)
  *
- * @brief .
+ * @brief Copies data from one linked list to another.
  *
+ * Copies data from the @p src linked list to the @p dst linked list, starting
+ * from the @p src `head` node, and ending at the `tail` node.
  *
+ * @param dst Pointer to the desination linked list structure.
+ * @param src Pointer to the source linked list structure.
  *
- * @param llist_t Pointer to the linked list structure
+ * @returns void
  *
- * @returns
+ * @remarks The @p dst linked list will be cleared if it is not empty.
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Copying lists
  */
 
 /**
- * @fn void llist_clear(llist_t *llist_t)
+ * @fn void llist_reverse(llist_t *llist)
  *
- * @brief .
+ * @brief Reverses nodes in a linked list.
  *
+ * Swaps the `prev` and `next pointers for all nodes in a linked list, and
+ * finally swaps the `head` and `tail` pointers.
  *
+ * @param llist Pointer to the linked list structure.
  *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
+ * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Reversing nodes
  */
 
 /**
- * @fn void llist_copy(llist_t *dst, llist_t *src)
+ * @fn size_t llist_index(llist_t *llist, lnode_t *node)
  *
- * @brief .
+ * @brief Returns the index of a node in a linked list.
  *
+ * Performs a linear search in a linked list to find the node that equals @p
+ * node.
  *
+ * @param llist Pointer to the linked list structure.
  *
- * @param llist_t Pointer to the linked list structure
+ * @returns The index of the node that equals @p node.
  *
- * @returns
+ * @remarks The `head` node would have an index of `0`.
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Index of a node
  */
 
 /**
- * @fn void llist_reverse(llist_t *llist_t)
+ * @fn lnode_t *llist_find(llist_t *llist, const void *key)
  *
- * @brief .
+ * @brief Finds a node in a linked list that contains the @p key value that has
+ * the same size as `data_size`.
  *
+ * Performs a linear search over a linked list, and performs a `memcmp` for each
+ * node to check if it contains the data of @p key.
  *
+ * @param llist Pointer to the linked list structure.
+ * @param key The data to search for in each node's `data` field.
  *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
+ * @returns The node containing the data that matches @p key, or `NULL` if not
+ * found.
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Finding nodes
  */
 
 /**
- * @fn size_t llist_index(llist_t *llist_t, lnode_t *node)
+ * @fn void lnode_t *llist_lsearch(llist_t *llist, const void *key)
  *
- * @brief .
+ * @brief Performs a linear search over a linked list to find the given @p key.
  *
+ * Performs a linear search over a linked list, and performs a `memcmp` for each
+ * node to check if it contains the data of @p key.
  *
+ * @param llist Pointer to the linked list structure.
+ * @param key The data to search for in each node's `data` field.
  *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
+ * @returns The node containing the data that matches @p key, or `NULL` if not
+ * found.
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Linear search
+ *
+ * @see https://en.wikipedia.org/wiki/Linear_search
  */
 
 /**
- * @fn lnode_t *llist_find(llist_t *llist_t, const void *key)
+ * @fn void llist_bsort(llist_t *llist)
  *
- * @brief .
+ * @brief Sorts an array using the bubblesort algorithm.
  *
+ * Sorts a vector using the bubble sort algorithm. It is not recommended to use
+ * this algorithm over the others available. However, it remains in the library
+ * for demonstration purposes. Use of this function requires the comparator
+ * function pointer to be set.
  *
+ * @param llist Pointer to the linked list structure.
  *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
+ * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet linked_list.test.c Bubble sort
+ *
+ * @see https://en.wikipedia.org/wiki/Bubble_sort
  */
 
 /**
- * @fn void lnode_t *llist_lsearch(llist_t *llist_t, const void *key)
+ * @fn void llist_qsort(llist_t *llist, lnode_t *lo, lnode_t *hi)
  *
- * @brief .
+ * @brief Sorts an array using the quicksort algorithm.
  *
+ * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
+ * use of the Lomuto partition scheme.
  *
+ * @param llist Pointer to the linked list structure.
+ * @param lo The first node in the linked list.
+ * @param hi The last node in the linked list.
  *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
- *
- * @b Example
- * @snippet linked_list.test.c Example
- */
-
-/**
- * @fn void llist_bsort(llist_t *llist_t)
- *
- * @brief .
- *
- *
- *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
+ * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Example
- */
-
-/**
- * @fn void llist_qsort(llist_t *llist_t, lnode_t *lo, lnode_t *hi)
+ * @snippet linked_list.test.c Quicksort
  *
- * @brief .
+ * @remarks The @p lo parameter should be the `head` of the linked list, and the
+ * @p hi parameter should be the `tail` of the linked list.
  *
- *
- *
- * @param llist_t Pointer to the linked list structure
- *
- * @returns
- *
- * @b Example
- * @snippet linked_list.test.c Example
+ * @see https://en.wikipedia.org/wiki/Quicksort
  */
 
 #ifndef LINKED_LIST_H

@@ -71,31 +71,45 @@ void linked_list_test(void)
     // print_llist(int32, &llist_b, true);
     // Output: { 5 3 10 4 7 8 7 }
 
+    //! [Prepending nodes]
     int32 h = 1;
     llist_prepend(&llist_a, &h);
     // print_llist(int32, &llist_a, false);
     // Output: { 1 7 8 7 3 10 4 5 }
+    //! [Prepending nodes]
 
+    //! [Inserting nodes]
     int32 i = 9;
     llist_insert(&llist_a, &i, 5);
     // print_llist(int32, &llist_a, false);
     // Output: { 1 7 8 7 3 9 10 4 5 }
+    //! [Inserting nodes]
 
+    //! [Reversing nodes]
     llist_reverse(&llist_a);
     assert(*(int32 *)llist_a.head->data == 5);
     assert(*(int32 *)llist_a.tail->data == 1);
 
     // print_llist(int32, &llist_a, false);
     // Output: { 5 3 10 9 4 7 8 7 1 }
+    //! [Reversing nodes]
 
+    //! [Linear search]
     {
         int32     k   = 8;
         llnode_t *key = llist_lsearch(&llist_a, &k);
         assert(*(int32 *)key->data == 8);
     }
+    //! [Linear search]
 
+    //! [Index of a node]
     size_t idx = llist_index(&llist_a, llist_a.head->next->next);
     assert(idx == 2);
+    //! [Index of a node]
+
+    //! [Deleting nodes]
+    // print_llist(int32, &llist_a, false);
+    // Output: { 5 3 10 9 4 7 8 7 1 }
 
     {
         int32 k = 10;
@@ -122,28 +136,37 @@ void linked_list_test(void)
 
     // print_llist(int32, &llist_a, false);
     // Output: { 4 9 7 8 7 1 }
+    //! [Deleting nodes]
 
+    //! [Finding nodes]
     int32     start  = 4;
     int32     end    = 1;
 
     llnode_t *node_a = llist_find(&llist_a, &start);
     llnode_t *node_b = llist_find(&llist_a, &end);
+    assert(*(int32 *)node_a->data == 4);
+    assert(*(int32 *)node_b->data == 1);
+    //! [Finding nodes]
 
+    //! [Erasing nodes]
     llist_erase(&llist_a, node_a, node_b);
     assert(*(int32 *)llist_a.head->data == 1);
     assert(*(int32 *)llist_a.tail->data == 1);
 
     // print_llist(int32, &llist_a, false);
     // Output: { 1 }
+    //! [Erasing nodes]
 
     move_test();
     swap_test();
     sort_test();
 
+    //! [Clearing lists]
     llist_clear(&llist_a);
     llist_clear(&llist_b);
     assert(llist_a.head == NULL && llist_a.tail == NULL);
     assert(llist_a.head == NULL && llist_b.tail == NULL);
+    //! [Clearing lists]
 }
 
 void move_test(void)
@@ -298,8 +321,10 @@ void sort_test(void)
     llist_b._cmp = &int32_cmp; // Set comparator function pointer
     llist_c._cmp = &int32_cmp; // Set comparator function pointer
 
+    //! [Copying lists]
     llist_copy(&llist_b, &llist_a);
     llist_copy(&llist_c, &llist_b);
+    //! [Copying lists]
 
     llist_reverse(&llist_c);
 
@@ -324,6 +349,7 @@ void sort_test(void)
     // print_llist(int32, &llist_a, false);
     // Output: { 7 8 7 4 10 3 5 }
 
+    //! [Bubble sort]
     llist_bsort(&llist_a);
     // print_llist(int32, &llist_a, false);
     // Output: { 3 4 5 7 7 8 10 }
@@ -331,10 +357,12 @@ void sort_test(void)
     // Output: { 10 8 7 7 5 4 3 }
     assert(*(int32 *)llist_a.head->data == 3);
     assert(*(int32 *)llist_a.tail->data == 10);
+    //! [Bubble sort]
 
     // print_llist(int32, &llist_b, false);
     // Output: { 7 8 7 4 10 3 5 }
 
+    //! [Quicksort]
     llist_qsort(&llist_b, llist_b.head, llist_b.tail);
     // print_llist(int32, &llist_b, false);
     // Output: { 3 4 5 7 7 8 10 }
@@ -342,6 +370,7 @@ void sort_test(void)
     // Output: { 10 8 7 7 5 4 3 }
     assert(*(int32 *)llist_b.head->data == 3);
     assert(*(int32 *)llist_b.tail->data == 10);
+    //! [Quicksort]
 
     // print_llist(int32, &llist_c, false);
     // Output: { 5 4 7 10 -1 19 4 3 33 3 7 8 7 }

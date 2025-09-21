@@ -186,7 +186,7 @@ void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
             b_next->prev = a;
         }
 
-        // Change the `next` and `prev` pointers for a first
+        // Change the `next` and `prev` pointers for `a` first
         a->prev = b;
         a->next = b_next;
 
@@ -275,6 +275,8 @@ void llist_copy(llist_t *dst, llist_t *src)
 {
     llnode_t *curr = src->head;
     llnode_t *temp = {0};
+
+    // TODO: Handle different data sizes
 
     if (dst->head != NULL) {
         llist_clear(dst);
