@@ -135,26 +135,29 @@ tools\doc.bat
 
 The following serves as a rough outline of what features will be implemented.
 
-Data structures and algorithms
-- [x] Vector
-- [x] Linked List
-- [x] Stack
-- [x] Queue
-- [x] Binary Tree
-- [ ] Binary Search Tree
-- [ ] Hash map
-- [ ] Heap
-- [ ] B-tree
-- [ ] R-tree
-- [ ] AVL Tree
+Legend:
 
-Performance
-- [ ] Performance profiling
-- [ ] Optimised versions of algorithms
+&#x2705; done &nbsp;|&nbsp; &#x1F504; in progress &nbsp;|&nbsp; &#x23F3; planned
 
-GUI
-- [ ] UI for visualising algorithms
+Current features:
 
-Housekeeping
+- &#x2705; Vector
+- &#x2705; Linked List
+- &#x2705; Stack
+- &#x2705; Queue
+- &#x2705; Binary Tree
+
+Future Plans:
+
+- &#x1F504; Binary Search Tree
+- &#x1F504; Hash map
+- &#x1F504; Heap
+- &#x23F3; B-tree
+- &#x23F3; R-tree
+- &#x23F3; AVL Tree
+
+Housekeeping: 
+
+- [ ] Benchmarks
 - [ ] Basic demo application
 - [ ] Host Doxygen documentation online
