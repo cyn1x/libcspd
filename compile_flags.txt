@@ -15,4 +15,4 @@
 -I
 ./include/util/
 -I
-./lib/logc/src/
+./tests/
