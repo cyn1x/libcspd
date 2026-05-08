@@ -1,3 +1,0 @@
-[submodule "lib/log.c"]
-	path = lib/log.c
-	url = git@github.com:cyn1x/logc.git
