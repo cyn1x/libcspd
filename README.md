@@ -42,28 +42,35 @@ int main(int argc, char *argv[])
 
 ## Installation
 
-This program can be installed on both Windows and Linux by cloning the repository and running the respective build scripts after installing the required dependencies.
+This program can be compiled on both Windows and Linux by cloning the repository and running the respective build scripts after installing the required dependencies.
 
 ### Windows
 
-MSVC is used to build the project on Windows.
+MSVC is used to build the project on Windows, and Doxygen is used to generate documentation.
 
 #### Dependencies
 
-Ensure Desktop Development for C++ is selected under the **Workloads** tab, and C++ Clang Compiler for Windows (17.0.3) is selected under **Individual components** tab. Newer versions of Clang should work also.
-
-- Microsoft Visual Studio 2022
-  - Desktop Development for C++
-  - C++ Clang Compiler for Windows (17.0.3)
-- Microsoft Visual Studio 2022 Build Tools
+- Microsoft Visual Studio Community (>= 2022)
+  - Workloads
+    - Desktop Development for C++
+  - Individual components
+    - MSBuild support for LLVM (clang-cl) toolset
+    - C++ Clang Compiler for Windows (>=17.0.3)
 - Doxygen
 
 ```commandline
-winget install --id=Microsoft.VisualStudio.2022.Community -e && winget install --id=Microsoft.VisualStudio.2022.BuildTools -e 
+winget install --id=Microsoft.VisualStudio.2022.Community -e 
+```
+
+Use the Visual Studio (GUI) Installer to install the **Workloads** and **Individual components**.
+
+```commandline
 git clone https://github.com/cyn1x/libcspd.git
 cd libcspd
 tools\build.bat
 ```
+
+Note that Visual Studio Build Tools can be used for development if using a text editor, but the Visual Studio IDE is useful for debugging.
 
 ### Linux
 
@@ -161,3 +168,4 @@ Housekeeping:
 - [ ] Benchmarks
 - [ ] Basic demo application
 - [ ] Host Doxygen documentation online
+- [ ] C++ wrappers for incompatible C functions

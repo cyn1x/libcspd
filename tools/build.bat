@@ -62,11 +62,6 @@ if not defined DevEnvDir (
     call "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 )
 
-rem Define the engine dynamic link library and application executable filenames
-set _dll=libcspd_%Platform%.dll
-set _lib=libcspd_%Platform%.lib
-set _exe=libcspd_%Platform%.exe
-
 rem Define `compile_flags.txt` file for the LLVM Clang LSP
 set CompileFlags=compile_flags.txt
 
@@ -94,6 +89,11 @@ goto :EOF
 ::-----------------------------------------------------------------------------
 rem Orchestrates the entire build process
 :Build
+
+rem Define the engine dynamic link library and application executable filenames
+set _dll=libcspd_%Platform%.dll
+set _lib=libcspd_%Platform%.lib
+set _exe=libcspd_%Platform%.exe
 
 rem Set the core library `include` and `src` directories
 set IncDir=%Root%\include
@@ -128,7 +128,6 @@ goto :EOF
 rem Performs a compilation of source files and subsequent linking of the resulting object files
 :Compile
 
-
 rem Compile core library `*.c` files
 cl /c /MD -Zi -W4 -Wall /std:c17 /Fo%ObjDir%\ /Fd"%ObjDir%\vc140.pdb" %Incs% %Srcs%
 if %ErrorLevel% neq 0 goto :error
@@ -145,7 +144,7 @@ call :RelativePath %BinDir%
 echo Library file `%_lib%` created in `%relpath%` successfully. & echo.
 
 rem Copy DLL to where the test executable will be built
-copy %bindir%\%_dll% %root%\tests\bin\win32\%config%_%platform% > nul
+copy %BinDir%\%_dll% %Root%\tests\bin\win32\%Config%_%Platform% > nul
 
 rem End of :Compile subroutine
 goto :EOF

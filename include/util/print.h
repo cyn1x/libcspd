@@ -43,6 +43,10 @@ static void print_fn(const char *format, ...) __attribute__((unused));
 extern "C" {
 #endif // __cplusplus
 
+#if __cplusplus
+#define print(T, S) ; // TODO: C++ implementation
+
+#else
 #define print_any(X)                                                           \
     _Generic((X),                                                              \
         int8: "%" PRIi8,                                                       \
@@ -64,6 +68,7 @@ static void print_fn(const char *format, ...)
 }
 
 #define print(T, S) print_fn(print_any(T), T), print_fn(S);
+#endif
 
 #ifdef __cplusplus
 }
