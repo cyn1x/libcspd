@@ -22,5 +22,7 @@ int main(int argc, char *argv[])
 
     cspd_integration_tests();
 
+    // TODO: #0021 - Display test results
+
     return 0;
 }

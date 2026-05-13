@@ -157,8 +157,8 @@ rem Build test suite
 :Test
 
 rem Set the core library `include` and `src` directories
-set IncDir=%root%\tests
-set SrcDir=%root%\tests
+set IncDir=%root%\tests\include
+set SrcDir=%root%\tests\src
 
 rem Clear `srcs` and `objs` variables to store new source and object filenames
 set Srcs=
