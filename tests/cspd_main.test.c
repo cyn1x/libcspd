@@ -1,9 +1,9 @@
-#include "binary_tree.test.h"
-#include "integration.test.h"
-#include "linked_list.test.h"
-#include "queue.test.h"
-#include "stack.test.h"
-#include "vector.test.h"
+#include "cspd_btree.test.h"
+#include "cspd_integration.test.h"
+#include "cspd_linked_list.test.h"
+#include "cspd_queue.test.h"
+#include "cspd_stack.test.h"
+#include "cspd_vector.test.h"
 // #include <log.h>
 
 int main(int argc, char *argv[])

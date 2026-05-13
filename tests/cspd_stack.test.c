@@ -1,7 +1,7 @@
-#include "stack.test.h"
+#include "cspd_stack.test.h"
 #include <assert.h>
 #include <cspd_print.h>
-#include <stack.h>
+#include <cspd_stack.h>
 #include <cspd_types.h>
 
 cspd_stack stack_setup(void)

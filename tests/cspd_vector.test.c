@@ -1,5 +1,5 @@
-#include "vector.test.h"
-#include "defs.test.h"
+#include "cspd_vector.test.h"
+#include "cspd_defs.test.h"
 #include <assert.h>
 #include <cspd_print.h>
 #include <cspd_vector.h>

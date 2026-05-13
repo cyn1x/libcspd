@@ -1,5 +1,5 @@
 /**
- * @file stack.h
+ * @file cspd_stack.h
  */
 
 #ifndef CSPD_STACK_H

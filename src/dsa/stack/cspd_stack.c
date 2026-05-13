@@ -1,6 +1,6 @@
 #define LIBCSPD_EXPORTS
 
-#include "stack.h"
+#include "cspd_stack.h"
 #include "cspd_linked_list.h"
 #include <stdlib.h>
 

@@ -1,6 +1,6 @@
 #define LIBCSPD_EXPORTS
 
-#include "queue.h"
+#include "cspd_queue.h"
 #include "cspd_linked_list.h"
 #include <stdlib.h>
 

@@ -1,4 +1,4 @@
-#include "integration.test.h"
+#include "cspd_integration.test.h"
 #include <assert.h>
 #include <cspd_vector.h>
 #include <stdlib.h>

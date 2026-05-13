@@ -1,8 +1,8 @@
-#include "binary_tree.test.h"
+#include "cspd_btree.test.h"
 #include <assert.h>
-#include <binary_tree.h>
+#include <cspd_btree.h>
 #include <cspd_print.h>
-#include <queue.h>
+#include <cspd_queue.h>
 
 void       bfs_test(void);
 

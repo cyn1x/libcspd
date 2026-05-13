@@ -1,6 +1,6 @@
 #define LIBCSPD_EXPORTS
 
-#include "binary_tree.h"
+#include "cspd_btree.h"
 #include <stdlib.h>
 #include <string.h>
 

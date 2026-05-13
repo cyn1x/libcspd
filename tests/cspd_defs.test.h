@@ -1,5 +1,5 @@
 /**
- * @file defs.test.h
+ * @file cspd_defs.test.h
  */
 
 #ifndef CSPD_DEFS_TEST_H

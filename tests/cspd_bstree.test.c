@@ -1,4 +1,4 @@
-#include "binary_search_tree.test.h"
+#include "cspd_bstree.test.h"
 #include "cspd_types.h"
 #include <assert.h>
 #include <cspd_bstree.h>
@@ -39,12 +39,12 @@ void bstree_setup(void)
     // (1)      (3)     (5)      (7)
 
     cspd_bstree_add(&bstree, &a);
-    // bstree_add(&bstree, &b);
-    // bstree_add(&bstree, &c);
-    // bstree_add(&bstree, &d);
-    // bstree_add(&bstree, &e);
-    // bstree_add(&bstree, &f);
-    // bstree_add(&bstree, &g);
+    // cspd_bstree_add(&bstree, &b);
+    // cspd_bstree_add(&bstree, &c);
+    // cspd_bstree_add(&bstree, &d);
+    // cspd_bstree_add(&bstree, &e);
+    // cspd_bstree_add(&bstree, &f);
+    // cspd_bstree_add(&bstree, &g);
 
     //! [Adding nodes]
 }

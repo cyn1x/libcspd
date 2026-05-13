@@ -1,7 +1,7 @@
-#include "queue.test.h"
+#include "cspd_queue.test.h"
 #include <assert.h>
 #include <cspd_print.h>
-#include <queue.h>
+#include <cspd_queue.h>
 #include <cspd_types.h>
 
 cspd_queue queue_setup(void)

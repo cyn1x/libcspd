@@ -1,5 +1,5 @@
 /**
- * @file queue.h
+ * @file cspd_queue.h
  */
 
 #ifndef CSPD_QUEUE_H

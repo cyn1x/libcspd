@@ -1,5 +1,5 @@
 /**
- * @file binary_tree.h
+ * @file cspd_btree.h
  */
 
 /**
@@ -54,7 +54,7 @@
 #define CSPD_BTREE_H
 
 #include "cspd_defs.h"
-#include "queue.h"
+#include "cspd_queue.h"
 #include "cspd_vector.h"
 
 #ifdef __clang__
