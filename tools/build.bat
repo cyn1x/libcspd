@@ -78,7 +78,9 @@ if not exist bin\win32\%config%_x64 mkdir bin\win32\%config%_x64
 if %ErrorLevel% neq 0 goto :error
 
 call :Build
+if %ErrorLevel% neq 0 goto :EOF
 call :Test
+if %ErrorLevel% neq 0 goto :EOF
 
 rem End of :Main subroutine call
 goto :EOF
