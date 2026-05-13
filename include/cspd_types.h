@@ -1,15 +1,15 @@
 /**
- * @file types.h
+ * @file cspd_types.h
  * Custom type definitions.
  * More readable type definitions for types in `stdint.h`.
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef CSPD_TYPES_H
+#define CSPD_TYPES_H
 
 #include <stdint.h>
 
-typedef int (*cmp_t)(const void *, const void *);
+typedef int (*cspd_cmp)(const void *, const void *);
 
 typedef int8_t   int8;
 typedef int16_t  int16;
@@ -21,4 +21,4 @@ typedef uint16_t uint16;
 typedef uint32_t uint32;
 typedef uint64_t uint64;
 
-#endif // TYPES_H
+#endif // CSPD_TYPES_H

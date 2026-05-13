@@ -1,5 +1,5 @@
 /**
- * @file util.h
+ * @file cspd_util.h
  * General utilities not specific to the purpose of any other header file.
  */
 
@@ -17,7 +17,7 @@
  */
 
 /**
- * @fn print_binary(void *data, size_t size)
+ * @fn cspd_print_binary(void *data, size_t size)
  *
  * @brief Prints out the binary representation of the given data.
  *
@@ -31,7 +31,7 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "defs.h"
+#include "cspd_defs.h"
 
 #ifdef __clang__
 #include <stddef.h>
@@ -42,10 +42,10 @@ extern "C" {
 #endif // __cplusplus
 
 void             swap(void *pa, void *pb, size_t size);
-LIBCSPD_API void print_binary(void *data, size_t size);
+LIBCSPD_API void cspd_print_binary(void *data, size_t size);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // UTIL_H
+#endif // CSPD_UTIL_H

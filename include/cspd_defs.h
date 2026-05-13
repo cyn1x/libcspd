@@ -1,12 +1,12 @@
 /**
- * @file defs.h
+ * @file cspd_defs.h
  * Abstraction of library import and export definitions.
  * Used to include in other header files which require their functions to be
  * exported, or source files for functions to be imported.
  */
 
-#ifndef DEFS_H
-#define DEFS_H
+#ifndef CSPD_DEFS_H
+#define CSPD_DEFS_H
 
 #ifdef _WIN32
 #pragma warning(disable : 5045)
@@ -24,4 +24,4 @@
 #define LIBCSPD_API
 #endif // _WIN32
 
-#endif // DEFS_H
+#endif // CSPD_DEFS_H

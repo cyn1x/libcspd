@@ -2,15 +2,15 @@
  * @file defs.test.h
  */
 
-#ifndef DEFS_TEST_H
-#define DEFS_TEST_H
+#ifndef CSPD_DEFS_TEST_H
+#define CSPD_DEFS_TEST_H
 
-#include <cmp.h>
-#include <types.h>
+#include <cspd_cmp.h>
+#include <cspd_types.h>
 
 //! [Comparator type initialization]
-cmp(int8) cmp(int16) cmp(int32) cmp(int64) cmp(uint8) cmp(uint16) cmp(uint32)
-    cmp(uint64)
+cspd_cmp(int8) cspd_cmp(int16) cspd_cmp(int32) cspd_cmp(int64) cspd_cmp(uint8)
+    cspd_cmp(uint16) cspd_cmp(uint32) cspd_cmp(uint64)
 //! [Comparator type initialization]
 
-#endif // DEFS_H
+#endif // CSPD_DEFS_TEST_H

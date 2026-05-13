@@ -1,8 +1,8 @@
 #include "binary_search_tree.test.h"
-#include "types.h"
+#include "cspd_types.h"
 #include <assert.h>
-#include <binary_search_tree.h>
-#include <print.h>
+#include <cspd_bstree.h>
+#include <cspd_print.h>
 
 #ifdef __clang__
 static void print_data(void *data) __attribute__((unused));
@@ -11,16 +11,16 @@ static void print_data(void *data) __attribute__((unused));
 static void print_data(void *data)
 {
     printf("{ ");
-    print(*(int32 *)data, " ");
+    cspd_print(*(int32 *)data, " ");
     printf("} \n");
 }
 
 void bstree_setup(void)
 {
     //! [Adding nodes]
-    bstree_t bstree;
+    cspd_bstree bstree;
 
-    bstree_init(&bstree, sizeof(int32));
+    cspd_bstree_init(&bstree, sizeof(int32));
 
     int32 a = 3;
     int32 b = 1;
@@ -38,7 +38,7 @@ void bstree_setup(void)
     //  |        |       |        |
     // (1)      (3)     (5)      (7)
 
-    bstree_add(&bstree, &a);
+    cspd_bstree_add(&bstree, &a);
     // bstree_add(&bstree, &b);
     // bstree_add(&bstree, &c);
     // bstree_add(&bstree, &d);
@@ -49,4 +49,4 @@ void bstree_setup(void)
     //! [Adding nodes]
 }
 
-void bstree_test(void) {}
+void cspd_bstree_test(void) {}

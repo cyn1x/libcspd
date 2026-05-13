@@ -1,9 +1,9 @@
 -I
 ./include/
 -I
-./include/dsa/binary_search_tree/
--I
 ./include/dsa/binary_tree/
+-I
+./include/dsa/bstree/
 -I
 ./include/dsa/linked_list/
 -I

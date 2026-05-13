@@ -1,5 +1,5 @@
 /**
- * @file vector.h
+ * @file cspd_vector.h
  */
 
 /**
@@ -361,11 +361,11 @@
  * @param vec The vector to be updated.
  */
 
-#ifndef VECTOR_H
-#define VECTOR_H
+#ifndef CSPD_VECTOR_H
+#define CSPD_VECTOR_H
 
-#include "defs.h"
-#include "types.h"
+#include "cspd_defs.h"
+#include "cspd_types.h"
 #include <stdbool.h>
 
 #ifdef __clang__
@@ -378,7 +378,7 @@ extern "C" {
 
 #define MIN_CAPACITY 32
 
-typedef struct vector
+typedef struct cspd_vector
 {
     size_t capacity;
     size_t size;
@@ -390,31 +390,34 @@ typedef struct vector
 
     int (*_cmp)(const void *, const void *);
 
-} vector_t;
+} cspd_vector;
 
-LIBCSPD_API void   vector_init(vector_t *vec, size_t data_size);
-LIBCSPD_API void  *vector_get(const vector_t *vec, size_t idx);
-LIBCSPD_API void   vector_set(vector_t *vec, size_t idx, const void *data);
-LIBCSPD_API void   vector_push(vector_t *vec, const void *data);
-LIBCSPD_API void   vector_pop(vector_t *vec);
-LIBCSPD_API void   vector_insert(vector_t *vec, size_t idx, size_t size,
-                                 const void *data);
-LIBCSPD_API void   vector_erase(vector_t *vec, size_t begin, size_t end);
-LIBCSPD_API void   vector_clear(vector_t *vec);
-LIBCSPD_API void  *vector_resize(vector_t *vec, size_t size);
-LIBCSPD_API void   vector_copy(vector_t *dst, vector_t *src);
-LIBCSPD_API void   vector_reverse(vector_t *vec);
-LIBCSPD_API size_t vector_lsearch(vector_t *vec, const void *key);
-LIBCSPD_API size_t vector_bsearch(vector_t *vec, const void *key);
-LIBCSPD_API void   vector_bsort(vector_t *vec);
-LIBCSPD_API void   vector_qsort(vector_t *vec, ptrdiff_t lo, ptrdiff_t hi);
-LIBCSPD_API void   vector_msort(vector_t *vec_a, size_t size, cmp_t cmp);
+LIBCSPD_API void  cspd_vector_init(cspd_vector *vec, size_t data_size);
+LIBCSPD_API void *cspd_vector_get(const cspd_vector *vec, size_t idx);
+LIBCSPD_API void  cspd_vector_set(cspd_vector *vec, size_t idx,
+                                  const void *data);
+LIBCSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
+LIBCSPD_API void  cspd_vector_pop(cspd_vector *vec);
+LIBCSPD_API void  cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
+                                     const void *data);
+LIBCSPD_API void  cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end);
+LIBCSPD_API void  cspd_vector_clear(cspd_vector *vec);
+LIBCSPD_API void *cspd_vector_resize(cspd_vector *vec, size_t size);
+LIBCSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
+LIBCSPD_API void  cspd_vector_reverse(cspd_vector *vec);
+LIBCSPD_API size_t cspd_vector_lsearch(cspd_vector *vec, const void *key);
+LIBCSPD_API size_t cspd_vector_bsearch(cspd_vector *vec, const void *key);
+LIBCSPD_API void   cspd_vector_bsort(cspd_vector *vec);
+LIBCSPD_API void   cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo,
+                                     ptrdiff_t hi);
+LIBCSPD_API void   cspd_vector_msort(cspd_vector *vec_a, size_t size,
+                                     cspd_cmp cmp);
 
-#define print_vector(type, vec)                                                \
+#define cspd_print_vector(type, vec)                                           \
     {                                                                          \
         printf("{ ");                                                          \
         for (size_t i = 0; i < (vec)->size; ++i) {                             \
-            print((*(type *)vector_get(vec, i)), " ");                         \
+            print((*(type *)cspd_vector_get(vec, i)), " ");                    \
         }                                                                      \
         printf("} \n");                                                        \
     }
@@ -423,4 +426,4 @@ LIBCSPD_API void   vector_msort(vector_t *vec_a, size_t size, cmp_t cmp);
 }
 #endif // __cplusplus
 
-#endif // VECTOR_H
+#endif // CSPD_VECTOR_H

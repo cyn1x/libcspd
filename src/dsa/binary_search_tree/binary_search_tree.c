@@ -1,33 +1,33 @@
 #define LIBCSPD_EXPORTS
 
-#include "binary_search_tree.h"
+#include "cspd_bstree.h"
 #include <stdlib.h>
 #include <string.h>
 
-void balance(bstree_t *bstree, bstnode_t *root, bstnode_t *node);
+void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node);
 
-void bstree_init(bstree_t *bstree, size_t data_size)
+void cspd_bstree_init(cspd_bstree *bstree, size_t data_size)
 {
     bstree->root      = NULL;
     bstree->data_size = data_size;
 }
 
-static bstnode_t *bstnode_init(void *data, size_t data_size)
+static cspd_bstnode *cspd_bstnode_init(void *data, size_t data_size)
 {
-    bstnode_t *node = malloc(sizeof(bstnode_t));
+    cspd_bstnode *node = malloc(sizeof(cspd_bstnode));
 
-    node->data      = malloc(sizeof(data_size));
-    node->left      = NULL;
-    node->right     = NULL;
+    node->data         = malloc(sizeof(data_size));
+    node->left         = NULL;
+    node->right        = NULL;
 
     memcpy(node->data, data, data_size);
 
     return node;
 }
 
-bstnode_t *bstree_add(bstree_t *bstree, void *data)
+cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data)
 {
-    bstnode_t *node = bstnode_init(data, bstree->data_size);
+    cspd_bstnode *node = cspd_bstnode_init(data, bstree->data_size);
 
     if (bstree->root == NULL) {
         bstree->root = node;
@@ -35,12 +35,12 @@ bstnode_t *bstree_add(bstree_t *bstree, void *data)
         return bstree->root;
     }
 
-    bstnode_t *leaf = bstree->root;
+    cspd_bstnode *leaf = bstree->root;
 
     return node;
 }
 
-void balance(bstree_t *bstree, bstnode_t *root, bstnode_t *node)
+void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node)
 {
     int cmp = bstree->_cmp(root->data, node->data);
 

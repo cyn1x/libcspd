@@ -1,5 +1,5 @@
 /**
- * @file linked_list.h
+ * @file cspd_linked_list.h
  */
 
 /**
@@ -385,10 +385,10 @@
  * @see https://en.wikipedia.org/wiki/Quicksort
  */
 
-#ifndef LINKED_LIST_H
-#define LINKED_LIST_H
+#ifndef CSPD_LINKED_LIST_H
+#define CSPD_LINKED_LIST_H
 
-#include "defs.h"
+#include "cspd_defs.h"
 #include <stdbool.h>
 
 #ifdef __clang__
@@ -399,50 +399,53 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct llnode
+typedef struct cspd_llnode
 {
-    void          *data;
-    struct llnode *prev;
-    struct llnode *next;
+    void               *data;
+    struct cspd_llnode *prev;
+    struct cspd_llnode *next;
 
-} llnode_t;
+} cspd_llnode;
 
-typedef struct llist
+typedef struct cspd_llist
 {
-    size_t    data_size;
+    size_t       data_size;
 
-    llnode_t *head;
-    llnode_t *tail;
+    cspd_llnode *head;
+    cspd_llnode *tail;
 
     int (*_cmp)(const void *, const void *);
 
-} llist_t;
+} cspd_llist;
 
-LIBCSPD_API void   llist_init(llist_t *llist, size_t data_size);
-LIBCSPD_API void   llist_append(llist_t *llist, void *data);
-LIBCSPD_API void   llist_prepend(llist_t *llist, void *data);
-LIBCSPD_API void   llist_insert(llist_t *llist, void *data, size_t idx);
-LIBCSPD_API void   llist_move(llist_t *llist, llnode_t *node, llnode_t *dst,
-                              llnode_t *dst_ptr);
-LIBCSPD_API void   llist_swap(llist_t *llist, llnode_t *a, llnode_t *b);
-LIBCSPD_API void   llist_delete(llist_t *llist, const void *keyt);
-LIBCSPD_API void   llist_erase(llist_t *llist, llnode_t *start, llnode_t *end);
-LIBCSPD_API void   llist_clear(llist_t *llist);
-LIBCSPD_API void   llist_copy(llist_t *dst, llist_t *src);
-LIBCSPD_API void   llist_reverse(llist_t *llist);
-LIBCSPD_API size_t llist_index(llist_t *llist, llnode_t *node);
-LIBCSPD_API llnode_t *llist_find(llist_t *llist, const void *key);
-LIBCSPD_API llnode_t *llist_lsearch(llist_t *llist, const void *key);
-LIBCSPD_API void      llist_bsort(llist_t *llist);
-LIBCSPD_API void      llist_qsort(llist_t *llist, llnode_t *lo, llnode_t *hi);
+LIBCSPD_API void   cspd_llist_init(cspd_llist *llist, size_t data_size);
+LIBCSPD_API void   cspd_llist_append(cspd_llist *llist, void *data);
+LIBCSPD_API void   cspd_llist_prepend(cspd_llist *llist, void *data);
+LIBCSPD_API void   cspd_llist_insert(cspd_llist *llist, void *data, size_t idx);
+LIBCSPD_API void   cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
+                                   cspd_llnode *dst, cspd_llnode *dst_ptr);
+LIBCSPD_API void   cspd_llist_swap(cspd_llist *llist, cspd_llnode *a,
+                                   cspd_llnode *b);
+LIBCSPD_API void   cspd_llist_delete(cspd_llist *llist, const void *keyt);
+LIBCSPD_API void   cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
+                                    cspd_llnode *end);
+LIBCSPD_API void   cspd_llist_clear(cspd_llist *llist);
+LIBCSPD_API void   cspd_llist_copy(cspd_llist *dst, cspd_llist *src);
+LIBCSPD_API void   cspd_llist_reverse(cspd_llist *llist);
+LIBCSPD_API size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node);
+LIBCSPD_API cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key);
+LIBCSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
+LIBCSPD_API void         cspd_llist_bsort(cspd_llist *llist);
+LIBCSPD_API void         cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
+                                          cspd_llnode *hi);
 
-#define print_llist(type, llist, reverse)                                      \
+#define cspd_print_llist(type, llist, reverse)                                 \
     {                                                                          \
         printf("{ ");                                                          \
-        llnode_t *_curr = !reverse ? (llist)->head : (llist)->tail;            \
+        cspd_llnode *_curr = !reverse ? (llist)->head : (llist)->tail;         \
                                                                                \
         while (_curr != NULL) {                                                \
-            print(*(type *)_curr->data, " ");                                  \
+            cspd_print(*(type *)_curr->data, " ");                             \
             _curr = !reverse ? _curr->next : _curr->prev;                      \
         }                                                                      \
         printf("} \n");                                                        \
@@ -452,4 +455,4 @@ LIBCSPD_API void      llist_qsort(llist_t *llist, llnode_t *lo, llnode_t *hi);
 }
 #endif // __cplusplus
 
-#endif // LINKED_LIST_H
+#endif // CSPD_LINKED_LIST_H

@@ -1,12 +1,12 @@
 /**
- * @file print.h
+ * @file cspd_print.h
  * Generic `printf()` wrapper.
  *
  * @see http://www.robertgamble.net/2012/01/c11-generic-selections.html
  */
 
 /**
- * @def print_any(T)
+ * @def cspd_print_any(T)
  *
  * @brief Determines the format specifier of a data type.
  *
@@ -16,7 +16,7 @@
  */
 
 /**
- * @def print(T, S)
+ * @def cspd_print(T, S)
  *
  * @brief Generic print function.
  *
@@ -28,26 +28,26 @@
  * @param S The string to output after the data has been printed.
  */
 
-#ifndef PRINT_H
-#define PRINT_H
+#ifndef CSPD_PRINT_H
+#define CSPD_PRINT_H
 
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
 
 #ifdef __clang__
-static void print_fn(const char *format, ...) __attribute__((unused));
+static void cspd_print_fn(const char *format, ...) __attribute__((unused));
 #endif /* ifdef __clang__ */
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-#if __cplusplus
-#define print(T, S) ; // TODO: C++ implementation
+#ifdef __cplusplus
+#define cspd_print(T, S) ; // TODO: C++ implementation
 
 #else
-#define print_any(X)                                                           \
+#define cspd_print_any(X)                                                      \
     _Generic((X),                                                              \
         int8: "%" PRIi8,                                                       \
         int16: "%" PRIi16,                                                     \
@@ -59,7 +59,7 @@ extern "C" {
         uint64: "%" PRIu64,                                                    \
         void *: "%p")
 
-static void print_fn(const char *format, ...)
+static void cspd_print_fn(const char *format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -67,11 +67,11 @@ static void print_fn(const char *format, ...)
     va_end(args);
 }
 
-#define print(T, S) print_fn(print_any(T), T), print_fn(S);
+#define cspd_print(T, S) cspd_print_fn(cspd_print_any(T), T), cspd_print_fn(S);
 #endif
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // PRINT_H
+#endif // CSPD_PRINT_H

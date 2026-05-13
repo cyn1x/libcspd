@@ -1,6 +1,6 @@
-#ifndef INTEGRATION_TEST_H
-#define INTEGRATION_TEST_H
+#ifndef CSPD_INTEGRATION_TEST_H
+#define CSPD_INTEGRATION_TEST_H
 
-void integration_tests(void);
+void cspd_integration_tests(void);
 
-#endif // INTEGRATION_TEST_H
+#endif // CSPD_INTEGRATION_TEST_H

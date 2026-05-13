@@ -1,6 +1,6 @@
-#ifndef QUEUE_TEST_H
-#define QUEUE_TEST_H
+#ifndef CSPD_QUEUE_TEST_H
+#define CSPD_QUEUE_TEST_H
 
-void queue_test(void);
+void cspd_queue_test(void);
 
-#endif // QUEUE_TEST_H
+#endif // CSPD_QUEUE_TEST_H

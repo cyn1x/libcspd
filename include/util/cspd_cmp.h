@@ -1,12 +1,12 @@
 /**
- * @file cmp.h
+ * @file cspd_cmp.h
  * Dynamic comparator function implementation.
  * Supports dynamic initialization of data types for comparing values with that
  * data type.
  */
 
 /**
- * @def cmp(T)
+ * @def cspd_cmp(T)
  *
  * @brief Comparator function initializer.
  *
@@ -16,15 +16,15 @@
  * @param T Data type to initialized for use with the comparator function.
  *
  * @b Example
- * @snippet defs.test.h Comparator type initialization
+ * @snippet cspd_defs.test.h Comparator type initialization
  * @b Example
- * @snippet vector.test.c Comparator function
+ * @snippet cspd_vector.test.c Comparator function
  */
 
-#ifndef CMP_H
-#define CMP_H
+#ifndef CSPD_CMP_H
+#define CSPD_CMP_H
 
-#define cmp(T)                                                                 \
+#define cspd_cmp(T)                                                            \
     /*                                                                         \
      * @brief Compares two variables for equality and inequality.              \
      *                                                                         \
@@ -49,4 +49,4 @@
         return 0;                                                              \
     }
 
-#endif // CMP_H
+#endif // CSPD_CMP_H

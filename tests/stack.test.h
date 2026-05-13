@@ -1,6 +1,6 @@
-#ifndef STACK_TEST_H
-#define STACK_TEST_H
+#ifndef CSPD_STACK_TEST_H
+#define CSPD_STACK_TEST_H
 
-void stack_test(void);
+void cspd_stack_test(void);
 
-#endif // STACK_TEST_H
+#endif // CSPD_STACK_TEST_H

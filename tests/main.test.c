@@ -14,13 +14,13 @@ int main(int argc, char *argv[])
     // TODO: #0020 - Dependency management
     // log_init(LOG_TRACE, stdout, NULL);
 
-    vector_test();
-    linked_list_test();
-    queue_test();
-    stack_test();
-    binary_tree_test();
+    cspd_vector_test();
+    cspd_linked_list_test();
+    cspd_queue_test();
+    cspd_stack_test();
+    cspd_btree_test();
 
-    integration_tests();
+    cspd_integration_tests();
 
     return 0;
 }

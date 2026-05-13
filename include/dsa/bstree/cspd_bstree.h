@@ -1,11 +1,11 @@
 /**
- * @file bstree.h
+ * @file cspd_bstree.h
  */
 
-#ifndef BINARY_SEARCH_TREE_H
-#define BINARY_SEARCH_TREE_H
+#ifndef CSPD_BSTREE_H
+#define CSPD_BSTREE_H
 
-#include "defs.h"
+#include "cspd_defs.h"
 
 #ifdef __clang__
 #include <stddef.h>
@@ -15,30 +15,30 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct bstnode
+typedef struct cspd_bstnode
 {
     void           *data;
     struct bstnode *left;
     struct bstnode *right;
-} bstnode_t;
+} cspd_bstnode;
 
-typedef struct bstree
+typedef struct cspd_bstree
 {
-    bstnode_t *root;
-    size_t     data_size;
+    cspd_bstnode *root;
+    size_t        data_size;
 
     int (*_cmp)(const void *, const void *);
-} bstree_t;
+} cspd_bstree;
 
-LIBCSPD_API void       bstree_init(bstree_t *bstree, size_t data_size);
-LIBCSPD_API bstnode_t *bstree_add(bstree_t *bstree, void *data);
-LIBCSPD_API void       bstree_clear(bstree_t *bstree);
+LIBCSPD_API void cspd_bstree_init(cspd_bstree *bstree, size_t data_size);
+LIBCSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
+LIBCSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
 
-#define print_binary_search_tree(type, vec)                                    \
+#define cspd_print_bstree(type, vec)                                           \
     {                                                                          \
         printf("{ ");                                                          \
         for (size_t i = 0; i < (vec)->size; ++i) {                             \
-            bstnode_t *_node = *(bstnode_t **)vector_get(vec, i);              \
+            cspd_bstnode *_node = *(cspd_bstnode **)cspd_vector_get(vec, i);   \
             print((*(type *)_node->data), " ");                                \
         }                                                                      \
         printf("} \n");                                                        \
@@ -48,4 +48,4 @@ LIBCSPD_API void       bstree_clear(bstree_t *bstree);
 }
 #endif // __cplusplus
 
-#endif // BINARY_SEARCH_TREE_H
+#endif // CSPD_BSTREE_H

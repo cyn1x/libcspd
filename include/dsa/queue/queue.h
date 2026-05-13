@@ -2,33 +2,33 @@
  * @file queue.h
  */
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef CSPD_QUEUE_H
+#define CSPD_QUEUE_H
 
-#include "defs.h"
-#include "linked_list.h"
+#include "cspd_defs.h"
+#include "cspd_linked_list.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-typedef struct queue_t
+typedef struct cspd_queue
 {
-    llist_t   llist;
+    cspd_llist   llist;
 
-    llnode_t *front;
-    llnode_t *back;
+    cspd_llnode *front;
+    cspd_llnode *back;
 
-} queue_t;
+} cspd_queue;
 
-LIBCSPD_API void  queue_init(queue_t *queue_t, size_t data_size);
-LIBCSPD_API void  queue_enqueue(queue_t *queue_t, void *data);
-LIBCSPD_API void  queue_deque(queue_t *queue_t);
-LIBCSPD_API void *queue_peek(queue_t *queue_t);
-LIBCSPD_API void  queue_clear(queue_t *queue_t);
+LIBCSPD_API void  cspd_queue_init(cspd_queue *queue_t, size_t data_size);
+LIBCSPD_API void  cspd_queue_enqueue(cspd_queue *queue_t, void *data);
+LIBCSPD_API void  cspd_queue_deque(cspd_queue *queue_t);
+LIBCSPD_API void *cspd_queue_peek(cspd_queue *queue_t);
+LIBCSPD_API void  cspd_queue_clear(cspd_queue *queue_t);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // QUEUE_H
+#endif // CSPD_QUEUE_H

@@ -1,7 +1,7 @@
 #define LIBCSPD_EXPORTS
 
-#include "util.h"
-#include "types.h"
+#include "cspd_util.h"
+#include "cspd_types.h"
 #include <stdio.h>
 
 void swap(void *pa, void *pb, size_t size)
@@ -16,7 +16,7 @@ void swap(void *pa, void *pb, size_t size)
     }
 }
 
-void print_binary(void *data, size_t size)
+void cspd_print_binary(void *data, size_t size)
 {
     // https://code-vault.net/lesson/0iqp12va9m:1603820088926
     for (uint64 i = 0; i < size; i++) {

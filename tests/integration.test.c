@@ -1,8 +1,8 @@
 #include "integration.test.h"
 #include <assert.h>
+#include <cspd_vector.h>
 #include <stdlib.h>
 #include <string.h>
-#include <vector.h>
 
 static void vector_test(void);
 static void linked_list_test(void);
@@ -22,7 +22,7 @@ typedef struct data
     void *value;
 } data_t;
 
-void integration_tests(void)
+void cspd_integration_tests(void)
 {
     vector_test();
     linked_list_test();
@@ -34,9 +34,10 @@ void integration_tests(void)
 static void vector_test(void)
 {
     //! [Vector usage with custom data types]
-    vector_t vec;
-    vector_init(&vec,
-                sizeof(node_t *)); // Store pointers instead of full structs
+    cspd_vector vec;
+    cspd_vector_init(
+        &vec,
+        sizeof(node_t *)); // Store pointers instead of full structs
 
     // Allocate data_t dynamically
     data_t *data  = malloc(sizeof(data_t));
@@ -50,10 +51,10 @@ static void vector_test(void)
     test->value  = 1;
     test->data   = data; // Assign the pointer directly
 
-    vector_push(&vec, &test); // Store the pointer, not a copy
+    cspd_vector_push(&vec, &test); // Store the pointer, not a copy
 
     // Retrieve
-    void   *res       = vector_get(&vec, 0);
+    void   *res       = cspd_vector_get(&vec, 0);
     node_t *test_res  = *(node_t **)res; // Dereference to get test_t pointer
     data_t *data_res  = test_res->data;
     int     res_value = *(int *)data_res->value;
@@ -65,7 +66,7 @@ static void vector_test(void)
     free(data);
     free(test);
 
-    vector_clear(&vec);
+    cspd_vector_clear(&vec);
     //! [Vector usage with custom data types]
 }
 

@@ -2,33 +2,33 @@
  * @file stack.h
  */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef CSPD_STACK_H
+#define CSPD_STACK_H
 
-#include "defs.h"
-#include "linked_list.h"
+#include "cspd_defs.h"
+#include "cspd_linked_list.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-typedef struct stack_t
+typedef struct cspd_stack
 {
-    llist_t   llist;
+    cspd_llist   llist;
 
-    llnode_t *top;
-    llnode_t *bottom;
+    cspd_llnode *top;
+    cspd_llnode *bottom;
 
-} stack_t;
+} cspd_stack;
 
-LIBCSPD_API void  stack_init(stack_t *stack_t, size_t data_size);
-LIBCSPD_API void  stack_push(stack_t *stack_t, void *data);
-LIBCSPD_API void  stack_pop(stack_t *stack_t);
-LIBCSPD_API void *stack_peek(stack_t *stack_t);
-LIBCSPD_API void  stack_clear(stack_t *stack_t);
+LIBCSPD_API void  cspd_stack_init(cspd_stack *stack_t, size_t data_size);
+LIBCSPD_API void  cspd_stack_push(cspd_stack *stack_t, void *data);
+LIBCSPD_API void  cspd_stack_pop(cspd_stack *stack_t);
+LIBCSPD_API void *cspd_stack_peek(cspd_stack *stack_t);
+LIBCSPD_API void  cspd_stack_clear(cspd_stack *stack_t);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // STACK_H
+#endif // CSPD_STACK_H

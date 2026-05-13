@@ -1,6 +1,6 @@
-#ifndef BINARY_TREE_TEST_H
-#define BINARY_TREE_TEST_H
+#ifndef CSPD_BTREE_TEST_H
+#define CSPD_BTREE_TEST_H
 
-void binary_tree_test(void);
+void cspd_btree_test(void);
 
-#endif // BINARY_TREE_TEST_H
+#endif // CSPD_BTREE_TEST_H

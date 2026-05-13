@@ -1,14 +1,15 @@
 #define LIBCSPD_EXPORTS
 
-#include "linked_list.h"
+#include "cspd_linked_list.h"
 #include <stdlib.h>
 #include <string.h>
 
-static llnode_t *node_init(size_t data_size);
-static llnode_t *partition(llist_t *llist, llnode_t *lo, llnode_t *hi);
-static void      delete_node(llist_t *llist, llnode_t *node);
+static cspd_llnode *node_init(size_t data_size);
+static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
+                              cspd_llnode *hi);
+static void         delete_node(cspd_llist *llist, cspd_llnode *node);
 
-void             llist_init(llist_t *llist, size_t data_size)
+void                cspd_llist_init(cspd_llist *llist, size_t data_size)
 {
     llist->data_size = data_size;
 
@@ -16,21 +17,21 @@ void             llist_init(llist_t *llist, size_t data_size)
     llist->tail      = NULL;
 }
 
-llnode_t *node_init(size_t data_size)
+cspd_llnode *node_init(size_t data_size)
 {
-    llnode_t *node = malloc(sizeof(llnode_t));
+    cspd_llnode *node = malloc(sizeof(cspd_llnode));
 
-    node->data     = malloc(data_size);
-    node->prev     = NULL;
-    node->next     = NULL;
+    node->data        = malloc(data_size);
+    node->prev        = NULL;
+    node->next        = NULL;
 
     return node;
 }
 
-void llist_append(llist_t *llist, void *data)
+void cspd_llist_append(cspd_llist *llist, void *data)
 {
-    llnode_t *node = node_init(llist->data_size);
-    llnode_t *curr = llist->head;
+    cspd_llnode *node = node_init(llist->data_size);
+    cspd_llnode *curr = llist->head;
 
     memcpy(node->data, data, llist->data_size);
 
@@ -49,9 +50,9 @@ void llist_append(llist_t *llist, void *data)
     llist->tail->prev        = curr;
 }
 
-void llist_prepend(llist_t *llist, void *data)
+void cspd_llist_prepend(cspd_llist *llist, void *data)
 {
-    llnode_t *node = node_init(llist->data_size);
+    cspd_llnode *node = node_init(llist->data_size);
 
     memcpy(node->data, data, llist->data_size);
 
@@ -62,7 +63,7 @@ void llist_prepend(llist_t *llist, void *data)
         return;
     }
 
-    llnode_t *temp = llist->head;
+    cspd_llnode *temp = llist->head;
     if (llist->head->next != NULL) {
         llist->head->prev = node;
         llist->head       = llist->head->next;
@@ -72,10 +73,10 @@ void llist_prepend(llist_t *llist, void *data)
     llist->head = node;
 }
 
-void llist_insert(llist_t *llist, void *data, size_t idx)
+void cspd_llist_insert(cspd_llist *llist, void *data, size_t idx)
 {
-    llnode_t *node = node_init(llist->data_size);
-    llnode_t *curr = llist->head;
+    cspd_llnode *node = node_init(llist->data_size);
+    cspd_llnode *curr = llist->head;
 
     memcpy(node->data, data, llist->data_size);
 
@@ -95,15 +96,15 @@ void llist_insert(llist_t *llist, void *data, size_t idx)
         curr = curr->next;
     }
 
-    llnode_t *temp = curr->prev;
-    temp->next     = node;
-    node->prev     = temp;
-    curr->prev     = node;
-    node->next     = curr;
+    cspd_llnode *temp = curr->prev;
+    temp->next        = node;
+    node->prev        = temp;
+    curr->prev        = node;
+    node->next        = curr;
 }
 
-void llist_move(llist_t *llist, llnode_t *node, llnode_t *dst,
-                llnode_t *dst_ptr)
+void cspd_llist_move(cspd_llist *llist, cspd_llnode *node, cspd_llnode *dst,
+                     cspd_llnode *dst_ptr)
 {
     if (node == dst) {
         // TODO: handle same node and target
@@ -121,7 +122,7 @@ void llist_move(llist_t *llist, llnode_t *node, llnode_t *dst,
 
     bool adjacent = dst->prev == node || dst->next == node;
     if (adjacent) {
-        llist_swap(llist, node, dst);
+        cspd_llist_swap(llist, node, dst);
 
         return;
     }
@@ -163,7 +164,7 @@ void llist_move(llist_t *llist, llnode_t *node, llnode_t *dst,
     }
 }
 
-void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
+void cspd_llist_swap(cspd_llist *llist, cspd_llnode *a, cspd_llnode *b)
 {
     if (a->next == b || b->next == a) {
         // Handle swapping adjacent nodes
@@ -172,12 +173,12 @@ void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
             // The order of operations is important here. The pointer to `a`
             // must always precede `b` in the linked list since the `next` and
             // `prev` pointers for `a` are changed first.
-            llist_swap(llist, b, a);
+            cspd_llist_swap(llist, b, a);
             return;
         }
 
-        llnode_t *a_prev = a->prev;
-        llnode_t *b_next = b->next;
+        cspd_llnode *a_prev = a->prev;
+        cspd_llnode *b_next = b->next;
 
         if (a_prev) {
             a_prev->next = b;
@@ -196,8 +197,8 @@ void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
     } else {
         // Nodes are not adjacent
 
-        llnode_t *a_prev = a->prev;
-        llnode_t *a_next = a->next;
+        cspd_llnode *a_prev = a->prev;
+        cspd_llnode *a_next = a->next;
 
         if (a->prev) {
             a->prev->next = b;
@@ -231,9 +232,9 @@ void llist_swap(llist_t *llist, llnode_t *a, llnode_t *b)
     }
 }
 
-void llist_delete(llist_t *llist, const void *key)
+void cspd_llist_delete(cspd_llist *llist, const void *key)
 {
-    llnode_t *curr = llist->head;
+    cspd_llnode *curr = llist->head;
 
     while (curr != NULL) {
         int exists = memcmp(curr->data, key, llist->data_size);
@@ -248,21 +249,21 @@ void llist_delete(llist_t *llist, const void *key)
     }
 }
 
-void llist_erase(llist_t *llist, llnode_t *start, llnode_t *end)
+void cspd_llist_erase(cspd_llist *llist, cspd_llnode *start, cspd_llnode *end)
 {
     while (start != end) {
-        llnode_t *temp = start->next;
+        cspd_llnode *temp = start->next;
         delete_node(llist, start);
         start = temp;
     }
 }
 
-void llist_clear(llist_t *llist)
+void cspd_llist_clear(cspd_llist *llist)
 {
-    llnode_t *curr = llist->head;
+    cspd_llnode *curr = llist->head;
 
     while (curr != NULL) {
-        llnode_t *temp = curr->next;
+        cspd_llnode *temp = curr->next;
         delete_node(llist, curr);
         curr = temp;
     }
@@ -271,19 +272,19 @@ void llist_clear(llist_t *llist)
     llist->tail = NULL;
 }
 
-void llist_copy(llist_t *dst, llist_t *src)
+void cspd_llist_copy(cspd_llist *dst, cspd_llist *src)
 {
-    llnode_t *curr = src->head;
-    llnode_t *temp = {0};
+    cspd_llnode *curr = src->head;
+    cspd_llnode *temp = {0};
 
     // TODO: Handle different data sizes
 
     if (dst->head != NULL) {
-        llist_clear(dst);
+        cspd_llist_clear(dst);
     }
 
     while (curr != NULL) {
-        llnode_t *node = node_init(dst->data_size);
+        cspd_llnode *node = node_init(dst->data_size);
 
         if (dst->head == NULL) {
             dst->head = node;
@@ -303,9 +304,9 @@ void llist_copy(llist_t *dst, llist_t *src)
     }
 }
 
-void llist_reverse(llist_t *llist)
+void cspd_llist_reverse(cspd_llist *llist)
 {
-    llnode_t *curr = llist->head;
+    cspd_llnode *curr = llist->head;
 
     if (curr == NULL) {
         // TODO: handle empty list
@@ -314,29 +315,29 @@ void llist_reverse(llist_t *llist)
     }
 
     while (curr != NULL) {
-        llnode_t *temp = curr->next;
-        curr->next     = curr->prev;
-        curr->prev     = temp;
-        curr           = temp;
+        cspd_llnode *temp = curr->next;
+        curr->next        = curr->prev;
+        curr->prev        = temp;
+        curr              = temp;
     }
 
     // swap head and tail pointers
-    llnode_t *head = llist->head;
-    llist->head    = llist->tail;
-    llist->tail    = head;
+    cspd_llnode *head = llist->head;
+    llist->head       = llist->tail;
+    llist->tail       = head;
 }
 
-llnode_t *llist_find(llist_t *llist, const void *key)
+cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key)
 {
-    llnode_t *node = llist_lsearch(llist, key);
+    cspd_llnode *node = cspd_llist_lsearch(llist, key);
 
     return node;
 }
 
-size_t llist_index(llist_t *llist, llnode_t *node)
+size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node)
 {
-    size_t    idx  = 0;
-    llnode_t *curr = llist->head;
+    size_t       idx  = 0;
+    cspd_llnode *curr = llist->head;
     while (curr && curr != node) {
         idx++;
         curr = curr->next;
@@ -345,9 +346,9 @@ size_t llist_index(llist_t *llist, llnode_t *node)
     return idx;
 }
 
-llnode_t *llist_lsearch(llist_t *llist, const void *key)
+cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key)
 {
-    llnode_t *curr = llist->head;
+    cspd_llnode *curr = llist->head;
 
     while (curr != NULL) {
         int exists = memcmp(curr->data, key, llist->data_size);
@@ -362,12 +363,12 @@ llnode_t *llist_lsearch(llist_t *llist, const void *key)
     return NULL;
 }
 
-void llist_bsort(llist_t *llist)
+void cspd_llist_bsort(cspd_llist *llist)
 {
-    llnode_t *a = llist->head;
+    cspd_llnode *a = llist->head;
     while (a) {
 
-        llnode_t *b = llist->head;
+        cspd_llnode *b = llist->head;
         while (b) {
             if (llist->_cmp(a->data, b->data) != 1) {
                 void *tmp = a->data;
@@ -380,24 +381,25 @@ void llist_bsort(llist_t *llist)
     }
 }
 
-void llist_qsort(llist_t *llist, llnode_t *lo, llnode_t *hi)
+void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo, cspd_llnode *hi)
 {
     if (!lo || !hi || lo->prev == hi) {
         return;
     }
 
-    llnode_t *pvt = partition(llist, lo, hi);
+    cspd_llnode *pvt = partition(llist, lo, hi);
 
-    llist_qsort(llist, lo, pvt->prev);
-    llist_qsort(llist, pvt->next, hi);
+    cspd_llist_qsort(llist, lo, pvt->prev);
+    cspd_llist_qsort(llist, pvt->next, hi);
 }
 
-static llnode_t *partition(llist_t *llist, llnode_t *lo, llnode_t *hi)
+static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
+                              cspd_llnode *hi)
 {
-    llnode_t *pvt  = hi;
-    llnode_t *curr = lo;
-    llnode_t *idx  = lo;
-    void     *tmp;
+    cspd_llnode *pvt  = hi;
+    cspd_llnode *curr = lo;
+    cspd_llnode *idx  = lo;
+    void        *tmp;
 
     while (curr != NULL) {
         int cmp = llist->_cmp(curr->data, pvt->data);
@@ -420,10 +422,10 @@ static llnode_t *partition(llist_t *llist, llnode_t *lo, llnode_t *hi)
     return idx;
 }
 
-void delete_node(llist_t *llist, llnode_t *node)
+void delete_node(cspd_llist *llist, cspd_llnode *node)
 {
-    llnode_t *prev = node->prev;
-    llnode_t *next = node->next;
+    cspd_llnode *prev = node->prev;
+    cspd_llnode *next = node->next;
 
     if (node->prev != NULL) {
         prev->next = next;

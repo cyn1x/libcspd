@@ -3,40 +3,40 @@
  */
 
 /**
- * @typedef struct btnode_t
+ * @typedef struct cspd_btnode
  *
  * @brief Data structure for nodes residing in a binary tree.
  *
- * @var btnode::data
+ * @var cspd_btnode::data
  * Memory which has been allocated for the binary tree node to store data.
  *
- * @var btnode::left
+ * @var cspd_btnode::left
  * The binary tree node's left pointer.
  *
- * @var btnode::right
+ * @var cspd_btnode::right
  * The binary tree node's right pointer.
  */
 
 /**
- * @typedef struct bintree_t
+ * @typedef struct cspd_btree
  *
  * @brief Data structure for binary tree.
  *
- * @var bintree::data_size
+ * @var cspd_btree::data_size
  * The size of the data in bytes being stored in the nodes that reside in the
  * binary tree.
  *
- * @var bintree::root
+ * @var cspd_btree::root
  * Pointer to the first node in the binary tree.
  *
- * @var bintree::_cmp
+ * @var cspd_btree::_cmp
  * Comparator function used for sorting or searching. The library contains some
  * basic types as seen below, which can be assigned to the `_cmp` variable. You
  * can also provide your own comparator functions.
  */
 
 /**
- * @fn void function_name(bintree_t *btree)
+ * @fn void function_name(cspd_btree *btree)
  *
  * @brief .
  *
@@ -47,15 +47,15 @@
  * @returns
  *
  * @b Example
- * @snippet binary_tree.test.c Example
+ * @snippet cspd_btree_test.c Example
  */
 
-#ifndef BINARY_TREE_H
-#define BINARY_TREE_H
+#ifndef CSPD_BTREE_H
+#define CSPD_BTREE_H
 
-#include "defs.h"
+#include "cspd_defs.h"
 #include "queue.h"
-#include "vector.h"
+#include "cspd_vector.h"
 
 #ifdef __clang__
 #include <stddef.h>
@@ -65,44 +65,44 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct btnode
+typedef struct cspd_btnode
 {
-    void          *data;
-    struct btnode *left;
-    struct btnode *right;
+    void               *data;
+    struct cspd_btnode *left;
+    struct cspd_btnode *right;
 
-} btnode_t;
+} cspd_btnode;
 
-typedef struct bintree
+typedef struct cspd_btree
 {
-    size_t    data_size;
-    btnode_t *root;
+    size_t       data_size;
+    cspd_btnode *root;
 
     int (*_cmp)(const void *, const void *);
 
-} bintree_t;
+} cspd_btree;
 
-LIBCSPD_API void      bintree_init(bintree_t *btree, size_t data_size);
-LIBCSPD_API btnode_t *bintree_add(bintree_t *btree, btnode_t **leaf,
-                                  void *data);
-LIBCSPD_API btnode_t *bintree_insert(bintree_t *btree, btnode_t **parent,
-                                     void *data);
-LIBCSPD_API void      bintree_preorder(btnode_t *node, vector_t *vec);
-LIBCSPD_API void      bintree_inorder(btnode_t *node, vector_t *vec);
-LIBCSPD_API void      bintree_postorder(btnode_t *node, vector_t *vec);
-LIBCSPD_API void      bintree_dfs(btnode_t *node, vector_t *vec);
-LIBCSPD_API void      bintree_bfs(btnode_t *node, queue_t *queue);
-LIBCSPD_API void      bintree_invert(btnode_t *node);
-LIBCSPD_API int32     bintree_height(btnode_t *node);
-LIBCSPD_API size_t    bintree_count(btnode_t *node);
-LIBCSPD_API void      bintree_clear(bintree_t *btree);
+LIBCSPD_API void         cspd_btree_init(cspd_btree *btree, size_t data_size);
+LIBCSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
+                                        void *data);
+LIBCSPD_API cspd_btnode *cspd_btree_insert(cspd_btree   *btree,
+                                           cspd_btnode **parent, void *data);
+LIBCSPD_API void   cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
+LIBCSPD_API void   cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
+LIBCSPD_API void   cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
+LIBCSPD_API void   cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
+LIBCSPD_API void   cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
+LIBCSPD_API void   cspd_btree_invert(cspd_btnode *node);
+LIBCSPD_API int32  cspd_btree_height(cspd_btnode *node);
+LIBCSPD_API size_t cspd_btree_count(cspd_btnode *node);
+LIBCSPD_API void   cspd_btree_clear(cspd_btree *btree);
 
-#define print_binary_tree(type, vec)                                           \
+#define cspd_print_btree(type, vec)                                            \
     {                                                                          \
         printf("{ ");                                                          \
         for (size_t i = 0; i < (vec)->size; ++i) {                             \
-            btnode_t *_node = *(btnode_t **)vector_get(vec, i);                \
-            print((*(type *)_node->data), " ");                                \
+            cspd_btnode *_node = *(cspd_btnode **)cspd_vector_get(vec, i);     \
+            cspd_print((*(type *)_node->data), " ");                           \
         }                                                                      \
         printf("} \n");                                                        \
     }
@@ -111,4 +111,4 @@ LIBCSPD_API void      bintree_clear(bintree_t *btree);
 }
 #endif // __cplusplus
 
-#endif // BINARY_TREE_H
+#endif // CSPD_BTREE_H

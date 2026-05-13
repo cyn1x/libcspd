@@ -1,6 +1,6 @@
-#ifndef VECTOR_TEST_H
-#define VECTOR_TEST_H
+#ifndef CSPD_VECTOR_TEST_H
+#define CSPD_VECTOR_TEST_H
 
-void vector_test(void);
+void cspd_vector_test(void);
 
-#endif // VECTOR_TEST_H
+#endif // CSPD_VECTOR_TEST_H

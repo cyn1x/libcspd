@@ -1,6 +1,6 @@
-#ifndef LINKED_LIST_TEST_H
-#define LINKED_LIST_TEST_H
+#ifndef CSPD_LINKED_LIST_TEST_H
+#define CSPD_LINKED_LIST_TEST_H
 
-void linked_list_test(void);
+void cspd_linked_list_test(void);
 
-#endif // LINKED_LIST_TEST_H
+#endif // CSPD_LINKED_LIST_TEST_H
