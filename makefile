@@ -3,7 +3,7 @@ CC     := clang
 CFLAGS  = -std=c17 -g -Wextra -Werror -pedantic -pedantic-errors $(INCLUDE)
 
 # Set `*.h` header files and include directories
-HEADERS := $(shell find ./include ./lib -type f -name '*.h' | sort -r)
+HEADERS := $(shell find ./include ./tests/include -type f -name '*.h' | sort -r)
 INCLUDE := $(sort $(addprefix -I,$(dir $(HEADERS))))
 
 # Set `compile_flags.txt` for the Clang LSP
