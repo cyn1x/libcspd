@@ -8,8 +8,8 @@ The purpose of the utilities are to teach data structures and algorithms, as wel
 #include "print.h"
 #include "vector.h"
 
-/* Simple program demonstrating the usage of one of the many utilities 
- * available in the libcspd library
+/** 
+ * Simple program demonstrating one of many utilities available.
  */
 int main(int argc, char *argv[])
 {
@@ -41,6 +41,8 @@ int main(int argc, char *argv[])
 
 This program can be compiled on both Windows and Linux by cloning the repository and running the respective build scripts after installing the required dependencies.
 
+Supports both 32-bit and 64-bit platforms.
+
 ### Windows
 
 MSVC is used to build the project on Windows, and Doxygen is used to generate documentation.
@@ -59,13 +61,13 @@ Use the Visual Studio (GUI) Installer to install the **Workloads** and **Individ
   - MSBuild support for LLVM (clang-cl) toolset
   - C++ Clang Compiler for Windows (>=17.0.3)
 
-Example: Installing the development environment.
+Installing the development environment.
 
 ```commandline
 winget install --id=Microsoft.VisualStudio.2026.Community -e 
 ```
 
-Example: If the full IDE install is not required, install Build Tools instead.
+If the full IDE install is not required, install Build Tools instead.
 
 ```commandline
 winget install --id=Microsoft.VisualStudio.2026.BuildTools -e 
@@ -125,13 +127,13 @@ The `makefile` build target will output a Shared Object file `libcspd.so` for dy
 ### Linux
 ```bash
 cd libcspd/
-LD_LIBRARY_PATH="/absolute/path/to/libcspd/bin;$LD_LIBRARY_PATH" ./tests/bin/libcspd
+LD_LIBRARY_PATH="/absolute/path/to/libcspd/lib/linux/Debug_x64;$LD_LIBRARY_PATH" ./bin/linux/Debug_x64/libcspd
 ```
 
 Memory leaks can be checked with Valgrind by also dynamically linking the library to another program.
 
 ```bash
-LD_LIBRARY_PATH="/mnt/d/Dev/GitHub/cyn1x/libcspd/bin;$LD_LIBRARY_PATH" valgrind --leak-check=yes ./tests/bin/libcspd 
+LD_LIBRARY_PATH="/absolute/path/to/libcspd/lib/linux/Debug_x64;$LD_LIBRARY_PATH" valgrind --leak-check=yes ./bin/linux/Debug_x64/libcspd
 ```
 
 ## Documentation
