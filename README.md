@@ -7,15 +7,12 @@ The purpose of the utilities are to teach data structures and algorithms, as wel
 ```c
 #include "print.h"
 #include "vector.h"
-#include <log.h>
 
+/* Simple program demonstrating the usage of one of the many utilities 
+ * available in the libcspd library
+ */
 int main(int argc, char *argv[])
 {
-    // Simple program demonstrating the usage of one of the many utilities 
-    // available in the libcspd library
-    
-    log_init(LOG_TRACE, stdout, NULL);
-
     // Create a vector to store a contiguous array of elements
     vector_t vec;
     vector_init(&vec, sizeof(int32));
@@ -49,20 +46,32 @@ This program can be compiled on both Windows and Linux by cloning the repository
 MSVC is used to build the project on Windows, and Doxygen is used to generate documentation.
 
 #### Dependencies
+Microsoft Visual Studio Build Tools can be used to compile the project library DLL as an alternative to a full IDE installation.
 
-- Microsoft Visual Studio Community (>= 2022)
-  - Workloads
-    - Desktop Development for C++
-  - Individual components
-    - MSBuild support for LLVM (clang-cl) toolset
-    - C++ Clang Compiler for Windows (>=17.0.3)
+- Microsoft Visual Studio 
+  - Community (>= 2022) or Build Tools (>= 2022)
 - Doxygen
 
+Use the Visual Studio (GUI) Installer to install the **Workloads** and **Individual components**.
+- Workloads
+  - Desktop Development for C++
+- Individual components
+  - MSBuild support for LLVM (clang-cl) toolset
+  - C++ Clang Compiler for Windows (>=17.0.3)
+
+Example: Installing the development environment.
+
 ```commandline
-winget install --id=Microsoft.VisualStudio.2022.Community -e 
+winget install --id=Microsoft.VisualStudio.2026.Community -e 
 ```
 
-Use the Visual Studio (GUI) Installer to install the **Workloads** and **Individual components**.
+Example: If the full IDE install is not required, install Build Tools instead.
+
+```commandline
+winget install --id=Microsoft.VisualStudio.2026.BuildTools -e 
+```
+
+Clone the repository and run the build script to create the DLL and LIB files.
 
 ```commandline
 git clone https://github.com/cyn1x/libcspd.git
@@ -88,6 +97,7 @@ cd libcspd/
 ```
 
 Finally, run the respective build scripts to compile. 
+
 ### Windows
 ```commandline
 cd libcspd
@@ -107,7 +117,7 @@ Instructions on how to compile and link the program for development on the proje
 ### Windows
 ```commandline
 cd libcspd
-tests\bin\libcspd.exe
+bin\win32\Debug_x64\libcspd_x64.exe
 ```
 
 The `makefile` build target will output a Shared Object file `libcspd.so` for dynamically linking in other programs. In the example below, the included program used for testing imports the library for testing purposes.

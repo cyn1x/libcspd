@@ -1,8 +1,17 @@
-:: TODO
+:: Script to compile and link the core standard library on Windows.
 
 :: MSVC Compiler and Linker Options
-:: https://learn.microsoft.com/en-us/cpp/build/reference/compiler-options-listed-alphabetically?view=msvc-170
-:: https://learn.microsoft.com/en-us/cpp/build/reference/linker-options?view=msvc-170
+:: https://learn.microsoft.com/en-us/cpp/build/reference/compiler-options-listed-by-category
+:: https://learn.microsoft.com/en-us/cpp/build/reference/linker-options
+
+:: Windows Commands
+:: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/windows-commands
+
+:: Addition to the standard help documentation on Windows commands
+:: https://ss64.com/nt/
+
+:: Variable names in :DevEnv use Microsoft visual Studio project codenames
+:: https://en.wikipedia.org/w/index.php?title=Visual_Studio&oldid=1356912898#History
 
 @echo off
 
@@ -57,7 +66,6 @@ goto :Main
 rem Main procedure that configurues the script environment and LSP compile flags
 :Main
 
-rem Configure development environment
 if not defined DevEnvDir (
     call "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 )
@@ -68,13 +76,11 @@ set CompileFlags=compile_flags.txt
 rem Clear `compile_flags.txt` file
 echo | set /p Clear="" > %CompileFlags%
 
-rem Create required directories for library compilation
-if not exist obj mkdir obj
-if not exist obj\win32\%config%_x86 mkdir obj\win32\%config%_x86
-if not exist obj\win32\%config%_x64 mkdir obj\win32\%config%_x64
-if not exist bin mkdir bin
-if not exist bin\win32\%config%_x86 mkdir bin\win32\%config%_x86
-if not exist bin\win32\%config%_x64 mkdir bin\win32\%config%_x64
+rem Create required directories for library and test suite compilation
+if not exist obj\win32\%Config%_%Platform% mkdir obj\win32\%Config%_%Platform%
+if not exist lib\win32\%Config%_%Platform% mkdir lib\win32\%Config%_%Platform%
+if not exist bin\win32\%Config%_%Platform% mkdir bin\win32\%Config%_%Platform%
+if not exist tests\obj\win32\%config%_%Platform% mkdir tests\obj\win32\%Config%_%Platform%
 if %ErrorLevel% neq 0 goto :error
 
 call :Build
@@ -93,9 +99,9 @@ rem Orchestrates the entire build process
 :Build
 
 rem Define the engine dynamic link library and application executable filenames
-set _dll=libcspd_%Platform%.dll
-set _lib=libcspd_%Platform%.lib
-set _exe=libcspd_%Platform%.exe
+set _lib=libcspd_%Platform%.lib &:: Prefix with `_` to avoid clash with LIB
+set _dll=libcspd_%Platform%.dll &:: Stay consistent with scheme above
+set _exe=libcspd_%Platform%.exe &:: Stay consistent with scheme(s) above
 
 rem Set the core library `include` and `src` directories
 set IncDir=%Root%\include
@@ -103,6 +109,7 @@ set SrcDir=%Root%\src
 
 rem Set the core library `obj` and `bin` directories
 set ObjDir=%Root%\obj\win32\%Config%_%Platform%
+set LibDir=%Root%\lib\win32\%Config%_%Platform%
 set BinDir=%Root%\bin\win32\%Config%_%Platform%
 
 rem Clear variables to store source, include, and object filenames.
@@ -118,6 +125,7 @@ rem Reference Platform and Win32 source files
 call :SourceFiles %SrcDir%
 if %ErrorLevel% neq 0 goto :Error
 
+rem Perform compile and linking
 call :Compile
 
 rem End of :Build subroutine call
@@ -139,14 +147,16 @@ call :ObjectFiles %ObjDir%
 if %ErrorLevel% neq 0 goto :Error
 
 rem Link *.obj object files
-LINK /nologo /DEBUG %Objs:~1% /DLL /OUT:%BinDir%\%_dll%
+LINK /nologo /DEBUG %Objs:~1% /DLL /OUT:%LibDir%\%_dll%
 if %ErrorLevel% neq 0 goto :Error
 
-call :RelativePath %BinDir%
-echo Library file `%_lib%` created in `%relpath%` successfully. & echo.
+call :RelativePath %LibDir%
+echo Library file `%_lib%` created in `%RelPath%` successfully. & echo.
 
 rem Copy DLL to where the test executable will be built
-copy %BinDir%\%_dll% %Root%\tests\bin\win32\%Config%_%Platform% > nul
+copy %LibDir%\%_dll% %BinDir% > nul
+
+goto :EOF
 
 rem End of :Compile subroutine
 goto :EOF
@@ -155,7 +165,7 @@ goto :EOF
 ::-----------------------------------------------------------------------------
 :: Test
 ::-----------------------------------------------------------------------------
-rem Build test suite
+rem Compile test program and link library DLL
 :Test
 
 rem Set the core library `include` and `src` directories
@@ -166,19 +176,8 @@ rem Clear `srcs` and `objs` variables to store new source and object filenames
 set Srcs=
 set Objs=
 
-rem Set the `obj` and `bin` directories for the test project
-set ObjDir=%root%\tests\obj\win32\%config%_%platform%
-set BinDir=%root%\tests\bin\win32\%config%_%platform%
-
-:: Create required directories for test suite compilation
-if not exist tests\obj mkdir tests\obj
-if not exist tests\obj\win32\%config%_x86 mkdir tests\obj\win32\%config%_x86
-if not exist tests\obj\win32\%config%_x64 mkdir tests\obj\win32\%config%_x64
-if not exist tests\bin mkdir tests\bin
-if not exist tests\bin\win32\%config%_x86 mkdir tests\bin\win32\%config%_x86
-if not exist tests\bin\win32\%config%_x64 mkdir tests\bin\win32\%config%_x64
-
-rem Compile test program and link library DLL
+rem Reset the `obj` directory for the test project intermediary files
+set ObjDir=%Root%\tests\obj\win32\%Config%_%Platform%
 
 rem Reference Platform and Win32 header files
 call :IncludeDirs %IncDir%
@@ -197,7 +196,7 @@ call :ObjectFiles %ObjDir%
 if %ErrorLevel% neq 0 goto :Error
 
 rem Link *.test.obj object files
-LINK /DEBUG %Objs:~1% /OUT:%BinDir%\%_exe% %Root%\bin\win32\Debug_x64\%_lib%
+LINK /DEBUG %Objs:~1% /OUT:%BinDir%\%_exe% %LibDir%\%_lib%
 if %ErrorLevel% neq 0 goto :error
 echo Test source files compiled successfully & echo.
 

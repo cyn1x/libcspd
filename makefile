@@ -16,25 +16,21 @@ CONFIG := Debug
 
 # Define intermediary and binary output directories
 SRCDIR := src
-LIBDIR := lib
+LIBDIR := lib/$(SYSTEM)/$(CONFIG)_$(ARCH)
 OBJDIR := obj/$(SYSTEM)/$(CONFIG)_$(ARCH)
 BINDIR := bin/$(SYSTEM)/$(CONFIG)_$(ARCH)
-
-# Library output directory
-LIBOUT := tests/$(BINDIR)
 
 # Define commands to retrieve `*.c` source and `*.o` intermediate files
 TEST := $(shell find $(TESTDIR) -type f -name '*.c')
 SRCS := $(shell find $(SRCDIR) -type f -name '*.c')
-LIBS := $(shell find $(LIBDIR) -type f -name '*.c')
 OBJS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))
-OBJS += $(patsubst $(LIBDIR)/%.c, $(OBJDIR)/%.o, $(LIBS))
 
-# Set Shared Object `*.so` output file path
-BINS := $(BINDIR)/libcspd.so tests/$(BINDIR)/libcspd
-ZIPS := $(BINDIR)/libcspd.tar.gz tests/$(BINDIR)/libcspd.so.tar.gz
+# Set `*.so` (Shared Object) target for `all` 
+BINS := $(LIBDIR)/libcspd.so $(BINDIR)/libcspd
+# TODO: Set `*.tar.gz` (Compressed Archive) target for `all` 
+# ZIPS := $(LIBDIR)/libcspd.tar.gz $(BINDIR)/libcspd.so.tar.gz
 
-# Targets
+# Make target for shared library and test suite executable
 all: $(BINS)
 
 release: CFLAGS = -Wall -pedantic -O2 -DNDEBUG -std=c17
@@ -42,24 +38,23 @@ release: CONFIG := Release
 release: $(BINS)
 release: clean
 
-# Ensure directories exist
-$(OBJDIR) $(BINDIR) $(LIBOUT):
+# Create required directories for library and test suite compilation
+$(OBJDIR) $(BINDIR) $(LIBDIR):
 	mkdir -p $@
 
-tests/$(BINDIR)/libcspd: $(TEST) | $(LIBOUT)
-	$(CC) $(CFLAGS) -o $@ $^ -L$(BINDIR) -lcspd
+# Compile core library `*.c` files and output to intermediary directory
+$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) -fPIC -c $< -o $(OBJDIR)/$(notdir $@)
 
-$(BINDIR)/libcspd.so: $(OBJS) | $(BINDIR)
+# Generate shared library for dynamic linking
+$(LIBDIR)/libcspd.so: $(OBJS) | $(LIBDIR)
 	$(shell cp /dev/null compile_flags.txt)
 	$(foreach i,$(CFLAGSTXT),$(file >> compile_flags.txt,$(i)))
 	$(CC) $(CFLAGS) -fPIC -shared $(addprefix $(OBJDIR)/, $(notdir $(OBJS))) -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -fPIC -c $< -o $(OBJDIR)/$(notdir $@)
-
-
-$(OBJDIR)/%.o: $(LIBDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) -fPIC -c $< -o $(OBJDIR)/$(notdir $@)
+# Compile and link test suite
+$(BINDIR)/libcspd: $(TEST) | $(BINDIR)
+	$(CC) $(CFLAGS) -o $@ $^ -L$(LIBDIR) -lcspd
 
 clean:
-	$(RM) $(BINDIR)/*.o $(BINDIR)/*.so $(OBJDIR)/*.o tests/bin/libcspd
+	$(RM) $(BINDIR)/*.o $(LIBDIR)/*.so $(OBJDIR)/*.o $(BINDIR)/libcspd
