@@ -392,26 +392,23 @@ typedef struct cspd_vector
 
 } cspd_vector;
 
-LIBCSPD_API void  cspd_vector_init(cspd_vector *vec, size_t data_size);
-LIBCSPD_API void *cspd_vector_get(const cspd_vector *vec, size_t idx);
-LIBCSPD_API void  cspd_vector_set(cspd_vector *vec, size_t idx,
-                                  const void *data);
-LIBCSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
-LIBCSPD_API void  cspd_vector_pop(cspd_vector *vec);
-LIBCSPD_API void  cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
-                                     const void *data);
-LIBCSPD_API void  cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end);
-LIBCSPD_API void  cspd_vector_clear(cspd_vector *vec);
-LIBCSPD_API void *cspd_vector_resize(cspd_vector *vec, size_t size);
-LIBCSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
-LIBCSPD_API void  cspd_vector_reverse(cspd_vector *vec);
-LIBCSPD_API size_t cspd_vector_lsearch(cspd_vector *vec, const void *key);
-LIBCSPD_API size_t cspd_vector_bsearch(cspd_vector *vec, const void *key);
-LIBCSPD_API void   cspd_vector_bsort(cspd_vector *vec);
-LIBCSPD_API void   cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo,
-                                     ptrdiff_t hi);
-LIBCSPD_API void   cspd_vector_msort(cspd_vector *vec_a, size_t size,
-                                     cspd_cmp cmp);
+CSPD_API void   cspd_vector_init(cspd_vector *vec, size_t data_size);
+CSPD_API void  *cspd_vector_get(const cspd_vector *vec, size_t idx);
+CSPD_API void   cspd_vector_set(cspd_vector *vec, size_t idx, const void *data);
+CSPD_API void   cspd_vector_push(cspd_vector *vec, const void *data);
+CSPD_API void   cspd_vector_pop(cspd_vector *vec);
+CSPD_API void   cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
+                                   const void *data);
+CSPD_API void   cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end);
+CSPD_API void   cspd_vector_clear(cspd_vector *vec);
+CSPD_API void  *cspd_vector_resize(cspd_vector *vec, size_t size);
+CSPD_API void   cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
+CSPD_API void   cspd_vector_reverse(cspd_vector *vec);
+CSPD_API size_t cspd_vector_lsearch(cspd_vector *vec, const void *key);
+CSPD_API size_t cspd_vector_bsearch(cspd_vector *vec, const void *key);
+CSPD_API void   cspd_vector_bsort(cspd_vector *vec);
+CSPD_API void   cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+CSPD_API void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp);
 
 #define cspd_print_vector(type, vec)                                           \
     {                                                                          \

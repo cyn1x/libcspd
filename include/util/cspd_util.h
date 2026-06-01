@@ -41,8 +41,8 @@
 extern "C" {
 #endif // __cplusplus
 
-void             swap(void *pa, void *pb, size_t size);
-LIBCSPD_API void cspd_print_binary(void *data, size_t size);
+void          swap(void *pa, void *pb, size_t size);
+CSPD_API void cspd_print_binary(void *data, size_t size);
 
 #ifdef __cplusplus
 }

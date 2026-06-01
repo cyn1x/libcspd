@@ -418,26 +418,26 @@ typedef struct cspd_llist
 
 } cspd_llist;
 
-LIBCSPD_API void   cspd_llist_init(cspd_llist *llist, size_t data_size);
-LIBCSPD_API void   cspd_llist_append(cspd_llist *llist, void *data);
-LIBCSPD_API void   cspd_llist_prepend(cspd_llist *llist, void *data);
-LIBCSPD_API void   cspd_llist_insert(cspd_llist *llist, void *data, size_t idx);
-LIBCSPD_API void   cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
-                                   cspd_llnode *dst, cspd_llnode *dst_ptr);
-LIBCSPD_API void   cspd_llist_swap(cspd_llist *llist, cspd_llnode *a,
-                                   cspd_llnode *b);
-LIBCSPD_API void   cspd_llist_delete(cspd_llist *llist, const void *keyt);
-LIBCSPD_API void   cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
-                                    cspd_llnode *end);
-LIBCSPD_API void   cspd_llist_clear(cspd_llist *llist);
-LIBCSPD_API void   cspd_llist_copy(cspd_llist *dst, cspd_llist *src);
-LIBCSPD_API void   cspd_llist_reverse(cspd_llist *llist);
-LIBCSPD_API size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node);
-LIBCSPD_API cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key);
-LIBCSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
-LIBCSPD_API void         cspd_llist_bsort(cspd_llist *llist);
-LIBCSPD_API void         cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
-                                          cspd_llnode *hi);
+CSPD_API void   cspd_llist_init(cspd_llist *llist, size_t data_size);
+CSPD_API void   cspd_llist_append(cspd_llist *llist, void *data);
+CSPD_API void   cspd_llist_prepend(cspd_llist *llist, void *data);
+CSPD_API void   cspd_llist_insert(cspd_llist *llist, void *data, size_t idx);
+CSPD_API void   cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
+                                cspd_llnode *dst, cspd_llnode *dst_ptr);
+CSPD_API void   cspd_llist_swap(cspd_llist *llist, cspd_llnode *a,
+                                cspd_llnode *b);
+CSPD_API void   cspd_llist_delete(cspd_llist *llist, const void *keyt);
+CSPD_API void   cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
+                                 cspd_llnode *end);
+CSPD_API void   cspd_llist_clear(cspd_llist *llist);
+CSPD_API void   cspd_llist_copy(cspd_llist *dst, cspd_llist *src);
+CSPD_API void   cspd_llist_reverse(cspd_llist *llist);
+CSPD_API size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node);
+CSPD_API cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key);
+CSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
+CSPD_API void         cspd_llist_bsort(cspd_llist *llist);
+CSPD_API void         cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
+                                       cspd_llnode *hi);
 
 #define cspd_print_llist(type, llist, reverse)                                 \
     {                                                                          \

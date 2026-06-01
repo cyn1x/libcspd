@@ -200,7 +200,10 @@ LINK /DEBUG %Objs:~1% /OUT:%BinDir%\%_exe% %LibDir%\%_lib%
 if %ErrorLevel% neq 0 goto :error
 echo Test source files compiled successfully & echo.
 
+rem Build completed
 echo Build succeeded.
+
+rem End of `:Compile` subroutine call
 goto :EOF
 
 

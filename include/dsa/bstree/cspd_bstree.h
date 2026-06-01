@@ -30,9 +30,9 @@ typedef struct cspd_bstree
     int (*_cmp)(const void *, const void *);
 } cspd_bstree;
 
-LIBCSPD_API void cspd_bstree_init(cspd_bstree *bstree, size_t data_size);
-LIBCSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
-LIBCSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
+CSPD_API void          cspd_bstree_init(cspd_bstree *bstree, size_t data_size);
+CSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
+CSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
 
 #define cspd_print_bstree(type, vec)                                           \
     {                                                                          \

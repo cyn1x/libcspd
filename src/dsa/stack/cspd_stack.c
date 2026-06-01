@@ -1,4 +1,4 @@
-#define LIBCSPD_EXPORTS
+#define CSPD_EXPORTS
 
 #include "cspd_stack.h"
 #include "cspd_linked_list.h"

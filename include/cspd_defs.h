@@ -13,15 +13,15 @@
 #endif // _WIN32
 
 #ifdef _WIN32
-#ifdef LIBCSPD_EXPORTS
-#define LIBCSPD_API __declspec(dllexport)
+#ifdef CSPD_EXPORTS
+#define CSPD_API __declspec(dllexport)
 #else
-#define LIBCSPD_API __declspec(dllimport)
+#define CSPD_API __declspec(dllimport)
 #endif // LIBCSPD_EXPORTS
 #elif __linux__
-#define LIBCSPD_API __attribute__((visibility("default")))
+#define CSPD_API __attribute__((visibility("default")))
 #else
-#define LIBCSPD_API
+#define CSPD_API
 #endif // _WIN32
 
 #endif // CSPD_DEFS_H

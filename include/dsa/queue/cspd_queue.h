@@ -21,11 +21,11 @@ typedef struct cspd_queue
 
 } cspd_queue;
 
-LIBCSPD_API void  cspd_queue_init(cspd_queue *queue_t, size_t data_size);
-LIBCSPD_API void  cspd_queue_enqueue(cspd_queue *queue_t, void *data);
-LIBCSPD_API void  cspd_queue_deque(cspd_queue *queue_t);
-LIBCSPD_API void *cspd_queue_peek(cspd_queue *queue_t);
-LIBCSPD_API void  cspd_queue_clear(cspd_queue *queue_t);
+CSPD_API void  cspd_queue_init(cspd_queue *queue_t, size_t data_size);
+CSPD_API void  cspd_queue_enqueue(cspd_queue *queue_t, void *data);
+CSPD_API void  cspd_queue_deque(cspd_queue *queue_t);
+CSPD_API void *cspd_queue_peek(cspd_queue *queue_t);
+CSPD_API void  cspd_queue_clear(cspd_queue *queue_t);
 
 #ifdef __cplusplus
 }

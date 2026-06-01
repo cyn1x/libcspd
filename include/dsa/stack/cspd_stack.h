@@ -21,11 +21,11 @@ typedef struct cspd_stack
 
 } cspd_stack;
 
-LIBCSPD_API void  cspd_stack_init(cspd_stack *stack_t, size_t data_size);
-LIBCSPD_API void  cspd_stack_push(cspd_stack *stack_t, void *data);
-LIBCSPD_API void  cspd_stack_pop(cspd_stack *stack_t);
-LIBCSPD_API void *cspd_stack_peek(cspd_stack *stack_t);
-LIBCSPD_API void  cspd_stack_clear(cspd_stack *stack_t);
+CSPD_API void  cspd_stack_init(cspd_stack *stack_t, size_t data_size);
+CSPD_API void  cspd_stack_push(cspd_stack *stack_t, void *data);
+CSPD_API void  cspd_stack_pop(cspd_stack *stack_t);
+CSPD_API void *cspd_stack_peek(cspd_stack *stack_t);
+CSPD_API void  cspd_stack_clear(cspd_stack *stack_t);
 
 #ifdef __cplusplus
 }

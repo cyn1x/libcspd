@@ -82,20 +82,20 @@ typedef struct cspd_btree
 
 } cspd_btree;
 
-LIBCSPD_API void         cspd_btree_init(cspd_btree *btree, size_t data_size);
-LIBCSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
+CSPD_API void         cspd_btree_init(cspd_btree *btree, size_t data_size);
+CSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
+                                     void *data);
+CSPD_API cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
                                         void *data);
-LIBCSPD_API cspd_btnode *cspd_btree_insert(cspd_btree   *btree,
-                                           cspd_btnode **parent, void *data);
-LIBCSPD_API void   cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
-LIBCSPD_API void   cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
-LIBCSPD_API void   cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
-LIBCSPD_API void   cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
-LIBCSPD_API void   cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
-LIBCSPD_API void   cspd_btree_invert(cspd_btnode *node);
-LIBCSPD_API int32  cspd_btree_height(cspd_btnode *node);
-LIBCSPD_API size_t cspd_btree_count(cspd_btnode *node);
-LIBCSPD_API void   cspd_btree_clear(cspd_btree *btree);
+CSPD_API void         cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void         cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void         cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void         cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void         cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
+CSPD_API void         cspd_btree_invert(cspd_btnode *node);
+CSPD_API int32        cspd_btree_height(cspd_btnode *node);
+CSPD_API size_t       cspd_btree_count(cspd_btnode *node);
+CSPD_API void         cspd_btree_clear(cspd_btree *btree);
 
 #define cspd_print_btree(type, vec)                                            \
     {                                                                          \

@@ -1,4 +1,4 @@
-#define LIBCSPD_EXPORTS
+#define CSPD_EXPORTS
 
 #include "cspd_vector.h"
 #include "cspd_util.h"
