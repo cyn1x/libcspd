@@ -1,8 +1,8 @@
 #define CSPD_EXPORTS
 
 #include "cspd_linked_list.h"
-#include <stdlib.h>
-#include <string.h>
+#include "cspd_mem.h"
+#include <stdbool.h>
 
 static cspd_llnode *node_init(size_t data_size);
 static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
@@ -19,7 +19,7 @@ void                cspd_llist_init(cspd_llist *llist, size_t data_size)
 
 cspd_llnode *node_init(size_t data_size)
 {
-    cspd_llnode *node = malloc(sizeof(cspd_llnode));
+    cspd_llnode *node = cspd_malloc(sizeof(cspd_llnode));
 
     node->data        = malloc(data_size);
     node->prev        = NULL;
@@ -438,8 +438,8 @@ void delete_node(cspd_llist *llist, cspd_llnode *node)
         llist->tail = prev;
     }
 
-    free(node->data);
+    cspd_free(node->data);
     node->next = NULL;
     node->prev = NULL;
-    free(node);
+    cspd_free(node);
 }

@@ -2,7 +2,7 @@
 
 #include "cspd_queue.h"
 #include "cspd_linked_list.h"
-#include <stdlib.h>
+#include "cspd_mem.h"
 
 void cspd_queue_init(cspd_queue *queue_t, size_t data_size)
 {
@@ -26,8 +26,8 @@ void cspd_queue_deque(cspd_queue *queue_t)
 {
     cspd_llnode *tmp = queue_t->front->next;
 
-    free(queue_t->front->data);
-    free(queue_t->front);
+    cspd_free(queue_t->front->data);
+    cspd_free(queue_t->front);
 
     queue_t->llist.head = tmp;
 

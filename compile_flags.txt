@@ -13,6 +13,8 @@
 -I
 ./include/dsa/vector/
 -I
+./include/sys/
+-I
 ./include/util/
 -I
 ./tests/include/

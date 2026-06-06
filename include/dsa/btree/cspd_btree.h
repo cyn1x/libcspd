@@ -35,21 +35,6 @@
  * can also provide your own comparator functions.
  */
 
-/**
- * @fn void function_name(cspd_btree *btree)
- *
- * @brief .
- *
- *
- *
- * @param btree Pointer to the binary tree structure
- *
- * @returns
- *
- * @b Example
- * @snippet cspd_btree_test.c Example
- */
-
 #ifndef CSPD_BTREE_H
 #define CSPD_BTREE_H
 

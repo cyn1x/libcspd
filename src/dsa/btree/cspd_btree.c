@@ -1,8 +1,7 @@
 #define CSPD_EXPORTS
 
 #include "cspd_btree.h"
-#include <stdlib.h>
-#include <string.h>
+#include "cspd_mem.h"
 
 static void recursive_delete(cspd_btnode *node);
 static void delete_node(cspd_btnode *node);
@@ -15,7 +14,7 @@ void        cspd_btree_init(cspd_btree *btree, size_t data_size)
 
 static cspd_btnode *btnode_init(void *data, size_t data_size)
 {
-    cspd_btnode *node = malloc(sizeof(cspd_btnode));
+    cspd_btnode *node = cspd_malloc(sizeof(cspd_btnode));
 
     node->data        = malloc(data_size);
     node->left        = NULL;
@@ -52,11 +51,10 @@ cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
 {
     (void)parent;
     (void)data;
+
     cspd_queue queue_t;
     cspd_queue_init(&queue_t, sizeof(cspd_btnode *));
-
     cspd_queue_enqueue(&queue_t, &btree->root);
-
     cspd_llnode *curr = queue_t.front;
 
     while (curr) {
@@ -220,6 +218,6 @@ static void delete_node(cspd_btnode *node)
 {
     node->left  = NULL;
     node->right = NULL;
-    free(node->data);
-    free(node);
+    cspd_free(node->data);
+    cspd_free(node);
 }

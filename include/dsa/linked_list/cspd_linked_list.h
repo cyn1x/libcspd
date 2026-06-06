@@ -389,7 +389,6 @@
 #define CSPD_LINKED_LIST_H
 
 #include "cspd_defs.h"
-#include <stdbool.h>
 
 #ifdef __clang__
 #include <stddef.h>

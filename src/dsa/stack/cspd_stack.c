@@ -2,7 +2,7 @@
 
 #include "cspd_stack.h"
 #include "cspd_linked_list.h"
-#include <stdlib.h>
+#include "cspd_mem.h"
 
 static void update_pointers(cspd_stack *stack_t);
 
@@ -24,8 +24,8 @@ void cspd_stack_pop(cspd_stack *stack_t)
 {
     cspd_llnode *tmp = stack_t->top->next;
 
-    free(stack_t->top->data);
-    free(stack_t->top);
+    cspd_free(stack_t->top->data);
+    cspd_free(stack_t->top);
 
     stack_t->llist.head = tmp;
 

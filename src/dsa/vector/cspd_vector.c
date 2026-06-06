@@ -1,9 +1,10 @@
 #define CSPD_EXPORTS
 
 #include "cspd_vector.h"
+#include "cspd_mem.h"
 #include "cspd_util.h"
-#include <stdlib.h>
-#include <string.h>
+
+static const int MIN_CAPACITY = 32;
 
 static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi);
 static void      split_merge(cspd_vector *vec_b, size_t begin, size_t end,
@@ -17,7 +18,7 @@ void             cspd_vector_init(cspd_vector *vec, size_t data_size)
     vec->data_size = data_size;
     vec->capacity  = MIN_CAPACITY;
     vec->size      = 0;
-    vec->data      = calloc(vec->capacity, vec->data_size);
+    vec->data      = cspd_calloc(vec->capacity, vec->data_size);
     vec->front     = NULL;
     vec->back      = NULL;
 }
@@ -39,7 +40,7 @@ void cspd_vector_push(cspd_vector *vec, const void *data)
 {
     if (vec->size == vec->capacity) {
         vec->capacity *= 2;
-        vec->data = realloc(vec->data, vec->data_size * vec->capacity);
+        vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
     }
     cspd_vector_set(vec, vec->size++, data);
 }
@@ -102,7 +103,7 @@ void cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
 
 void cspd_vector_clear(cspd_vector *vec)
 {
-    free(vec->data);
+    cspd_free(vec->data);
     vec->data_size = 0;
     vec->capacity  = 0;
     vec->size      = 0;
@@ -120,7 +121,7 @@ void *cspd_vector_resize(cspd_vector *vec, size_t size)
     }
 
     // TODO: check if realloc was valid
-    vec->data = realloc(vec->data, vec->data_size * vec->capacity);
+    vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
 
     return vec;
 }

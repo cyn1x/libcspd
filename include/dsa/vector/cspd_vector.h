@@ -3,12 +3,6 @@
  */
 
 /**
- * @def MIN_VECTOR_CAPACITY
- *
- * @brief The minimum capacity of the vector upon initialization.
- */
-
-/**
  * @def print_vector(type, vec)
  *
  * @brief Prints the contents of the vector.
@@ -366,7 +360,6 @@
 
 #include "cspd_defs.h"
 #include "cspd_types.h"
-#include <stdbool.h>
 
 #ifdef __clang__
 #include <stddef.h>
@@ -375,8 +368,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
-#define MIN_CAPACITY 32
 
 typedef struct cspd_vector
 {
