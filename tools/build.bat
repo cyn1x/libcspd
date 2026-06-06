@@ -19,6 +19,7 @@ setlocal enabledelayedexpansion
 
 set Err=
 
+rem Parse arguments
 set ArgCount=0
 for %%I in (%*) do (
     set /A ArgCount+=1
@@ -138,6 +139,7 @@ goto :EOF
 rem Performs a compilation of source files and subsequent linking of the resulting object files
 :Compile
 
+rem Parse arguments
 rem Compile core library `*.c` files
 cl /c /MD -Zi -W4 -Wall /std:c17 /Fo%ObjDir%\ /Fd"%ObjDir%\vc140.pdb" %Incs% %Srcs%
 if %ErrorLevel% neq 0 goto :error
