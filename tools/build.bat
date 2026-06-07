@@ -14,9 +14,6 @@
 
 setlocal EnableDelayedExpansion
 
-rem Define error message variable
-set Err=
-
 rem Parse arguments
 set ArgCount=0
 for %%G in (%*) do (
@@ -100,7 +97,7 @@ goto :EOF
 rem Orchestrates the entire build process
 :Build
 
-rem Define the engine dynamic link library and application executable filenames
+rem Define the dynamic link library and application executable filenames
 set _lib=libcspd_%Platform%.lib &:: Prefix with `_` to avoid clash with LIB
 set _dll=libcspd_%Platform%.dll &:: Stay consistent with scheme above
 set _exe=libcspd_%Platform%.exe &:: Stay consistent with scheme(s) above
@@ -142,7 +139,6 @@ rem Performs a compilation of source files and subsequent linking of the resulti
 
 setlocal
 
-rem Parse arguments
 rem Compile core library `*.c` files
 cl /c /MD -Zi -W4 -Wall /std:c17 /Fo%ObjDir%\ /Fd"%ObjDir%\vc140.pdb" %Incs% %Srcs%
 if %ErrorLevel% neq 0 goto :error
@@ -238,9 +234,12 @@ goto :EOF
 rem Parse the INI configuration file and set environment variables
 :ParseConfig
 
-rem The equals symbol is the only delimeter
-for /f "usebackq tokens=* delims==" %%G in (env.ini) do (
-    set %%G
+if exist env.ini (
+
+    rem The equals symbol is the only delimeter (for key-value pairs)
+    for /f "usebackq tokens=* delims==" %%G in (env.ini) do (
+        set %%G
+    )
 )
 
 rem End of :ParseConfig subroutine call
@@ -354,7 +353,6 @@ goto :EOF
 rem Error function to call when a build error is encountered
 :Error
 
-set Err=%ErrorLevel%
 echo. 
 echo Build failed.
 echo Exited with error code: %ErrorLevel%
