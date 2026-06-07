@@ -1,6 +1,6 @@
 :: Script to set the development environment variables on Windows.
 
-:: Variable names in :DevEnv use Microsoft visual Studio project codenames
+:: Variable names use Microsoft visual Studio project codenames
 :: https://en.wikipedia.org/w/index.php?title=Visual_Studio&oldid=1356912898#History
 
 @echo off
@@ -10,8 +10,8 @@ set Dev16_A="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliar
 set Dev17_A="C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat"
 
 rem Define Visual Studio Build Tools environment variables
-set Dev16_B="C:\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
-set Dev17_B="C:\Program Files\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
+set Dev16_B="C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
+set Dev17_B="C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
 
 rem Configure development environment
 if not defined DevEnvDir (
