@@ -10,9 +10,6 @@
 :: Addition to the standard help documentation on Windows commands
 :: https://ss64.com/nt/
 
-:: Variable names in :DevEnv use Microsoft visual Studio project codenames
-:: https://en.wikipedia.org/w/index.php?title=Visual_Studio&oldid=1356912898#History
-
 @echo off
 
 setlocal EnableDelayedExpansion
@@ -22,9 +19,9 @@ set Err=
 
 rem Parse arguments
 set ArgCount=0
-for %%I in (%*) do (
+for %%G in (%*) do (
     set /A ArgCount+=1
-    set "ArgVec[!ArgCount!]=%%~I"
+    set "ArgVec[!ArgCount!]=%%~G"
 )
 
 rem Default fallback if MSVC does not automatically set platform
@@ -37,14 +34,14 @@ set LinkerOpts=/DEBUG
 
 rem Set project root directory
 set Root=%~dp0..
-for %%I in ("%Root%") do set "Root=%%~fI"
+for %%G in ("%Root%") do set "Root=%%~fG"
 
 rem Process command-line arguments arguments
-for /L %%I in (1,1,%ArgCount%) do (
+for /L %%G in (1,1,%ArgCount%) do (
     
-    set arg=!argVec[%%I]!
+    set arg=!argVec[%%G]!
 
-    if !Arg! EQU clean goto :clean
+    if !Arg! EQU clean goto :Clean
 
     if !Arg! EQU release (
         set CompilerOpts=-Od -DDEBUG=0
@@ -57,6 +54,9 @@ for /L %%I in (1,1,%ArgCount%) do (
     )
 
 )
+
+rem Parse INI configuration file and set environment variables
+call :ParseConfig
 
 rem End of entry point procedure
 goto :Main
@@ -140,6 +140,8 @@ goto :EOF
 rem Performs a compilation of source files and subsequent linking of the resulting object files
 :Compile
 
+setlocal
+
 rem Parse arguments
 rem Compile core library `*.c` files
 cl /c /MD -Zi -W4 -Wall /std:c17 /Fo%ObjDir%\ /Fd"%ObjDir%\vc140.pdb" %Incs% %Srcs%
@@ -158,6 +160,8 @@ echo Library file `%_lib%` created in `%RelPath%` successfully. & echo.
 
 rem Copy DLL to where the test executable will be built
 copy %LibDir%\%_dll% %BinDir% > nul
+
+endlocal
 
 rem End of :Compile subroutine
 goto :EOF
@@ -228,6 +232,21 @@ rem End of :Clean subroutine call
 goto :EOF
 
 
+::---------------------------------------------------------------------------
+:: Parse Config
+::---------------------------------------------------------------------------
+rem Parse the INI configuration file and set environment variables
+:ParseConfig
+
+rem The equals symbol is the only delimeter
+for /f "usebackq tokens=* delims==" %%G in (env.ini) do (
+    set %%G
+)
+
+rem End of :ParseConfig subroutine call
+goto :EOF
+
+
 ::-----------------------------------------------------------------------------
 :: Development Environment
 ::-----------------------------------------------------------------------------
@@ -260,6 +279,8 @@ goto :EOF
 rem Adds a compile flag to `compile_flags.txt` for the Clang LSP
 :AddCompileFlag
 
+setlocal
+
 set Flag=%1
 
 rem Invert slashes for include paths to be compatible with the LSP
@@ -268,6 +289,8 @@ set FilePath=!Flag:\=/!
 rem Write flag to `compile_flags.txt` file
 echo -I>> %Root%\%CompileFlags%
 echo .!FilePath!>> %Root%\%CompileFlags%
+
+endlocal
 
 rem End of :AddCompileFlag subroutine call
 goto :EOF
@@ -279,9 +302,9 @@ goto :EOF
 rem Reference the absolute and relative paths of each `*.h` header file
 :IncludeDirs
 
-for /r %1 %%A in (*.h) do (
+for /r %1 %%G in (*.h) do (
 
-    call :RelativePath %%~dpA
+    call :RelativePath %%~dpG
 
     rem Prevent duplicate include directories
     if !Prev! neq !RelPath! (
@@ -303,8 +326,8 @@ goto :EOF
 rem Reference source files to be compiled
 :SourceFiles
 
-for /r %1 %%I in (*.c) do (
-    call set "Srcs=%%Srcs%% %%~fI"
+for /r %1 %%G in (*.c) do (
+    call set "Srcs=%%Srcs%% %%~fG"
 )
 
 rem End of :SourceFiles subroutine call
@@ -317,8 +340,8 @@ goto :EOF
 rem Reference intermediary object files
 :ObjectFiles
 
-for /r %1 %%I in (*.obj) do (
-    call set "Objs=%%Objs%% %1\%%~nxI"
+for /r %1 %%G in (*.obj) do (
+    call set "Objs=%%Objs%% %1\%%~nxG"
 )
 
 rem End of :ObjectFiles subroutine call
