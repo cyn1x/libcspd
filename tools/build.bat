@@ -15,8 +15,9 @@
 
 @echo off
 
-setlocal enabledelayedexpansion
+setlocal EnableDelayedExpansion
 
+rem Define error message variable
 set Err=
 
 rem Parse arguments
@@ -69,7 +70,7 @@ rem Main procedure that configurues the script environment and LSP compile flags
 
 rem Configure MSVC environment variables
 call :DevEnv
-if %Result% neq 0 goto :Error
+if %ErrorLevel% neq 0 goto :Error
 
 rem Define `compile_flags.txt` file for the LLVM Clang LSP
 set CompileFlags=compile_flags.txt
@@ -158,8 +159,6 @@ echo Library file `%_lib%` created in `%RelPath%` successfully. & echo.
 rem Copy DLL to where the test executable will be built
 copy %LibDir%\%_dll% %BinDir% > nul
 
-goto :EOF
-
 rem End of :Compile subroutine
 goto :EOF
 
@@ -235,44 +234,8 @@ goto :EOF
 rem Set environment variables for MSVC
 :DevEnv
 
-rem 0 for OK and 1 for FAIL
-set Result=0
-
 rem Configure development environment
-if not defined DevEnvDir (
-
-    set Dev16_A="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
-    set Dev17_A="C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat"
-
-    rem Define Visual Studio Build Tools environment variables
-    set Dev16_B="C:\Program Files\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
-    set Dev17_B="C:\Program Files\Microsoft Visual Studio\18\BuildTools\VC\Auxiliary\Build\vcvarsall.bat"
-
-    rem Preference the latest version of Visual Studio Community
-    if exist !Dev17_A! (
-        call !Dev17_A! %Platform%
-        goto :EOF
-    )
-    if exist !Dev16_A! ( 
-        call %Dev16_A% %Platform% 
-        goto :EOF 
-    )
-
-    rem Preference the latest version of Visual Studio Build Tools
-    if exist !Dev17_B! (
-        call !Dev17_B! %Platform%
-        goto :EOF
-    )
-    if exist !Dev16_B! ( 
-        call !Dev16_B! %Platform% 
-        goto :EOF 
-    )
-
-    rem No valid installation of Visual Studio or Visual Studio Build Tools was found
-    echo Error: Unable to locate compiler toolchain
-    echo Check: At least one of the following should be valid:  &echo  - !Dev16_A:~1,-1! &echo  - !Dev17_A:~1,-1! &echo  - !Dev16_B:~1,-1! &echo  - !Dev17_B:~1,-1! 
-    set Result=1
-)
+call tools\devenv.bat
 
 rem End of :DevEnv subroutine call
 goto :EOF
