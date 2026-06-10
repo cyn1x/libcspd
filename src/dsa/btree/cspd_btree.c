@@ -16,7 +16,7 @@ static cspd_btnode *btnode_init(void *data, size_t data_size)
 {
     cspd_btnode *node = cspd_malloc(sizeof(cspd_btnode));
 
-    node->data        = malloc(data_size);
+    node->data        = cspd_malloc(data_size);
     node->left        = NULL;
     node->right       = NULL;
 

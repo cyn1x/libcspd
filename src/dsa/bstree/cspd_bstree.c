@@ -1,7 +1,7 @@
 #define CSPD_EXPORTS
 
 #include "cspd_bstree.h"
-#include <stdlib.h>
+#include "cspd_mem.h"
 #include <string.h>
 
 void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node);
@@ -14,9 +14,9 @@ void cspd_bstree_init(cspd_bstree *bstree, size_t data_size)
 
 static cspd_bstnode *cspd_bstnode_init(void *data, size_t data_size)
 {
-    cspd_bstnode *node = malloc(sizeof(cspd_bstnode));
+    cspd_bstnode *node = cspd_malloc(sizeof(cspd_bstnode));
 
-    node->data         = malloc(sizeof(data_size));
+    node->data         = cspd_malloc(sizeof(data_size));
     node->left         = NULL;
     node->right        = NULL;
 

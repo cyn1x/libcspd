@@ -21,7 +21,7 @@ cspd_llnode *node_init(size_t data_size)
 {
     cspd_llnode *node = cspd_malloc(sizeof(cspd_llnode));
 
-    node->data        = malloc(data_size);
+    node->data        = cspd_malloc(data_size);
     node->prev        = NULL;
     node->next        = NULL;
 
