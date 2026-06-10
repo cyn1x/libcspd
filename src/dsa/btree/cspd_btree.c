@@ -124,8 +124,8 @@ void cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec)
         return;
     }
 
-    cspd_btree_inorder(node->left, vec);
-    cspd_btree_inorder(node->right, vec);
+    cspd_btree_postorder(node->left, vec);
+    cspd_btree_postorder(node->right, vec);
     cspd_vector_push(vec, &node);
 }
 
