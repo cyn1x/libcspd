@@ -5,6 +5,9 @@
 
 @echo off
 
+rem Set platform to the processor architecture if running as a standalone script
+if "%Platform%"=="" set Platform=%PROCESSOR_ARCHITECTURE%
+
 rem Define Visual Studio Community environment variables
 set Dev16_A="C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
 set Dev17_A="C:\Program Files\Microsoft Visual Studio\18\Community\VC\Auxiliary\Build\vcvarsall.bat"
