@@ -6,6 +6,8 @@
 /**
  * @fn swap(void *pa, void *pb, size_t size)
  *
+ * @internal
+ *
  * @brief Performs an in-place bytewise swap between two pointers.
  *
  * Iterates through each byte of the given size in bytes and performs an
@@ -41,7 +43,7 @@
 extern "C" {
 #endif // __cplusplus
 
-void          swap(void *pa, void *pb, size_t size);
+void          cspd_swap(void *pa, void *pb, size_t size);
 CSPD_API void cspd_print_binary(void *data, size_t size);
 
 #ifdef __cplusplus

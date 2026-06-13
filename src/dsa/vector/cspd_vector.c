@@ -11,7 +11,6 @@ static void      split_merge(cspd_vector *vec_b, size_t begin, size_t end,
                              cspd_vector *vec_a);
 static void      merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
                        cspd_vector *vec_a);
-static void      update_pointers(cspd_vector *vec);
 
 void             cspd_vector_init(cspd_vector *vec, size_t data_size)
 {
@@ -19,8 +18,16 @@ void             cspd_vector_init(cspd_vector *vec, size_t data_size)
     vec->capacity  = MIN_CAPACITY;
     vec->size      = 0;
     vec->data      = cspd_calloc(vec->capacity, vec->data_size);
-    vec->front     = NULL;
-    vec->back      = NULL;
+}
+
+void *cspd_vector_back(cspd_vector *vec)
+{
+    return cspd_vector_get(vec, vec->size - 1);
+}
+
+void *cspd_vector_front(cspd_vector *vec)
+{
+    return cspd_vector_get(vec, 0);
 }
 
 void *cspd_vector_get(const cspd_vector *vec, size_t idx)
@@ -32,8 +39,6 @@ void cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
 {
     void *dst = (int8 *)vec->data + idx * vec->data_size;
     memcpy(dst, data, vec->data_size);
-
-    update_pointers(vec);
 }
 
 void cspd_vector_push(cspd_vector *vec, const void *data)
@@ -48,7 +53,6 @@ void cspd_vector_push(cspd_vector *vec, const void *data)
 void cspd_vector_pop(cspd_vector *vec)
 {
     vec->size--;
-    vec->back = cspd_vector_get(vec, vec->size - 1);
 }
 
 void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
@@ -71,8 +75,6 @@ void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
 
     memmove(dst, src, mv_amt * vec->data_size);
     memcpy(src, data, amt * vec->data_size);
-
-    update_pointers(vec);
 }
 
 void cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
@@ -91,14 +93,7 @@ void cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
     }
 
     memmove(dst, src, (vec->size - amt) * vec->data_size);
-
     vec->size -= amt;
-    if (vec->size == 0) {
-        vec->front = vec->back = NULL;
-        return;
-    }
-
-    update_pointers(vec);
 }
 
 void cspd_vector_clear(cspd_vector *vec)
@@ -108,8 +103,6 @@ void cspd_vector_clear(cspd_vector *vec)
     vec->capacity  = 0;
     vec->size      = 0;
     vec->data      = NULL;
-    vec->front     = NULL;
-    vec->back      = NULL;
 }
 
 void *cspd_vector_resize(cspd_vector *vec, size_t size)
@@ -132,7 +125,6 @@ void cspd_vector_copy(cspd_vector *dst, cspd_vector *src)
     cspd_vector_resize(dst, src->capacity);
     dst->size = src->size;
     memcpy(dst->data, src->data, src->size * src->data_size);
-    update_pointers(dst);
 }
 
 void cspd_vector_reverse(cspd_vector *vec)
@@ -141,7 +133,7 @@ void cspd_vector_reverse(cspd_vector *vec)
         void *src = cspd_vector_get(vec, i);
         void *dst = cspd_vector_get(vec, vec->size - 1 - i);
 
-        swap(src, dst, vec->data_size);
+        cspd_swap(src, dst, vec->data_size);
     }
 }
 
@@ -190,7 +182,7 @@ void cspd_vector_bsort(cspd_vector *vec)
             int   cmp = vec->_cmp(a, b);
 
             if (cmp != -1) {
-                swap(a, b, vec->data_size);
+                cspd_swap(a, b, vec->data_size);
             }
         }
     }
@@ -233,13 +225,13 @@ static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
         if (cmp != 1) {
             idx++;
             tmp = cspd_vector_get(vec, idx);
-            swap(curr, tmp, vec->data_size);
+            cspd_swap(curr, tmp, vec->data_size);
         }
     }
 
     idx++;
     tmp = cspd_vector_get(vec, idx);
-    swap(tmp, pvt, vec->data_size);
+    cspd_swap(tmp, pvt, vec->data_size);
 
     return idx;
 }
@@ -273,28 +265,11 @@ static void merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
         void *tmp =
             cspd_vector_get(vec_b, k); // pointer to place sorted element
         if (i < mid && (j >= end || cmp != 1)) {
-            swap(lrh, tmp, vec_b->data_size);
+            cspd_swap(lrh, tmp, vec_b->data_size);
             i = i + 1;
         } else {
-            swap(rrh, tmp, vec_b->data_size);
+            cspd_swap(rrh, tmp, vec_b->data_size);
             j = j + 1;
         }
-    }
-}
-
-static void update_pointers(cspd_vector *vec)
-{
-    void *front = cspd_vector_get(vec, 0);
-    void *back  = cspd_vector_get(vec, vec->size - 1);
-    if (vec->size == 1) {
-        vec->front = vec->back = front;
-        return;
-    }
-
-    if (vec->front != front) {
-        vec->front = front;
-    }
-    if (vec->back != back) {
-        vec->back = back;
     }
 }

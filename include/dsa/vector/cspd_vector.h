@@ -31,12 +31,6 @@
  * @var cspd_vector::data
  * Memory which has been allocated for the vector to store data.
  *
- * @var cspd_vector::front
- * Pointer to the first element in the vector.
- *
- * @var cspd_vector::back
- * Pointer to the last element in the vector.
- *
  * @var cspd_vector::_cmp
  * Comparator function used for sorting or searching. The library contains some
  * basic types as seen below, which can be assigned to the `_cmp` variable. You
@@ -65,6 +59,26 @@
  *
  * @b Example
  * @snippet cspd_vector.test.c Initialize
+ */
+
+/**
+ * @fn *cspd_vector_back(const cspd_vector *vec)
+ *
+ * @brief Retrieves the last element in the vector.
+ *
+ * @param vec The vector to retrieve the element from.
+ *
+ * @returns Pointer to the last element in the vector.
+ */
+
+/**
+ * @fn *cspd_vector_front(const cspd_vector *vec)
+ *
+ * @brief Retrieves the first element in the vector.
+ *
+ * @param vec The vector to retrieve the element from.
+ *
+ * @returns Pointer to the first element in the vector.
  */
 
 /**
@@ -376,16 +390,15 @@ typedef struct cspd_vector
     size_t capacity;
     size_t size;
     size_t data_size;
-
     void  *data;
-    void  *front;
-    void  *back;
 
     int (*_cmp)(const void *, const void *);
 
 } cspd_vector;
 
 CSPD_API void   cspd_vector_init(cspd_vector *vec, size_t data_size);
+CSPD_API void  *cspd_vector_back(cspd_vector *vec);
+CSPD_API void  *cspd_vector_front(cspd_vector *vec);
 CSPD_API void  *cspd_vector_get(const cspd_vector *vec, size_t idx);
 CSPD_API void   cspd_vector_set(cspd_vector *vec, size_t idx, const void *data);
 CSPD_API void   cspd_vector_push(cspd_vector *vec, const void *data);

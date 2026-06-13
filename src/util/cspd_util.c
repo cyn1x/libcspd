@@ -4,7 +4,7 @@
 #include "cspd_types.h"
 #include <stdio.h>
 
-void swap(void *pa, void *pb, size_t size)
+void cspd_swap(void *pa, void *pb, size_t size)
 {
     uint8  tmp;
     uint8 *a = pa, *b = pb;
