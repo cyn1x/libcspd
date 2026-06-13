@@ -2,11 +2,11 @@
 
 Collection of utilities used to write C programs quickly and efficiently.
 
-The purpose of the utilities are to teach data structures and algorithms, as well as provide a simple interface for leveraging common data structures. Here is a simple example of what this means.
+The purpose of the utilities are to provide a simple interface for leveraging common data structures. Here is a simple example of basic array usage via the `cspd_vector.h` interface.
 
 ```c
-#include "print.h"
-#include "vector.h"
+#include "cspd_print.h"
+#include "cspd_vector.h"
 
 /** 
  * Simple program demonstrating one of many utilities available.
@@ -15,27 +15,29 @@ int main(int argc, char *argv[])
 {
     // Create a vector to store a contiguous array of elements
     vector_t vec;
-    vector_init(&vec, sizeof(int32));
+    cspd_vector_init(&vec, sizeof(int32));
 
     // Create 10 elements and push them into the vector
     for (int32 i = 0; i < 10; ++i) {
         int32 k = i;
-        vector_push(&vec, &k);
+        cspd_vector_push(&vec, &k);
     }
 
-    print_vector(int32, &vec);
+    cspd_print_vector(int32, &vec);
     // Output: { 0 1 2 3 4 5 6 7 8 9 }
 
     // Insert data into the vector
     int32 data[] = {10, 11, 12};
-    vector_insert(&vec, 4, sizeof(data), &data);
+    cspd_vector_insert(&vec, 4, sizeof(data), &data);
 
-    print_vector(int32, &vec);
+    cspd_print_vector(int32, &vec);
     // Output: { 0 1 2 3 10 11 12 4 5 6 7 8 9 }
 
     return 0;
 }
 ```
+
+There is also support for integrating custom memory allocators via the `cspd_mem.h` interface. The default behaviour uses the `stdlib.h` memory functions.
 
 ## Installation
 
@@ -55,14 +57,26 @@ Microsoft Visual Studio Build Tools can be used to compile the project library D
   - Community (>= 2022) or Build Tools (>= 2022)
 - Doxygen
 
+##### Visual Studio
+
+Note: Visual Studio Build Tools can be used for development if using a text editor, but the Visual Studio Community IDE is useful for debugging.
+
 Use the Visual Studio (GUI) Installer to install the **Workloads** and **Individual components**.
 - Workloads
   - Desktop Development for C++
 - Individual components
-  - MSBuild support for LLVM (clang-cl) toolset
   - C++ Clang Compiler for Windows (>=17.0.3)
 
-If the full IDE is desired, install Visual Studio Community.
+Note: The **Individual components** are optional for the LSP configuration if using a text editor for development. The development environment for text editors can be configured simply by defining the MSVC environment using the provided Windows batch script.
+
+For example, set the `Platform` variable to either `x86` for 32-bit targets or `x64` for 64-bit targets, and run the `devenv.bat` batch script to configure the MSVC environment.
+
+```commandline
+set Platform=x64
+tools\devenv.bat
+```
+
+If a full IDE is desired, install Visual Studio Community.
 
 ```commandline
 winget install --id=Microsoft.VisualStudio.2026.Community -e 
@@ -74,15 +88,13 @@ Otherwise, install Visual Studio Build Tools instead.
 winget install --id=Microsoft.VisualStudio.2026.BuildTools -e 
 ```
 
-Note: Visual Studio Build Tools can be used for development if using a text editor, but the Visual Studio IDE is useful for debugging.
-
 ### Linux
 
-Clang is used to build the project on Linux. The Clang version used is 17.0.6 though should work with any newer version.
+The LLVM Clang compiler toolchain is used to build the project on Linux. The minimum Clang version tested is 17.0.6, though any newer version should work.
 
 #### Dependencies
 
-Clang is used as the LSP and for compiling the project on Linux.
+The LLVM Clang compiler toolchain is used as the LSP and for compiling the project on Linux.
 
 ```bash
 sudo apt-get install clang
@@ -111,7 +123,7 @@ The `makefile` is in the project root directory.
 
 ### Windows
 
-Clone the repository and build the project.
+Clone the repository and build the project using the provided Windows batch file.
 
 ```commandline
 git clone https://github.com/cyn1x/libcspd.git
@@ -119,7 +131,7 @@ cd libcspd
 tools\build.bat
 ```
 
-The build script attempts to locate the Visual Studio install directory automatically, but this can be specified manually as follows.
+The build script attempts to locate the Visual Studio install directory, but this can be specified manually to override this behaviour.
 1. Create a file named `env.ini` in the project root directory
 2. Assign the absolute path of `vcvarsall.bat` as the *value* to the `MsvcDir` *key*.
 

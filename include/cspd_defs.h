@@ -17,7 +17,7 @@
 #define CSPD_API __declspec(dllexport)
 #else
 #define CSPD_API __declspec(dllimport)
-#endif // LIBCSPD_EXPORTS
+#endif // CSPD_EXPORTS
 #elif __linux__
 #define CSPD_API __attribute__((visibility("default")))
 #else

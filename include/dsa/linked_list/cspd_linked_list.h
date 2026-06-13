@@ -3,7 +3,7 @@
  */
 
 /**
- * @def print_llist(type, llist, reverse)
+ * @def cspd_print_llist(type, llist, reverse)
  *
  * @brief Prints the contents of the linked list.
  *
@@ -17,35 +17,35 @@
  */
 
 /**
- * @typedef struct llist_node
+ * @typedef struct cspd_llnode
  *
  * @brief Data structure for linked list nodes.
  *
- * @var llist_node::data
+ * @var cspd_llnode::data
  * Memory which has been allocated for the linked list node to store data.
  *
- * @var linked_list::prev
+ * @var cspd_llnode::prev
  * Pointer to the previous node in the linked list.
  *
- * @var linked_list::next
+ * @var cspd_llnode::next
  * Pointer to the next node in the linked list.
  */
 
 /**
- * @typedef struct llist_t
+ * @typedef struct cspd_llist
  *
  * @brief Data structure for linked list.
  *
- * @var llist::data_size
+ * @var cspd_llist::data_size
  * The size of the data in bytes being stored in the linked list nodes.
  *
- * @var llist::head
+ * @var cspd_llist::head
  * Pointer to the first node in the linked list.
  *
- * @var llisit::tail
+ * @var cspd_llist::tail
  * Pointer to the last node in the linked list.
  *
- * @var lllist::_cmp
+ * @var cspd_llist::_cmp
  * Comparator function used for sorting or searching. The library contains some
  * basic types as seen below, which can be assigned to the `_cmp` variable. You
  * can also provide your own comparator functions.
@@ -53,32 +53,32 @@
  * @b Example
  * The provided comparator functions can be defined in a header file.
  *
- * @include defs.test.h
+ * @include cspd_defs.test.h
  * Once defined, assign the address of the defined functions from the header
  * file to the comparator function pointer.
  *
- * @snippet linked_list.test.c Comparator function
+ * @snippet cspd_linked_list.test.c Comparator function
  */
 
 /**
- * @fn void llist_init(llist_t *llist, size_t data_size)
+ * @fn void cspd_llist_init(cspd_llist *llist, size_t data_size)
  *
  * @brief Initializes a new linked list.
  *
- * Sets `data_size` to the given parameter, and sets the head and tail pointers
- * to `NULL`.
+ * Sets `data_size` to the given parameter, and sets the `head` and `tail`
+ * pointers to `NULL`.
  *
- * @param vec Pointer to the linked list to be initialized.
+ * @param llist Pointer to the linked list to be initialized.
  * @param data_size The size of the data type in bytes.
  *
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Initialize
+ * @snippet cspd_linked_list.test.c Initialize
  */
 
 /**
- * @fn node *node_init(llist_t *llist)
+ * @fn node *cspd_node_init(cspd_llist *llist)
  *
  * @brief Initializes a new node.
  *
@@ -90,11 +90,11 @@
  * @returns Pointer to the new node in memory.
  *
  * @b Example
- * @snippet linked_list.test.c Initialize
+ * @snippet cspd_linked_list.test.c Initialize
  */
 
 /**
- * @fn void llist_append(llist_t *llist, void *data)
+ * @fn void cspd_llist_append(cspd_llist *llist, void *data)
  *
  * @brief Adds a node to the end of the linked list.
  *
@@ -108,11 +108,11 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Appending nodes
+ * @snippet cspd_linked_list.test.c Appending nodes
  */
 
 /**
- * @fn void llist_prepend(llist_t *llist, void *data)
+ * @fn void cspd_llist_prepend(cspd_llist *llist, void *data)
  *
  * @brief Adds a node to the start of the linked list.
  *
@@ -127,11 +127,11 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Prepending nodes
+ * @snippet cspd_linked_list.test.c Prepending nodes
  */
 
 /**
- * @fn void llist_insert(llist_t *llist, void *data, size_t idx)
+ * @fn void cspd_llist_insert(cspd_llist *llist, void *data, size_t idx)
  *
  * Initializes a new node and copies the given data into memory. The node is
  * inserted at the position given by `idx`, with the new node preceding the node
@@ -144,12 +144,12 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Inserting nodes
+ * @snippet cspd_linked_list.test.c Inserting nodes
  */
 
 /**
- * @fn void llist_move(llist_t *llist, lnode_t *node, lnode_t *dst, lnode_t
- * *dst_ptr)
+ * @fn void cspd_llist_move(cspd_llist *llist, cspd_llnode *node, cspd_llnode
+ * *dst, cspd_llnode *dst_ptr)
  *
  * @brief Moves a node in the linked list to the given destination.
  *
@@ -165,15 +165,15 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Moving nodes
+ * @snippet cspd_linked_list.test.c Moving nodes
  */
 
 /**
- * @fn void llist_swap(llist_t *llist, lnode_t *a, lnode_t *b)
+ * @fn void cspd_llist_swap(cspd_llist *llist, cspd_llnode *a, cspd_llnode *b)
  *
  * @brief Swaps two nodes in a linked list.
  *
- * Swaps two nodes, `a` and `b` in the given `llist_t`, by changing
+ * Swaps two nodes, `a` and `b` in the given `cspd_llist`, by changing
  * `a->prev->next` from `a` to `b` (the next pointer of the node preceding `a`).
  * The node proceeding `a` has its `prev` pointer changed to point to `b`
  * (`a->next->prev`). Similarly, the same is done for node `b`
@@ -196,11 +196,11 @@
  * with the nodes swapped in the function's arguments.
  *
  * @b Example
- * @snippet linked_list.test.c Swapping nodes
+ * @snippet cspd_linked_list.test.c Swapping nodes
  */
 
 /**
- * @fn void llist_delete(llist_t *llist, const void *key)
+ * @fn void cspd_llist_delete(cspd_llist *llist, const void *key)
  *
  * @brief Deletes a node in a linked list.
  *
@@ -213,11 +213,12 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Deleting nodes
+ * @snippet cspd_linked_list.test.c Deleting nodes
  */
 
 /**
- * @fn void llist_erase(llist_t *llist, lnode_t *start, lnode_t *end)
+ * @fn void cspd_llist_erase(cspd_llist *llist, cspd_llnode *start, cspd_llnode
+ * *end)
  *
  * @brief Erases a range of nodes in a linked list.
  *
@@ -230,11 +231,11 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Example
+ * @snippet cspd_linked_list.test.c Example
  */
 
 /**
- * @fn void llist_clear(llist_t *llist)
+ * @fn void cspd_llist_clear(cspd_llist *llist)
  *
  * @brief Clears all nodes from a linked list.
  *
@@ -247,11 +248,11 @@
  * @remarks After this call, @p llist will be empty.
  *
  * @b Example
- * @snippet linked_list.test.c Clearing lists
+ * @snippet cspd_linked_list.test.c Clearing lists
  */
 
 /**
- * @fn void llist_copy(llist_t *dst, llist *src)
+ * @fn void llist_copy(cspd_llist *dst, llist *src)
  *
  * @brief Copies data from one linked list to another.
  *
@@ -266,11 +267,11 @@
  * @remarks The @p dst linked list will be cleared if it is not empty.
  *
  * @b Example
- * @snippet linked_list.test.c Copying lists
+ * @snippet cspd_linked_list.test.c Copying lists
  */
 
 /**
- * @fn void llist_reverse(llist_t *llist)
+ * @fn void llist_reverse(cspd_llist *llist)
  *
  * @brief Reverses nodes in a linked list.
  *
@@ -282,11 +283,11 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Reversing nodes
+ * @snippet cspd_linked_list.test.c Reversing nodes
  */
 
 /**
- * @fn size_t llist_index(llist_t *llist, lnode_t *node)
+ * @fn size_t llist_index(cspd_llist *llist, cspd_llnode *node)
  *
  * @brief Returns the index of a node in a linked list.
  *
@@ -300,11 +301,11 @@
  * @remarks The `head` node would have an index of `0`.
  *
  * @b Example
- * @snippet linked_list.test.c Index of a node
+ * @snippet cspd_linked_list.test.c Index of a node
  */
 
 /**
- * @fn lnode_t *llist_find(llist_t *llist, const void *key)
+ * @fn cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key)
  *
  * @brief Finds a node in a linked list that contains the @p key value that has
  * the same size as `data_size`.
@@ -319,11 +320,12 @@
  * found.
  *
  * @b Example
- * @snippet linked_list.test.c Finding nodes
+ * @snippet cspd_linked_list.test.c Finding nodes
  */
 
 /**
- * @fn void lnode_t *llist_lsearch(llist_t *llist, const void *key)
+ * @fn void cspd_llist_lsearch *llist_lsearch(cspd_llist *llist, const void
+ * *key)
  *
  * @brief Performs a linear search over a linked list to find the given @p key.
  *
@@ -337,13 +339,13 @@
  * found.
  *
  * @b Example
- * @snippet linked_list.test.c Linear search
+ * @snippet cspd_linked_list.test.c Linear search
  *
  * @see https://en.wikipedia.org/wiki/Linear_search
  */
 
 /**
- * @fn void llist_bsort(llist_t *llist)
+ * @fn void cspd_llist_bsort(cspd_llist *llist)
  *
  * @brief Sorts an array using the bubblesort algorithm.
  *
@@ -357,13 +359,14 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Bubble sort
+ * @snippet cspd_linked_list.test.c Bubble sort
  *
  * @see https://en.wikipedia.org/wiki/Bubble_sort
  */
 
 /**
- * @fn void llist_qsort(llist_t *llist, lnode_t *lo, lnode_t *hi)
+ * @fn void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo, cspd_llnode
+ * *hi)
  *
  * @brief Sorts an array using the quicksort algorithm.
  *
@@ -377,7 +380,7 @@
  * @returns void
  *
  * @b Example
- * @snippet linked_list.test.c Quicksort
+ * @snippet cspd_linked_list.test.c Quicksort
  *
  * @remarks The @p lo parameter should be the `head` of the linked list, and the
  * @p hi parameter should be the `tail` of the linked list.

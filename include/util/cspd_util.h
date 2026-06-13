@@ -28,8 +28,8 @@
  * @param size The size of the data type in bytes.
  */
 
-#ifndef UTIL_H
-#define UTIL_H
+#ifndef CSPD_UTIL_H
+#define CSPD_UTIL_H
 
 #include "cspd_defs.h"
 
