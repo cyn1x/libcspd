@@ -20,21 +20,6 @@ void             cspd_vector_init(cspd_vector *vec, size_t data_size)
     vec->data      = cspd_calloc(vec->capacity, vec->data_size);
 }
 
-void *cspd_vector_back(cspd_vector *vec)
-{
-    return cspd_vector_get(vec, vec->size - 1);
-}
-
-void *cspd_vector_front(cspd_vector *vec)
-{
-    return cspd_vector_get(vec, 0);
-}
-
-void *cspd_vector_get(const cspd_vector *vec, size_t idx)
-{
-    return (int8 *)vec->data + vec->data_size * idx;
-}
-
 void cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
 {
     void *dst = (int8 *)vec->data + idx * vec->data_size;
@@ -48,11 +33,6 @@ void cspd_vector_push(cspd_vector *vec, const void *data)
         vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
     }
     cspd_vector_set(vec, vec->size++, data);
-}
-
-void cspd_vector_pop(cspd_vector *vec)
-{
-    vec->size--;
 }
 
 void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,

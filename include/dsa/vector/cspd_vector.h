@@ -397,12 +397,8 @@ typedef struct cspd_vector
 } cspd_vector;
 
 CSPD_API void   cspd_vector_init(cspd_vector *vec, size_t data_size);
-CSPD_API void  *cspd_vector_back(cspd_vector *vec);
-CSPD_API void  *cspd_vector_front(cspd_vector *vec);
-CSPD_API void  *cspd_vector_get(const cspd_vector *vec, size_t idx);
 CSPD_API void   cspd_vector_set(cspd_vector *vec, size_t idx, const void *data);
 CSPD_API void   cspd_vector_push(cspd_vector *vec, const void *data);
-CSPD_API void   cspd_vector_pop(cspd_vector *vec);
 CSPD_API void   cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
                                    const void *data);
 CSPD_API void   cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end);
@@ -424,6 +420,26 @@ CSPD_API void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp);
         }                                                                      \
         printf("} \n");                                                        \
     }
+
+static inline void *cspd_vector_get(const cspd_vector *vec, size_t idx)
+{
+    return (int8 *)vec->data + vec->data_size * idx;
+}
+
+static inline void *cspd_vector_back(const cspd_vector *vec)
+{
+    return cspd_vector_get(vec, vec->size - 1);
+}
+
+static inline void *cspd_vector_front(const cspd_vector *vec)
+{
+    return cspd_vector_get(vec, 0);
+}
+
+static inline void cspd_vector_pop(cspd_vector *vec)
+{
+    vec->size--;
+}
 
 #ifdef __cplusplus
 }
