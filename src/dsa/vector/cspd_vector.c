@@ -4,15 +4,63 @@
 #include "cspd_mem.h"
 #include "cspd_util.h"
 
+/**
+ * @internal
+ *
+ * @brief Default minimum capacity of the vector.
+ */
 static const int MIN_CAPACITY = 32;
 
+/**
+ * @internal
+ *
+ * @brief Divides the vector into two partitions.
+ *
+ * Divides the vector into two partitions and moves all elements to the left of
+ * the pivot if they are less than or equal to the pivot.
+ *
+ * @param vec The vector to be partitioned.
+ * @param lo Index of the first element in the vector
+ * @param hi Index of the last element of in the vector
+ *
+ * @returns The index of the next pivot point.
+ */
 static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi);
-static void      split_merge(cspd_vector *vec_b, size_t begin, size_t end,
-                             cspd_vector *vec_a);
-static void      merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
-                       cspd_vector *vec_a);
 
-void             cspd_vector_init(cspd_vector *vec, size_t data_size)
+/**
+ * @internal
+ *
+ * @brief Merges split runs from `vec_b` to `vec_a`.
+ *
+ * Splits `vec_a` into 2 runs, then sorts both runs into `vec_b`, then merges
+ * both runs from `vec_b` to `vec_a`.
+ *
+ * @param vec_b The work vector
+ * @param begin Index of the starter of the vector
+ * @param end Index of the end of the vector
+ * @param vec_a The vector to be sorted
+ */
+static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
+                        cspd_vector *vec_a);
+
+/**
+ * @internal
+ *
+ * @brief Helper function for mergesort that performs the sort.
+ *
+ * Helper function for `vector_msort()` that performs the sorting by use of the
+ * vector comparator function.
+ *
+ * @param vec_b The work vector
+ * @param begin Index of the starter of the vector
+ * @param mid Index of the middle of the vector
+ * @param end Index of the end of the vector
+ * @param vec_a The vector to be sorted
+ */
+static void merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
+                  cspd_vector *vec_a);
+
+void        cspd_vector_init(cspd_vector *vec, size_t data_size)
 {
     vec->data_size = data_size;
     vec->capacity  = MIN_CAPACITY;

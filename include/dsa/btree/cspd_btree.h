@@ -35,6 +35,147 @@
  * can also provide your own comparator functions.
  */
 
+/**
+ * @fn void cspd_btree_init(cspd_btree *btree, size_t data_size);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param btree
+ * @param data_size
+ */
+
+/**
+ * @fn cspd_btnode cspd_btree_add(cspd_btree  *btree,  cspd_btnode   **leaf,
+ * void *data)
+ *
+ * @brief
+ *
+ *
+ *
+ * @param btree
+ * @param data
+ */
+
+/**
+ * @fn cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
+ * void *data);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param btree
+ * @param parent
+ */
+
+/**
+ * @fn void cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ * @param vec
+ */
+
+/**
+ * @fn void cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ * @param vec
+ */
+
+/**
+ * @fn void cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ * @param vec
+ */
+
+/**
+ * @fn void cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ * @param vec
+ */
+
+/**
+ * @fn void cspd_btree_bfs(cspd_btnode *node, cspd_vector *vec);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ * @param vec
+ */
+
+/**
+ * @fn void cspd_btree_invert(cspd_btnode *node);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ */
+
+/**
+ * @fn int32 cspd_btree_height(cspd_btnode *node);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ */
+
+/**
+ * @fn size_t cspd_btree_count(cspd_btnode *node);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param node
+ */
+
+/**
+ * @fn void cspd_btree_clear(cspd_btree *btree);
+ *
+ * @brief
+ *
+ *
+ *
+ * @param btree
+ */
+
+/**
+ * @def cspd_print_btree(type, vec)
+ *
+ * @brief Prints the contents of the binary tree.
+ *
+ *
+ *
+ * @param type Type of data to be casted.
+ * @param vec
+ */
+
 #ifndef CSPD_BTREE_H
 #define CSPD_BTREE_H
 
@@ -50,15 +191,15 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct cspd_btnode
+typedef struct cspd_btnode_t
 {
-    void               *data;
-    struct cspd_btnode *left;
-    struct cspd_btnode *right;
+    void                 *data;
+    struct cspd_btnode_t *left;
+    struct cspd_btnode_t *right;
 
 } cspd_btnode;
 
-typedef struct cspd_btree
+typedef struct cspd_btree_t
 {
     size_t       data_size;
     cspd_btnode *root;

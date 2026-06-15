@@ -6,10 +6,12 @@
 
 cspd_queue queue_setup(void)
 {
+    //! [Initialize]
     cspd_queue queue;
     cspd_queue_init(&queue, sizeof(int32));
 
     return queue;
+    //! [Initialize]
 }
 
 void cspd_queue_test(void)

@@ -19,14 +19,14 @@
  *
  * @brief Data structure for the vector.
  *
- * @var cspd_vector::data_size
- * The size of the data in bytes being stored in the vector.
- *
  * @var cspd_vector::capacity
  * The total capacity of the vector.
  *
  * @var cspd_vector::size
  * The total size of the vector.
+ *
+ * @var cspd_vector::data_size
+ * The size of the data in bytes being stored in the vector.
  *
  * @var cspd_vector::data
  * Memory which has been allocated for the vector to store data.
@@ -38,9 +38,11 @@
  *
  * @b Example
  * The provided comparator functions can be defined in a header file.
+ *
  * @include cspd_defs.test.h
  * Once defined, assign the address of the defined functions from the header
  * file to the comparator function pointer.
+ *
  * @snippet cspd_vector.test.c Comparator function
  */
 
@@ -62,7 +64,7 @@
  */
 
 /**
- * @fn *cspd_vector_back(const cspd_vector *vec)
+ * @fn static void *cspd_vector_back(const cspd_vector *vec)
  *
  * @brief Retrieves the last element in the vector.
  *
@@ -72,7 +74,7 @@
  */
 
 /**
- * @fn *cspd_vector_front(const cspd_vector *vec)
+ * @fn static inline void *cspd_vector_front(const cspd_vector *vec)
  *
  * @brief Retrieves the first element in the vector.
  *
@@ -82,7 +84,7 @@
  */
 
 /**
- * @fn *cspd_vector_get(const cspd_vector *vec, size_t idx)
+ * @fn static inline void *cspd_vector_get(const cspd_vector *vec, size_t idx)
  *
  * @brief Retrieves an element from the vector.
  *
@@ -98,7 +100,7 @@
  */
 
 /**
- * @fn cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
+ * @fn void cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
  *
  * @brief Copies data to the vector.
  *
@@ -111,7 +113,7 @@
  */
 
 /**
- * @fn cspd_vector_push(cspd_vector *vec, const void *data)
+ * @fn void cspd_vector_push(cspd_vector *vec, const void *data)
  *
  * @brief Appends an element to the vector.
  *
@@ -126,7 +128,7 @@
  */
 
 /**
- * @fn cspd_vector_pop(cspd_vector *vec)
+ * @fn static inline void cspd_vector_pop(cspd_vector *vec)
  *
  * @brief Removes the last element of the vector.
  *
@@ -137,8 +139,8 @@
  */
 
 /**
- * @fn cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size, const void
- * *data)
+ * @fn void cspd_vector_insert(cspd_vector *vec, size_t  idx, size_t  size,
+ * const void *data)
  *
  * @brief Inserts one or many elements at the specified index.
  *
@@ -155,7 +157,7 @@
  */
 
 /**
- * @fn cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
+ * @fn void cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
  *
  * @brief Erases one or many elements from a vector.
  *
@@ -172,7 +174,7 @@
  */
 
 /**
- * @fn cspd_vector_clear(cspd_vector *vec)
+ * @fn void cspd_vector_clear(cspd_vector *vec)
  *
  * @brief Removes all items from a vector.
  *
@@ -186,7 +188,7 @@
  */
 
 /**
- * @fn *cspd_vector_resize(cspd_vector *vec)
+ * @fn void *cspd_vector_resize(cspd_vector *vec, size_t size)
  *
  * @brief Resizes the vector.
  *
@@ -199,7 +201,7 @@
  */
 
 /**
- * @fn *cspd_vector_copy(cspd_vector *dst, vector *src)
+ * @fn void cspd_vector_copy(cspd_vector *dst, cspd_vector *src)
  *
  * @brief Copies data from one vector to the other.
  *
@@ -210,7 +212,7 @@
  */
 
 /**
- * @fn *cspd_vector_reverse(cspd_vector *vec)
+ * @fn void cspd_vector_reverse(cspd_vector *vec)
  *
  * @brief Reverses the order of elements in a vector
  *
@@ -220,7 +222,7 @@
  */
 
 /**
- * @fn cspd_vector_lsearch(cspd_vector *vec, const void *key)
+ * @fn void cspd_vector_lsearch(cspd_vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
@@ -240,7 +242,7 @@
  */
 
 /**
- * @fn cspd_vector_bsearch(cspd_vector *vec, const void *key)
+ * @fn size_t cspd_vector_bsearch(cspd_vector *vec, const void *key)
  *
  * @brief Checks if an element exists in the vector.
  *
@@ -266,7 +268,7 @@
  */
 
 /**
- * @fn cspd_vector_bsort(cspd_vector *vec)
+ * @fn void cspd_vector_bsort(cspd_vector *vec)
  *
  * @brief Sorts a vector using the bubblesort algorithm.
  *
@@ -287,22 +289,7 @@
  */
 
 /**
- * @fn cspd_vector_qsort(cspd_vector *vec ptrdiff_t lo, ptrdiff_t hi)
- *
- * @brief Sorts a vector using the quicksort algorithm.
- *
- * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
- * use of the Lomuto partition scheme.
- *
- * @param vec The vector to be sorted.
- * @param lo Index of the first element in the vector
- * @param hi Index of the last element of in the vector
- *
- * @see https://en.wikipedia.org/wiki/Quicksort
- */
-
-/**
- * @fn cspd_vector_msort(cspd_vector *vec)
+ * @fn void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
  *
  * @brief Sorts a vector using the mergesort algorithm.
  *
@@ -315,60 +302,18 @@
  */
 
 /**
- * @fn cspd_partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+ * @fn void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
  *
- * @brief Divides the vector into two partitions.
+ * @brief Sorts a vector using the quicksort algorithm.
  *
- * Divides the vector into two partitions and moves all elements to the left of
- * the pivot if they are less than or equal to the pivot.
+ * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
+ * use of the Lomuto partition scheme.
  *
- * @param vec The vector to be partitioned.
+ * @param vec The vector to be sorted.
  * @param lo Index of the first element in the vector
  * @param hi Index of the last element of in the vector
  *
- * @returns The index of the next pivot point.
- */
-
-/**
- * @fn cspd_split_merge(cspd_vector *vec_b, size_t begin, size_t end,
- * cspd_vector *vec_a)
- *
- * @brief Merges split runs from `vec_b` to `vec_a`.
- *
- * Splits `vec_a` into 2 runs, then sorts both runs into `vec_b`, then merges
- * both runs from `vec_b` to `vec_a`.
- *
- * @param vec_b The work vector
- * @param begin Index of the starter of the vector
- * @param end Index of the end of the vector
- * @param vec_a The vector to be sorted
- */
-
-/**
- * @fn cspd_merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
- * cspd_vector *vec_a)
- *
- * @brief Helper function for mergesort that performs the sort.
- *
- * Helper function for `vector_msort()` that performs the sorting by use of the
- * vector comparator function.
- *
- * @param vec_b The work vector
- * @param begin Index of the starter of the vector
- * @param mid Index of the middle of the vector
- * @param end Index of the end of the vector
- * @param vec_a The vector to be sorted
- */
-
-/**
- * @fn cspd_update_pointers(cspd_vector *vec)
- *
- * @brief Updates the front and back pointers.
- *
- * Helper function that updates the front and back pointers if the calling
- * function deems them necessary to be updated.
- *
- * @param vec The vector to be updated.
+ * @see https://en.wikipedia.org/wiki/Quicksort
  */
 
 #ifndef CSPD_VECTOR_H
@@ -385,7 +330,7 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct cspd_vector
+typedef struct cspd_vector_t
 {
     size_t capacity;
     size_t size;
