@@ -2,7 +2,7 @@
 
 Collection of utilities used to write C programs quickly and efficiently.
 
-The purpose of the utilities are to provide a simple interface for leveraging common data structures. Here is a simple example of basic array usage via the `cspd_vector.h` interface.
+The purpose of these utilities is to provide a simple interface for leveraging common data structures when programming in C.
 
 ```c
 #include "cspd_print.h"
@@ -43,10 +43,9 @@ There is also support for integrating custom memory allocators via the `cspd_mem
 
 This program can be compiled on both Windows and Linux by cloning the repository and running the respective build scripts after installing the required dependencies.
 
-Supports both 32-bit and 64-bit platforms.
+ℹ️ Currently only supports x86 and x64 architectures.
 
 ### Windows
-
 MSVC is used to build the project on Windows, and Doxygen is used to generate documentation.
 
 #### Dependencies
@@ -61,22 +60,13 @@ Microsoft Visual Studio Build Tools can be used to compile the project library D
 
 Note: Visual Studio Build Tools can be used for development if using a text editor, but the Visual Studio Community IDE is useful for debugging.
 
-Use the Visual Studio (GUI) Installer to install the **Workloads** and **Individual components**.
+Use the Visual Studio Installer (GUI) to install the **Workloads** and **Individual components**.
 - Workloads
   - Desktop Development for C++
 - Individual components
   - C++ Clang Compiler for Windows (>=17.0.3)
 
-Note: The **Individual components** are optional for the LSP configuration if using a text editor for development. The development environment for text editors can be configured simply by defining the MSVC environment using the provided Windows batch script.
-
-For example, set the `Platform` variable to either `x86` for 32-bit targets or `x64` for 64-bit targets, and run the `devenv.bat` batch script to configure the MSVC environment.
-
-```commandline
-set Platform=x64
-tools\devenv.bat
-```
-
-If a full IDE is desired, install Visual Studio Community.
+Note: The **Individual components** are optional for the LSP configuration if using a text editor for development. If a full IDE is desired, install Visual Studio Community.
 
 ```commandline
 winget install --id=Microsoft.VisualStudio.2026.Community -e 
@@ -172,6 +162,20 @@ Memory leaks can be checked with Valgrind by also dynamically linking the librar
 ```bash
 LD_LIBRARY_PATH="/absolute/path/to/libcspd/lib/linux/Debug_x64;$LD_LIBRARY_PATH" valgrind --leak-check=yes ./bin/linux/Debug_x64/libcspd
 ```
+
+## Development
+
+There is no strict development environment enforced, but text editors are preferred for both Windows and Linux.
+
+### Windows
+
+The development environment for text editors can be configured simply by defining the MSVC environment using the provided Windows batch script in the `tools` directory.
+
+Run the `devenv.bat` batch script to configure the MSVC environment. The platform will be automatically detected, i.e. `x86` for 32-bit or `x64` for 64-bit.
+
+### Linux
+
+Simply ensure Clang is available on the system PATH.
 
 ## Documentation
 
