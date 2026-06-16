@@ -1,8 +1,10 @@
 # libcspd
 
-Collection of utilities used to write C programs quickly and efficiently.
+![License](https://img.shields.io/github/license/cyn1x/libcspd)
+![Language](https://img.shields.io/badge/language-C-blue)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey)
 
-The purpose of these utilities is to provide a simple interface for leveraging common data structures when programming in C.
+A cross-platform C library providing core data structures and utilities for efficient C program development. The purpose of these utilities is to provide a simple interface for leveraging common data structures when programming in C.
 
 ```c
 #include "cspd_print.h"
@@ -39,6 +41,12 @@ int main(int argc, char *argv[])
 
 There is also support for integrating custom memory allocators via the `cspd_mem.h` interface. The default behaviour uses the `stdlib.h` memory functions.
 
+## Background
+
+This project started as a way to learn data structures and algorithms from the ground up, and grew into a set of tools I now use in my own pet projects. It's published here as a reference and source of inspiration for anyone building their own utility library or learning how common data structures are implemented in C.
+
+Contributions, bug reports, and forks are welcome.
+
 ## Installation
 
 This program can be compiled on both Windows and Linux by cloning the repository and running the respective build scripts after installing the required dependencies.
@@ -46,19 +54,18 @@ This program can be compiled on both Windows and Linux by cloning the repository
 ℹ️ Currently only supports x86 and x64 architectures.
 
 ### Windows
+
 MSVC is used to build the project on Windows, and Doxygen is used to generate documentation.
 
 #### Dependencies
 
-Microsoft Visual Studio Build Tools can be used to compile the project library DLL as an alternative to a full IDE installation.
-
-- Microsoft Visual Studio 
-  - Community (>= 2022) or Build Tools (>= 2022)
+- Microsoft Visual Studio Community (>= 2022) or Build Tools (>= 2022)
 - Doxygen
 
-##### Visual Studio
+<details>
+<summary>Installing Visual Studio</summary>
 
-Note: Visual Studio Build Tools can be used for development if using a text editor, but the Visual Studio Community IDE is useful for debugging.
+Microsoft Visual Studio Build Tools can be used to compile the project library DLL as an alternative to a full IDE installation.
 
 Use the Visual Studio Installer (GUI) to install the **Workloads** and **Individual components**.
 - Workloads
@@ -78,16 +85,22 @@ Otherwise, install Visual Studio Build Tools instead.
 winget install --id=Microsoft.VisualStudio.2026.BuildTools -e 
 ```
 
+</details>
+
 ### Linux
 
 The LLVM Clang compiler toolchain is used to build the project on Linux. The minimum Clang version tested is 17.0.6, though any newer version should work.
 
 #### Dependencies
 
-The LLVM Clang compiler toolchain is used as the LSP and for compiling the project on Linux.
-
 ```bash
 sudo apt-get install clang
+```
+
+<details>
+<summary>Installing a specific Clang version manually</summary>
+
+```bash
 curl -O https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 tar -xf ./clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz
 cd clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04/bin/
@@ -95,13 +108,11 @@ cd clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04/bin/
 sudo cp -R clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04/* /usr/
 ```
 
+</details>
+
 ## Building
 
-Instructions on how to build the project for use on both Windows and Linux.
-
 ### Linux
-
-Clone the repository and build the project using `make`.
 
 ```bash
 git clone https://github.com/cyn1x/libcspd.git
@@ -109,11 +120,7 @@ cd libcspd/
 make
 ```
 
-The `makefile` is in the project root directory.
-
 ### Windows
-
-Clone the repository and build the project using the provided Windows batch file.
 
 ```commandline
 git clone https://github.com/cyn1x/libcspd.git
@@ -121,79 +128,69 @@ cd libcspd
 tools\build.bat
 ```
 
-The build script attempts to locate the Visual Studio install directory, but this can be specified manually to override this behaviour.
-1. Create a file named `env.ini` in the project root directory
-2. Assign the absolute path of `vcvarsall.bat` as the *value* to the `MsvcDir` *key*.
-
-Example showing how to add a non-standard program install location of `C:\Apps` for Visual Studio Community 2022.
+The build script attempts to locate the Visual Studio install directory automatically. To override this, create a file named `env.ini` in the project root and set the path to `vcvarsall.bat`:
 
 ```ini
 MsvcDir="C:\Apps\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat"
 ```
 
-Clone the repository and run the build script to create the DLL and LIB files.
-
 ## Usage
 
-For use in other projects, both build scripts show an example of how to link the library to another program. The test program in the `bin` directory does exactly this.
+For use in other projects, both the Windows and Linux build scripts show an example of how to link the library to another program. The test program in the `bin` directory does exactly this.
+
+## Development
+
+The project is currently being developed using [Neovim](https://github.com/neovim/neovim). There is no strict development environment enforced.
 
 ### Windows
 
-Running the resulting test program executable in the build output directory on Windows.
+Run the `devenv.bat` batch script to configure the MSVC environment. The platform will be automatically detected (`x86` for 32-bit, `x64` for 64-bit).
+
+If using Visual Studio Community, open `libcspd.sln` and press F11 to start debugging.
+
+### Linux
+
+Ensure Clang is available on the system PATH.
+
+## Tests
+
+### Windows
 
 ```commandline
 cd libcspd
 bin\win32\Debug_x64\libcspd_x64.exe
 ```
 
-The `makefile` build target will output a Shared Object file `libcspd.so` for dynamically linking in other programs. In the example below, the included program used for testing imports the library for testing purposes.
-
 ### Linux
-
-Running the resulting test program binary in the build output directory on Linux.
 
 ```bash
 cd libcspd/
 LD_LIBRARY_PATH="/absolute/path/to/libcspd/lib/linux/Debug_x64;$LD_LIBRARY_PATH" ./bin/linux/Debug_x64/libcspd
 ```
 
-Memory leaks can be checked with Valgrind by also dynamically linking the library to another program.
+Memory leaks can be checked with Valgrind:
 
 ```bash
 LD_LIBRARY_PATH="/absolute/path/to/libcspd/lib/linux/Debug_x64;$LD_LIBRARY_PATH" valgrind --leak-check=yes ./bin/linux/Debug_x64/libcspd
 ```
-
-## Development
-
-There is no strict development environment enforced, but text editors are preferred for both Windows and Linux.
-
-### Windows
-
-The development environment for text editors can be configured simply by defining the MSVC environment using the provided Windows batch script in the `tools` directory.
-
-Run the `devenv.bat` batch script to configure the MSVC environment. The platform will be automatically detected, i.e. `x86` for 32-bit or `x64` for 64-bit.
-
-### Linux
-
-Simply ensure Clang is available on the system PATH.
 
 ## Documentation
 
 Doxygen is used to generate documentation. The resulting website will be generated in the `/doc` directory.
 
 ### Windows
+
 ```
 tools\doc.bat
 ```
 
 ### Linux
+
 ```
 tools\doc.sh
 ```
 
 ## Roadmap
-
-The following serves as a rough outline of what features will be implemented.
 
 Legend:
 
@@ -216,7 +213,7 @@ Future Plans:
 - &#x23F3; R-tree
 - &#x23F3; AVL Tree
 
-Housekeeping: 
+Housekeeping:
 
 - [ ] Benchmarks
 - [ ] Basic demo application
