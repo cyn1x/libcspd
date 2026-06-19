@@ -334,6 +334,8 @@
  * @fn cspd_merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
  * cspd_vector *vec_a)
  *
+ * @internal
+ *
  * @brief Helper function for mergesort that performs the sort.
  *
  * Helper function for `vector_msort()` that performs the sorting by use of the
@@ -344,17 +346,6 @@
  * @param mid Index of the middle of the vector
  * @param end Index of the end of the vector
  * @param vec_a The vector to be sorted
- */
-
-/**
- * @fn cspd_update_pointers(cspd_vector *vec)
- *
- * @brief Updates the front and back pointers.
- *
- * Helper function that updates the front and back pointers if the calling
- * function deems them necessary to be updated.
- *
- * @param vec The vector to be updated.
  */
 
 #ifndef CSPD_VECTOR_H
