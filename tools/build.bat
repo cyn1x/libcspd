@@ -199,7 +199,8 @@ if %ErrorLevel% neq 0 goto :Error
 rem Link *.test.obj object files
 LINK /DEBUG %Objs:~1% /OUT:%BinDir%\%_exe% %LibDir%\%_lib%
 if %ErrorLevel% neq 0 goto :error
-echo Test source files compiled successfully & echo.
+call :RelativePath %BinDir%
+echo Test executable `%_exe%` created in `%RelPath%` successfully. & echo.
 
 rem Build completed
 echo Build succeeded.
