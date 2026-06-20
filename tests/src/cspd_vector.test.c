@@ -88,7 +88,7 @@ void cspd_vector_test(void)
         int32  k   = 6;
         size_t idx = cspd_vector_lsearch(&vec, &k);
         assert(idx == 2);
-        assert(*(int32 *)vec.back == 7);
+        assert(*(int32 *)cspd_vector_back(&vec) == 7);
         //! [Linear search]
     }
 
@@ -101,15 +101,15 @@ void cspd_vector_test(void)
 
         int32 value = *(int32 *)cspd_vector_get(&vec, 5);
         assert(value == 4);
-        assert(*(int32 *)vec.back == 7);
+        assert(*(int32 *)cspd_vector_front(&vec) == 3);
         assert(vec.size == 9);
     }
 
     cspd_vector_erase(&vec, 4, 0);
     // cspd_print_vector(int32, &vec);
     // Output: { 0 4 5 6 7 }
-    assert(*(int32 *)vec.front == 0);
-    assert(*(int32 *)vec.back == 7);
+    assert(*(int32 *)cspd_vector_front(&vec) == 0);
+    assert(*(int32 *)cspd_vector_back(&vec) == 7);
     assert(vec.size == 5);
     //! [Erasing data]
 
@@ -118,7 +118,7 @@ void cspd_vector_test(void)
     cspd_vector_insert(&vec, 1, sizeof(a_vals), &a_vals);
     // cspd_print_vector(int32, &vec);
     // Output: { 0 1 2 3 4 5 6 7 }
-    assert(*(int32 *)vec.front == 0);
+    assert(*(int32 *)cspd_vector_front(&vec) == 0);
 
     int32 b_vals[] = {-3, -2, -1};
     cspd_vector_insert(&vec, 0, sizeof(b_vals), &b_vals);
@@ -126,14 +126,14 @@ void cspd_vector_test(void)
     // Output: { -3 -2 -1 0 1 2 3 4 5 6 7 }
     // printf("%d\n", *(int32 *)vec.back);
     // Output: 7
-    assert(*(int32 *)vec.front == -3);
-    assert(*(int32 *)vec.back == 7);
+    assert(*(int32 *)cspd_vector_front(&vec) == -3);
+    assert(*(int32 *)cspd_vector_back(&vec) == 7);
 
     int32 c_vals[] = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
     cspd_vector_insert(&vec, 11, sizeof(c_vals), &c_vals);
     // cspd_print_vector(int32, &vec);
     // Output: { -3 -2 -1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
-    assert(*(int32 *)vec.back == 19);
+    assert(*(int32 *)cspd_vector_back(&vec) == 19);
     //! [Inserting data]
 
     int32 d_vals[] = {-17, -16, -15, -14, -13, -12, -11,
@@ -142,19 +142,19 @@ void cspd_vector_test(void)
     // cspd_print_vector(int32, &vec);
     // Output: { -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0
     // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
-    assert(*(int32 *)vec.front == -17);
-    assert(*(int32 *)vec.back == 19);
+    assert(*(int32 *)cspd_vector_front(&vec) == -17);
+    assert(*(int32 *)cspd_vector_back(&vec) == 19);
 
     cspd_vector_pop(&vec);
-    assert(*(int32 *)vec.back == 18);
+    assert(*(int32 *)cspd_vector_back(&vec) == 18);
 
     // Reverse the vector
     cspd_vector_reverse(&vec);
     // cspd_print_vector(int32, &vec);
     // Output: { 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 -1 -2 -3 -4 -5
     // -6 -7 -8 -9 -10 -11 -12 -13 -14 -15 -16 -17 }
-    assert(*(int32 *)vec.front == 18);
-    assert(*(int32 *)vec.back == -17);
+    assert(*(int32 *)cspd_vector_front(&vec) == 18);
+    assert(*(int32 *)cspd_vector_back(&vec) == -17);
 
     //! [Bubble sort]
     cspd_vector_bsort(&vec);
@@ -239,8 +239,8 @@ static void sort_test(void)
     // cspd_print_vector(int32, &vec_a);
     // Output: { 3 4 5 7 7 8 10 }
 
-    assert(*(int32 *)vec_a.front == 3);
-    assert(*(int32 *)vec_a.back == 10);
+    assert(*(int32 *)cspd_vector_front(&vec_a) == 3);
+    assert(*(int32 *)cspd_vector_back(&vec_a) == 10);
 
     // cspd_print_vector(int32, &vec_b);
     // Output: { 7 8 7 4 10 3 5 }
@@ -249,8 +249,8 @@ static void sort_test(void)
     // cspd_print_vector(int32, &vec_b);
     // Output: { 3 4 5 7 7 8 10 }
 
-    assert(*(int32 *)vec_b.front == 3);
-    assert(*(int32 *)vec_b.back == 10);
+    assert(*(int32 *)cspd_vector_front(&vec_a) == 3);
+    assert(*(int32 *)cspd_vector_back(&vec_b) == 10);
 
     // cspd_print_vector(int32, &vec_c);
     // Output: { 1 2 3 4 5 6 7 8 }

@@ -4,9 +4,37 @@
 #include "cspd_mem.h"
 #include <stdbool.h>
 
+/**
+ * @internal
+ *
+ * @brief Initializes a new node.
+ *
+ * Memory is allocated for the new node and the data that will reside within the
+ * new node structure. The `prev` and `next` pointers are set to `NULL`.
+ *
+ * @param llist Pointer to the linked list structure.
+ *
+ * @returns Pointer to the new node in memory.
+ *
+ * @b Example
+ * @snippet cspd_linked_list.test.c Initialize
+ */
 static cspd_llnode *node_init(size_t data_size);
+
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ *
+ * @param llist Pointer to the linked list structure.
+ *
+ * @returns
+ */
 static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
                               cspd_llnode *hi);
+
 static void         delete_node(cspd_llist *llist, cspd_llnode *node);
 
 void                cspd_llist_init(cspd_llist *llist, size_t data_size)

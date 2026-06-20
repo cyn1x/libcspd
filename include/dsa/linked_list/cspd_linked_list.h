@@ -78,22 +78,6 @@
  */
 
 /**
- * @fn node *cspd_node_init(cspd_llist *llist)
- *
- * @brief Initializes a new node.
- *
- * Memory is allocated for the new node and the data that will reside within the
- * new node structure. The `prev` and `next` pointers are set to `NULL`.
- *
- * @param llist Pointer to the linked list structure.
- *
- * @returns Pointer to the new node in memory.
- *
- * @b Example
- * @snippet cspd_linked_list.test.c Initialize
- */
-
-/**
  * @fn void cspd_llist_append(cspd_llist *llist, void *data)
  *
  * @brief Adds a node to the end of the linked list.
@@ -252,7 +236,7 @@
  */
 
 /**
- * @fn void llist_copy(cspd_llist *dst, llist *src)
+ * @fn void cspd_llist_copy(cspd_llist *dst, cspd_llist *src)
  *
  * @brief Copies data from one linked list to another.
  *
@@ -271,7 +255,7 @@
  */
 
 /**
- * @fn void llist_reverse(cspd_llist *llist)
+ * @fn void cspd_llist_reverse(cspd_llist *llist)
  *
  * @brief Reverses nodes in a linked list.
  *
@@ -287,7 +271,7 @@
  */
 
 /**
- * @fn size_t llist_index(cspd_llist *llist, cspd_llnode *node)
+ * @fn size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node)
  *
  * @brief Returns the index of a node in a linked list.
  *
@@ -324,8 +308,7 @@
  */
 
 /**
- * @fn void cspd_llist_lsearch *llist_lsearch(cspd_llist *llist, const void
- * *key)
+ * @fn void *cspd_llist_lsearch (cspd_llist *llist, const void *key)
  *
  * @brief Performs a linear search over a linked list to find the given @p key.
  *
@@ -401,15 +384,15 @@
 extern "C" {
 #endif // __cplusplus
 
-typedef struct cspd_llnode
+typedef struct cspd_llnode_t
 {
-    void               *data;
-    struct cspd_llnode *prev;
-    struct cspd_llnode *next;
+    void                 *data;
+    struct cspd_llnode_t *prev;
+    struct cspd_llnode_t *next;
 
 } cspd_llnode;
 
-typedef struct cspd_llist
+typedef struct cspd_llist_t
 {
     size_t       data_size;
 

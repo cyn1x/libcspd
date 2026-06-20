@@ -2,6 +2,8 @@
  * @file cspd_types.h
  * Custom type definitions.
  * More readable type definitions for types in `stdint.h`.
+ *
+ * @see https://en.wikipedia.org/wiki/C_data_types#stdint.h
  */
 
 #ifndef CSPD_TYPES_H

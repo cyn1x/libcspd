@@ -6,10 +6,12 @@
 
 cspd_stack stack_setup(void)
 {
+    //! [Initialize]
     cspd_stack stack;
     cspd_stack_init(&stack, sizeof(int32));
 
     return stack;
+    //! [Initialize]
 }
 
 void cspd_stack_test(void)

@@ -2,10 +2,57 @@
 
 #include "cspd_mem.h"
 
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ *
+ * @param
+ *
+ * @returns
+ */
 static void *real_malloc(size_t size);
+
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ *
+ * @param
+ *
+ * @returns
+ */
 static void *real_calloc(size_t number, size_t size);
+
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ *
+ * @param
+ *
+ * @returns
+ */
 static void *real_realloc(void *block, size_t size);
-static void  real_free(void *block);
+
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ *
+ * @param
+ *
+ * @returns
+ */
+static void real_free(void *block);
 
 static struct
 {
