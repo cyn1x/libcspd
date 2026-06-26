@@ -351,7 +351,7 @@ CSPD_API void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp);
 
 static inline void *cspd_vector_get(const cspd_vector *vec, size_t idx)
 {
-    return (int8 *)vec->data + vec->data_size * idx;
+    return (u8 *)vec->data + vec->data_size * idx;
 }
 
 static inline void *cspd_vector_back(const cspd_vector *vec)

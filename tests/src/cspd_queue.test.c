@@ -8,7 +8,7 @@ cspd_queue queue_setup(void)
 {
     //! [Initialize]
     cspd_queue queue;
-    cspd_queue_init(&queue, sizeof(int32));
+    cspd_queue_init(&queue, sizeof(i32));
 
     return queue;
     //! [Initialize]
@@ -32,12 +32,12 @@ void cspd_queue_test(void)
 
     {
         void *data = cspd_queue_peek(&queue);
-        assert(*(int32 *)data == 1);
+        assert(*(i32 *)data == 1);
     }
 
     {
         cspd_queue_deque(&queue);
-        assert(*(int32 *)queue.front->data == 4);
+        assert(*(i32 *)queue.front->data == 4);
     }
 
     cspd_queue_clear(&queue);

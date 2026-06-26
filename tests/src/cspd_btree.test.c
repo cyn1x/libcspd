@@ -11,19 +11,19 @@ cspd_btree cspd_btree_setup(void)
     //! [Adding nodes]
     cspd_btree btree;
 
-    cspd_btree_init(&btree, sizeof(int32));
+    cspd_btree_init(&btree, sizeof(i32));
 
-    int32 a = 7;
-    int32 b = 23;
-    int32 c = 5;
-    int32 d = 8;
-    int32 e = 14;
-    int32 f = 1;
-    int32 g = 9;
-    int32 h = 6;
-    int32 i = 2;
-    int32 j = 15;
-    int32 k = 4;
+    i32 a = 7;
+    i32 b = 23;
+    i32 c = 5;
+    i32 d = 8;
+    i32 e = 14;
+    i32 f = 1;
+    i32 g = 9;
+    i32 h = 6;
+    i32 i = 2;
+    i32 j = 15;
+    i32 k = 4;
 
     //                  (7)
     //         /--------------------\
@@ -78,9 +78,9 @@ void cspd_btree_test(void)
         cspd_btree_preorder(btree.root, &vec);
 
         cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 0);
-        assert(*(int32 *)node->data == 7);
+        assert(*(i32 *)node->data == 7);
 
-        // cspd_print_btree(int32, &vec);
+        // cspd_print_btree(i32, &vec);
         // Output: { 7 23 8 14 5 1 6 2 9 15 }
 
         cspd_vector_clear(&vec);
@@ -95,9 +95,9 @@ void cspd_btree_test(void)
         cspd_btree_inorder(btree.root, &vec);
 
         cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 0);
-        assert(*(int32 *)node->data == 8);
+        assert(*(i32 *)node->data == 8);
 
-        // cspd_print_btree(int32, &vec);
+        // cspd_print_btree(i32, &vec);
         // Output: { 8 23 14 7 6 1 2 5 15 9 }
 
         cspd_vector_clear(&vec);
@@ -111,7 +111,7 @@ void cspd_btree_test(void)
 
         cspd_btree_postorder(btree.root, &vec);
 
-        // cspd_print_btree(int32, &vec);
+        // cspd_print_btree(i32, &vec);
         // Output: { 8 23 14 6 1 2 5 15 9 7 }
 
         cspd_vector_clear(&vec);
@@ -125,7 +125,7 @@ void cspd_btree_test(void)
 
         cspd_btree_dfs(btree.root, &vec);
 
-        // cspd_print_btree(int32, &vec);
+        // cspd_print_btree(i32, &vec);
         // Output: { 7 23 8 14 5 1 6 2 9 15 }
 
         cspd_vector_clear(&vec);
@@ -186,21 +186,21 @@ void cspd_btree_test(void)
 
         {
             cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 2);
-            assert(*(int32 *)node->data == 9);
+            assert(*(i32 *)node->data == 9);
         }
 
         {
             cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 7);
-            assert(*(int32 *)node->data == 6);
+            assert(*(i32 *)node->data == 6);
         }
 
         {
             cspd_btnode *node =
                 *(cspd_btnode **)cspd_vector_get(&vec, vec.size - 1);
-            assert(*(int32 *)node->data == 8);
+            assert(*(i32 *)node->data == 8);
         }
 
-        // cspd_print_btree(int32, &vec);
+        // cspd_print_btree(i32, &vec);
         // Output: { 7 5 9 15 10 1 2 6 23 14 8 }
 
         cspd_vector_clear(&vec);
@@ -208,7 +208,7 @@ void cspd_btree_test(void)
     }
 
     //! [Calculating height]
-    uint32 height = cspd_btree_height(btree.root);
+    u32 height = cspd_btree_height(btree.root);
     assert(height == 4);
     //! [Calculating height]
 
@@ -230,61 +230,61 @@ void bfs_test(void)
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 7);
+            assert(*(i32 *)btnode->data == 7);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 23);
+            assert(*(i32 *)btnode->data == 23);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 5);
+            assert(*(i32 *)btnode->data == 5);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 8);
+            assert(*(i32 *)btnode->data == 8);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 14);
+            assert(*(i32 *)btnode->data == 14);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 1);
+            assert(*(i32 *)btnode->data == 1);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 9);
+            assert(*(i32 *)btnode->data == 9);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 6);
+            assert(*(i32 *)btnode->data == 6);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 2);
+            assert(*(i32 *)btnode->data == 2);
             cspd_queue_deque(&queue);
         }
 
         {
             cspd_btnode *btnode = *(cspd_btnode **)cspd_queue_peek(&queue);
-            assert(*(int32 *)btnode->data == 15);
+            assert(*(i32 *)btnode->data == 15);
             cspd_queue_deque(&queue);
         }
 

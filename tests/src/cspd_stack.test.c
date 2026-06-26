@@ -8,7 +8,7 @@ cspd_stack stack_setup(void)
 {
     //! [Initialize]
     cspd_stack stack;
-    cspd_stack_init(&stack, sizeof(int32));
+    cspd_stack_init(&stack, sizeof(i32));
 
     return stack;
     //! [Initialize]
@@ -32,12 +32,12 @@ void cspd_stack_test(void)
 
     {
         void *data = cspd_stack_peek(&stack);
-        assert(*(int32 *)data == 2);
+        assert(*(i32 *)data == 2);
     }
 
     {
         cspd_stack_pop(&stack);
-        assert(*(int32 *)stack.top->data == 9);
+        assert(*(i32 *)stack.top->data == 9);
     }
 
     cspd_stack_clear(&stack);

@@ -4,31 +4,20 @@
 #include <cspd_bstree.h>
 #include <cspd_print.h>
 
-#ifdef __clang__
-static void print_data(void *data) __attribute__((unused));
-#endif /* ifdef __clang__ */
-
-static void print_data(void *data)
-{
-    printf("{ ");
-    cspd_print(*(int32 *)data, " ");
-    printf("} \n");
-}
-
 void bstree_setup(void)
 {
     //! [Adding nodes]
     cspd_bstree bstree;
 
-    cspd_bstree_init(&bstree, sizeof(int32));
+    cspd_bstree_init(&bstree, sizeof(i32));
 
-    int32 a = 3;
-    int32 b = 1;
-    int32 c = 7;
-    int32 d = 2;
-    int32 e = 4;
-    int32 f = 6;
-    int32 g = 5;
+    i32 a = 3;
+    i32 b = 1;
+    i32 c = 7;
+    i32 d = 2;
+    i32 e = 4;
+    i32 f = 6;
+    i32 g = 5;
 
     //               (4)
     //         /--------------\

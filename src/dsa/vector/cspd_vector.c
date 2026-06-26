@@ -75,7 +75,7 @@ void        cspd_vector_init(cspd_vector *vec, size_t data_size)
 
 void cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
 {
-    void *dst = (int8 *)vec->data + idx * vec->data_size;
+    void *dst = (u8 *)vec->data + idx * vec->data_size;
     memcpy(dst, data, vec->data_size);
 }
 

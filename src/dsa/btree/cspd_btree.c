@@ -187,7 +187,7 @@ void cspd_btree_invert(cspd_btnode *node)
     node->right      = tmp;
 }
 
-int32 cspd_btree_height(cspd_btnode *node)
+i32 cspd_btree_height(cspd_btnode *node)
 {
     if (node == NULL) {
         return -1;
