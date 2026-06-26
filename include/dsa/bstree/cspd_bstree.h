@@ -108,7 +108,7 @@ CSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
         printf("{ ");                                                          \
         for (size_t i = 0; i < (vec)->size; ++i) {                             \
             cspd_bstnode *_node = *(cspd_bstnode **)cspd_vector_get(vec, i);   \
-            print((*(type *)_node->data), " ");                                \
+            cspd_print((*(type *)_node->data), " ");                           \
         }                                                                      \
         printf("} \n");                                                        \
     }

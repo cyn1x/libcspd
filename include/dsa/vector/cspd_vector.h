@@ -344,7 +344,7 @@ CSPD_API void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp);
     {                                                                          \
         printf("{ ");                                                          \
         for (size_t i = 0; i < (vec)->size; ++i) {                             \
-            print((*(type *)cspd_vector_get(vec, i)), " ");                    \
+            cspd_print((*(type *)cspd_vector_get(vec, i)), " ");               \
         }                                                                      \
         printf("} \n");                                                        \
     }
