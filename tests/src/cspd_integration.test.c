@@ -11,16 +11,16 @@ static void stack_test(void);
 static void binary_tree_test(void);
 
 #pragma pack(4)
-typedef struct node
+typedef struct node_t
 {
     int   value;
     void *data;
-} node_t;
+} node;
 
-typedef struct data
+typedef struct data_t
 {
     void *value;
-} data_t;
+} data;
 
 void cspd_integration_tests(void)
 {
@@ -35,36 +35,35 @@ static void vector_test(void)
 {
     //! [Vector usage with custom data types]
     cspd_vector vec;
-    cspd_vector_init(
-        &vec,
-        sizeof(node_t *)); // Store pointers instead of full structs
+    cspd_vector_init(&vec,
+                     sizeof(node *)); // Store pointers instead of full structs
 
     // Allocate data_t dynamically
-    data_t *data  = malloc(sizeof(data_t));
+    data *test_data  = malloc(sizeof(data));
 
-    int     value = 4;
-    data->value   = malloc(sizeof(int));
-    memcpy(data->value, &value, sizeof(int));
+    int   a          = 4;
+    test_data->value = malloc(sizeof(int));
+    memcpy(test_data->value, &a, sizeof(int));
 
     // Allocate test_t dynamically
-    node_t *test = malloc(sizeof(node_t));
-    test->value  = 1;
-    test->data   = data; // Assign the pointer directly
+    node *test_node  = malloc(sizeof(node));
+    test_node->value = 1;
+    test_node->data  = test_data; // Assign the pointer directly
 
-    cspd_vector_push(&vec, &test); // Store the pointer, not a copy
+    cspd_vector_push(&vec, &test_node); // Store the pointer, not a copy
 
     // Retrieve
-    void   *res       = cspd_vector_get(&vec, 0);
-    node_t *test_res  = *(node_t **)res; // Dereference to get test_t pointer
-    data_t *data_res  = test_res->data;
-    int     res_value = *(int *)data_res->value;
+    void *result      = cspd_vector_get(&vec, 0);
+    node *test_result = *(node **)result; // Dereference to get node pointer
+    data *data_result = test_result->data;
+    int   value       = *(int *)data_result->value;
 
-    assert(res_value == 4);
+    assert(value == 4);
 
     // Cleanup
-    free(data->value);
-    free(data);
-    free(test);
+    free(test_data->value);
+    free(test_data);
+    free(test_node);
 
     cspd_vector_clear(&vec);
     //! [Vector usage with custom data types]

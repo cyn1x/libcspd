@@ -79,8 +79,8 @@ void cspd_vector_test(void)
 
     {
         //! [Linear search]
-        i32    k   = 6;
-        size_t idx = cspd_vector_lsearch(&vec, &k);
+        i32   k   = 6;
+        usize idx = cspd_vector_lsearch(&vec, &k);
         assert(idx == 2);
         assert(*(i32 *)cspd_vector_back(&vec) == 7);
         //! [Linear search]
@@ -159,15 +159,15 @@ void cspd_vector_test(void)
 
     {
         // built-in binary search
-        i32     k   = 9;
-        size_t *res = bsearch(&k, vec.data, vec.size, vec.data_size, i32_cmp);
+        i32    k   = 9;
+        usize *res = bsearch(&k, vec.data, vec.size, vec.data_size, i32_cmp);
         assert(*(i32 *)res == 9);
     }
 
     {
         //! [Custom binary search]
-        i32    n   = -2;
-        size_t idx = cspd_vector_bsearch(&vec, &n, i32_cmp);
+        i32   n   = -2;
+        usize idx = cspd_vector_bsearch(&vec, &n, i32_cmp);
         assert(idx == 15);
         //! [Custom binary search]
     }
@@ -248,7 +248,7 @@ static void sort_test(void)
     // cspd_print_vector(i32, &vec_c);
     // Output: { 1 2 3 4 5 6 7 8 }
 
-    for (size_t i = 0; i < vec_c.size - 1; i++) {
+    for (usize i = 0; i < vec_c.size - 1; i++) {
         assert(*(i32 *)cspd_vector_get(&vec_c, i) <=
                *(i32 *)cspd_vector_get(&vec_c, i + 1));
     }

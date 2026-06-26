@@ -14,7 +14,7 @@
  *
  * @returns
  */
-static void *real_malloc(size_t size);
+static void *real_malloc(usize size);
 
 /**
  * @internal
@@ -27,7 +27,7 @@ static void *real_malloc(size_t size);
  *
  * @returns
  */
-static void *real_calloc(size_t number, size_t size);
+static void *real_calloc(usize number, usize size);
 
 /**
  * @internal
@@ -40,7 +40,7 @@ static void *real_calloc(size_t number, size_t size);
  *
  * @returns
  */
-static void *real_realloc(void *block, size_t size);
+static void *real_realloc(void *block, usize size);
 
 /**
  * @internal
@@ -85,17 +85,17 @@ void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
     mem.free_func    = free_func;
 }
 
-void *cspd_malloc(size_t size)
+void *cspd_malloc(usize size)
 {
     return mem.malloc_func(size);
 }
 
-void *cspd_calloc(size_t number, size_t size)
+void *cspd_calloc(usize number, usize size)
 {
     return mem.calloc_func(number, size);
 }
 
-void *cspd_realloc(void *block, size_t size)
+void *cspd_realloc(void *block, usize size)
 {
     return mem.realloc_func(block, size);
 }
@@ -105,17 +105,17 @@ void cspd_free(void *block)
     mem.free_func(block);
 }
 
-static void *real_malloc(size_t size)
+static void *real_malloc(usize size)
 {
     return malloc(size);
 }
 
-static void *real_calloc(size_t number, size_t size)
+static void *real_calloc(usize number, usize size)
 {
     return calloc(number, size);
 }
 
-static void *real_realloc(void *block, size_t size)
+static void *real_realloc(void *block, usize size)
 {
     return realloc(block, size);
 }
