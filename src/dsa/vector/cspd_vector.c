@@ -22,10 +22,12 @@ static const int MIN_CAPACITY = 32;
  * @param vec The vector to be partitioned.
  * @param lo Index of the first element in the vector
  * @param hi Index of the last element of in the vector
+ * @param cmp Comparator function pointer.
  *
  * @returns The index of the next pivot point.
  */
-static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
+                           cspd_cmp cmp);
 
 /**
  * @internal
@@ -39,9 +41,11 @@ static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi);
  * @param begin Index of the starter of the vector
  * @param end Index of the end of the vector
  * @param vec_a The vector to be sorted
+ * @param cmp Comparator function pointer.
+ *
  */
 static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
-                        cspd_vector *vec_a);
+                        cspd_vector *vec_a, cspd_cmp cmp);
 
 /**
  * @internal
@@ -56,9 +60,10 @@ static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
  * @param mid Index of the middle of the vector
  * @param end Index of the end of the vector
  * @param vec_a The vector to be sorted
+ * @param cmp Comparator function pointer.
  */
 static void merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
-                  cspd_vector *vec_a);
+                  cspd_vector *vec_a, cspd_cmp cmp);
 
 void        cspd_vector_init(cspd_vector *vec, size_t data_size)
 {
@@ -179,7 +184,7 @@ size_t cspd_vector_lsearch(cspd_vector *vec, const void *key)
     return SIZE_MAX;
 }
 
-size_t cspd_vector_bsearch(cspd_vector *vec, const void *key)
+size_t cspd_vector_bsearch(cspd_vector *vec, const void *key, cspd_cmp cmp)
 {
     size_t lo = 0;
     size_t hi = vec->size - 1;
@@ -187,7 +192,7 @@ size_t cspd_vector_bsearch(cspd_vector *vec, const void *key)
     do {
         size_t m     = (lo + (hi - lo) / 2);
         void  *mid   = cspd_vector_get(vec, m);
-        int    match = vec->_cmp(mid, key);
+        int    match = cmp(mid, key);
 
         if (match == 0) {
             return m;
@@ -201,15 +206,15 @@ size_t cspd_vector_bsearch(cspd_vector *vec, const void *key)
     return SIZE_MAX;
 }
 
-void cspd_vector_bsort(cspd_vector *vec)
+void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
 {
     for (size_t i = 0; i < vec->size; i++) {
         for (size_t j = 0; j < vec->size - 1 - i; j++) {
-            void *a   = cspd_vector_get(vec, j);
-            void *b   = cspd_vector_get(vec, j + 1);
-            int   cmp = vec->_cmp(a, b);
+            void *a      = cspd_vector_get(vec, j);
+            void *b      = cspd_vector_get(vec, j + 1);
+            int   result = cmp(a, b);
 
-            if (cmp != -1) {
+            if (result != -1) {
                 cspd_swap(a, b, vec->data_size);
             }
         }
@@ -219,38 +224,39 @@ void cspd_vector_bsort(cspd_vector *vec)
 void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
 {
     cspd_vector vec_b;
-    cspd_vector_init(&vec_b, sizeof(int32));
-    vec_b._cmp = cmp;
+    cspd_vector_init(&vec_b, vec_a->data_size);
 
     cspd_vector_copy(&vec_b, vec_a);
-    split_merge(vec_a, 0, size, &vec_b);
+    split_merge(vec_a, 0, size, &vec_b, cmp);
 
     cspd_vector_clear(&vec_b);
 }
 
-void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
+                       cspd_cmp cmp)
 {
     if (lo >= hi) {
         return;
     }
 
-    ptrdiff_t pvt_idx = partition(vec, lo, hi);
+    ptrdiff_t pvt_idx = partition(vec, lo, hi, cmp);
 
-    cspd_vector_qsort(vec, lo, pvt_idx - 1);
-    cspd_vector_qsort(vec, pvt_idx + 1, hi);
+    cspd_vector_qsort(vec, lo, pvt_idx - 1, cmp);
+    cspd_vector_qsort(vec, pvt_idx + 1, hi, cmp);
 }
 
-static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
+                           cspd_cmp cmp)
 {
     void     *pvt = cspd_vector_get(vec, hi);
     void     *tmp;
     ptrdiff_t idx = lo - 1;
 
     for (ptrdiff_t i = lo; i < hi; ++i) {
-        void *curr = cspd_vector_get(vec, i);
+        void *curr   = cspd_vector_get(vec, i);
 
-        int   cmp  = vec->_cmp(curr, pvt);
-        if (cmp != 1) {
+        int   result = cmp(curr, pvt);
+        if (result != 1) {
             idx++;
             tmp = cspd_vector_get(vec, idx);
             cspd_swap(curr, tmp, vec->data_size);
@@ -265,7 +271,7 @@ static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
 }
 
 static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
-                        cspd_vector *vec_a)
+                        cspd_vector *vec_a, cspd_cmp cmp)
 {
     if (end - begin <= 1) {
         return;
@@ -273,26 +279,26 @@ static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
 
     size_t mid = (end + begin) / 2;
 
-    split_merge(vec_a, begin, mid, vec_b);
-    split_merge(vec_a, mid, end, vec_b);
+    split_merge(vec_a, begin, mid, vec_b, cmp);
+    split_merge(vec_a, mid, end, vec_b, cmp);
 
-    merge(vec_b, begin, mid, end, vec_a);
+    merge(vec_b, begin, mid, end, vec_a, cmp);
 }
 
 static void merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
-                  cspd_vector *vec_a)
+                  cspd_vector *vec_a, cspd_cmp cmp)
 {
     size_t i = begin;
     size_t j = mid;
 
     for (size_t k = begin; k < end; k++) {
-        void *lrh = cspd_vector_get(vec_a, i); // left run head
-        void *rrh = cspd_vector_get(vec_a, j); // right run head
-        int   cmp = vec_a->_cmp(lrh, rrh);
+        void *lrh    = cspd_vector_get(vec_a, i); // left run head
+        void *rrh    = cspd_vector_get(vec_a, j); // right run head
+        int   result = cmp(lrh, rrh);
 
         void *tmp =
             cspd_vector_get(vec_b, k); // pointer to place sorted element
-        if (i < mid && (j >= end || cmp != 1)) {
+        if (i < mid && (j >= end || result != 1)) {
             cspd_swap(lrh, tmp, vec_b->data_size);
             i = i + 1;
         } else {

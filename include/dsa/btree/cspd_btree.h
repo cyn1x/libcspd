@@ -28,11 +28,6 @@
  *
  * @var cspd_btree::root
  * Pointer to the first node in the binary tree.
- *
- * @var cspd_btree::_cmp
- * Comparator function used for sorting or searching. The library contains some
- * basic types as seen below, which can be assigned to the `_cmp` variable. You
- * can also provide your own comparator functions.
  */
 
 /**
@@ -115,7 +110,7 @@
  */
 
 /**
- * @fn void cspd_btree_bfs(cspd_btnode *node, cspd_vector *vec);
+ * @fn void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
  *
  * @brief
  *
@@ -203,8 +198,6 @@ typedef struct cspd_btree_t
 {
     size_t       data_size;
     cspd_btnode *root;
-
-    int (*_cmp)(const void *, const void *);
 
 } cspd_btree;
 

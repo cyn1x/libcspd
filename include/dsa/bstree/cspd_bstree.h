@@ -76,6 +76,7 @@
 #define CSPD_BSTREE_H
 
 #include "cspd_defs.h"
+#include "cspd_types.h"
 
 #ifdef __clang__
 #include <stddef.h>
@@ -96,8 +97,6 @@ typedef struct cspd_bstree_t
 {
     cspd_bstnode *root;
     size_t        data_size;
-
-    int (*_cmp)(const void *, const void *);
 } cspd_bstree;
 
 CSPD_API void          cspd_bstree_init(cspd_bstree *bstree, size_t data_size);

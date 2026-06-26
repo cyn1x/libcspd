@@ -4,8 +4,16 @@
 #include "cspd_mem.h"
 #include <string.h>
 
-static void balance(cspd_bstree *bstree, cspd_bstnode *root,
-                    cspd_bstnode *node);
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ * @param
+ */
+static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
+                    cspd_cmp cmp);
 
 void        cspd_bstree_init(cspd_bstree *bstree, size_t data_size)
 {
@@ -41,9 +49,10 @@ cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data)
     return node;
 }
 
-static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node)
+static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
+                    cspd_cmp cmp)
 {
-    int cmp = bstree->_cmp(root->data, node->data);
+    int result = cmp(root->data, node->data);
 
     // TODO: implementation
 }

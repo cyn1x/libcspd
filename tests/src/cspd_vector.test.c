@@ -12,10 +12,6 @@ static cspd_vector setup(void)
     cspd_vector vec;
     cspd_vector_init(&vec, sizeof(int32));
 
-    //! [Comparator function]
-    vec._cmp = &int32_cmp; // Set comparator function pointer
-    //! [Comparator function]
-
     int32 a = 7;
     int32 b = 8;
     int32 c = 7;
@@ -41,8 +37,6 @@ void cspd_vector_test(void)
     cspd_vector vec;
     cspd_vector_init(&vec, sizeof(int32));
     //! [Initialize]
-
-    vec._cmp = &int32_cmp; // Set comparator function pointer
 
     //! [Push elements]
     int32 w = 3;
@@ -157,7 +151,7 @@ void cspd_vector_test(void)
     assert(*(int32 *)cspd_vector_back(&vec) == -17);
 
     //! [Bubble sort]
-    cspd_vector_bsort(&vec);
+    cspd_vector_bsort(&vec, int32_cmp);
     // cspd_print_vector(int32, &vec);
     // Output: { -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0
     // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 }
@@ -166,20 +160,20 @@ void cspd_vector_test(void)
     {
         // built-in binary search
         int32   k   = 9;
-        size_t *res = bsearch(&k, vec.data, vec.size, vec.data_size, vec._cmp);
+        size_t *res = bsearch(&k, vec.data, vec.size, vec.data_size, int32_cmp);
         assert(*(int32 *)res == 9);
     }
 
     {
         //! [Custom binary search]
         int32  n   = -2;
-        size_t idx = cspd_vector_bsearch(&vec, &n);
+        size_t idx = cspd_vector_bsearch(&vec, &n, int32_cmp);
         assert(idx == 15);
         //! [Custom binary search]
     }
 
     int32 key  = 4;
-    void *addr = (int32 *)cspd_vector_bsearch(&vec, &key);
+    void *addr = (int32 *)cspd_vector_bsearch(&vec, &key, int32_cmp);
     // printf("Key found at: %p\n", addr);
     assert(addr != NULL);
 
@@ -205,11 +199,6 @@ static void sort_test(void)
     cspd_vector_init(&vec_b, sizeof(int32));
     cspd_vector_init(&vec_c, sizeof(int32));
 
-    // Set comparator function pointers
-    vec_a._cmp = &int32_cmp;
-    vec_b._cmp = &int32_cmp;
-    vec_c._cmp = &int32_cmp;
-
     cspd_vector_copy(&vec_b, &vec_a);
 
     int32 a = 6;
@@ -234,7 +223,7 @@ static void sort_test(void)
     // Output: { 7 8 7 4 10 3 5 }
 
     // built-in quicksort
-    qsort(vec_a.data, vec_a.size, vec_a.data_size, vec_a._cmp);
+    qsort(vec_a.data, vec_a.size, vec_a.data_size, int32_cmp);
 
     // cspd_print_vector(int32, &vec_a);
     // Output: { 3 4 5 7 7 8 10 }
@@ -245,7 +234,7 @@ static void sort_test(void)
     // cspd_print_vector(int32, &vec_b);
     // Output: { 7 8 7 4 10 3 5 }
 
-    cspd_vector_qsort(&vec_b, 0, vec_b.size - 1);
+    cspd_vector_qsort(&vec_b, 0, vec_b.size - 1, int32_cmp);
     // cspd_print_vector(int32, &vec_b);
     // Output: { 3 4 5 7 7 8 10 }
 

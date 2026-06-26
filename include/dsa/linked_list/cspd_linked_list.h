@@ -44,20 +44,6 @@
  *
  * @var cspd_llist::tail
  * Pointer to the last node in the linked list.
- *
- * @var cspd_llist::_cmp
- * Comparator function used for sorting or searching. The library contains some
- * basic types as seen below, which can be assigned to the `_cmp` variable. You
- * can also provide your own comparator functions.
- *
- * @b Example
- * The provided comparator functions can be defined in a header file.
- *
- * @include cspd_defs.test.h
- * Once defined, assign the address of the defined functions from the header
- * file to the comparator function pointer.
- *
- * @snippet cspd_linked_list.test.c Comparator function
  */
 
 /**
@@ -201,8 +187,8 @@
  */
 
 /**
- * @fn void cspd_llist_erase(cspd_llist *llist, cspd_llnode *start, cspd_llnode
- * *end)
+ * @fn void cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
+ * cspd_llnode *end)
  *
  * @brief Erases a range of nodes in a linked list.
  *
@@ -328,7 +314,7 @@
  */
 
 /**
- * @fn void cspd_llist_bsort(cspd_llist *llist)
+ * @fn void cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp)
  *
  * @brief Sorts an array using the bubblesort algorithm.
  *
@@ -338,6 +324,7 @@
  * function pointer to be set.
  *
  * @param llist Pointer to the linked list structure.
+ * @param cmp Comparator function pointer.
  *
  * @returns void
  *
@@ -348,8 +335,8 @@
  */
 
 /**
- * @fn void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo, cspd_llnode
- * *hi)
+ * @fn void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
+ * cspd_llnode *hi, cspd_cmp cmp)
  *
  * @brief Sorts an array using the quicksort algorithm.
  *
@@ -357,8 +344,9 @@
  * use of the Lomuto partition scheme.
  *
  * @param llist Pointer to the linked list structure.
- * @param lo The first node in the linked list.
- * @param hi The last node in the linked list.
+ * @param lo Pointer to the first node in the linked list.
+ * @param hi Pointer to the last node in the linked list.
+ * @param cmp Comparator function pointer.
  *
  * @returns void
  *
@@ -375,6 +363,7 @@
 #define CSPD_LINKED_LIST_H
 
 #include "cspd_defs.h"
+#include "cspd_types.h"
 
 #ifdef __clang__
 #include <stddef.h>
@@ -395,11 +384,8 @@ typedef struct cspd_llnode_t
 typedef struct cspd_llist_t
 {
     size_t       data_size;
-
     cspd_llnode *head;
     cspd_llnode *tail;
-
-    int (*_cmp)(const void *, const void *);
 
 } cspd_llist;
 
@@ -420,9 +406,9 @@ CSPD_API void   cspd_llist_reverse(cspd_llist *llist);
 CSPD_API size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node);
 CSPD_API cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key);
 CSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
-CSPD_API void         cspd_llist_bsort(cspd_llist *llist);
+CSPD_API void         cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp);
 CSPD_API void         cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
-                                       cspd_llnode *hi);
+                                       cspd_llnode *hi, cspd_cmp cmp);
 
 #define cspd_print_llist(type, llist, reverse)                                 \
     {                                                                          \

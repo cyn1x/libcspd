@@ -28,16 +28,17 @@ static cspd_llnode *node_init(size_t data_size);
  *
  *
  *
- * @param llist Pointer to the linked list structure.
+ * @param lo
+ * @param hi
+ * @param cmp Comparator function pointer.
  *
  * @returns
  */
-static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
-                              cspd_llnode *hi);
+static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp);
 
 static void         delete_node(cspd_llist *llist, cspd_llnode *node);
 
-void                cspd_llist_init(cspd_llist *llist, size_t data_size)
+void        cspd_llist_init(cspd_llist *llist, size_t data_size)
 {
     llist->data_size = data_size;
 
@@ -391,14 +392,14 @@ cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key)
     return NULL;
 }
 
-void cspd_llist_bsort(cspd_llist *llist)
+void cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp)
 {
     cspd_llnode *a = llist->head;
     while (a) {
 
         cspd_llnode *b = llist->head;
         while (b) {
-            if (llist->_cmp(a->data, b->data) != 1) {
+            if (cmp(a->data, b->data) != 1) {
                 void *tmp = a->data;
                 a->data   = b->data;
                 b->data   = tmp;
@@ -409,20 +410,20 @@ void cspd_llist_bsort(cspd_llist *llist)
     }
 }
 
-void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo, cspd_llnode *hi)
+void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo, cspd_llnode *hi,
+                      cspd_cmp cmp)
 {
     if (!lo || !hi || lo->prev == hi) {
         return;
     }
 
-    cspd_llnode *pvt = partition(llist, lo, hi);
+    cspd_llnode *pvt = partition(lo, hi, cmp);
 
-    cspd_llist_qsort(llist, lo, pvt->prev);
-    cspd_llist_qsort(llist, pvt->next, hi);
+    cspd_llist_qsort(llist, lo, pvt->prev, cmp);
+    cspd_llist_qsort(llist, pvt->next, hi, cmp);
 }
 
-static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
-                              cspd_llnode *hi)
+static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp)
 {
     cspd_llnode *pvt  = hi;
     cspd_llnode *curr = lo;
@@ -430,9 +431,9 @@ static cspd_llnode *partition(cspd_llist *llist, cspd_llnode *lo,
     void        *tmp;
 
     while (curr != NULL) {
-        int cmp = llist->_cmp(curr->data, pvt->data);
+        int result = cmp(curr->data, pvt->data);
 
-        if (cmp == -1) {
+        if (result == -1) {
             tmp        = idx->data;
             idx->data  = curr->data;
             curr->data = tmp;

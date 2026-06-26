@@ -15,10 +15,6 @@ static cspd_llist setup(void)
     cspd_llist_init(&llist, sizeof(int32));
     //! [Initialize]
 
-    //! [Comparator function]
-    llist._cmp = &int32_cmp; // Set comparator function pointer
-    //! [Comparator function]
-
     //! [Appending nodes]
     int32 a = 7;
     int32 b = 8;
@@ -46,20 +42,12 @@ void cspd_linked_list_test(void)
     assert(*(int32 *)llist_a.head->data == 7);
     assert(*(int32 *)llist_a.tail->data == 5);
 
-    //! [Comparator function]
-    llist_a._cmp = &int32_cmp; // Set comparator function pointer
-    //! [Comparator function]
-
     cspd_llist llist_b;
 
     cspd_llist_init(&llist_b, sizeof(int32));
     cspd_llist_copy(&llist_b, &llist_a);
     assert(*(int32 *)llist_b.head->data == 7);
     assert(*(int32 *)llist_b.tail->data == 5);
-
-    //! [Comparator function]
-    llist_b._cmp = &int32_cmp; // Set comparator function pointer
-    //! [Comparator function]
 
     // cspd_print_llist(int32, &llist_a, NULL);
     // Output: { 7 8 7 4 10 3 5 }
@@ -173,8 +161,6 @@ void move_test(void)
 {
     cspd_llist llist = setup();
 
-    llist._cmp       = &int32_cmp; // Set comparator function pointer
-
     //! [Moving nodes]
     // cspd_print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
@@ -247,8 +233,6 @@ void swap_test(void)
 {
     cspd_llist llist = setup();
 
-    llist._cmp       = &int32_cmp; // Set comparator function pointer
-
     //! [Swapping nodes]
     // cspd_print_llist(int32, &llist, false);
     // Output: { 7 8 7 3 10 4 5 }
@@ -310,16 +294,11 @@ void sort_test(void)
 {
     cspd_llist llist_a = setup();
 
-    llist_a._cmp       = &int32_cmp; // Set comparator function pointer
-
     cspd_llist llist_b;
     cspd_llist llist_c;
 
     cspd_llist_init(&llist_b, sizeof(int32));
     cspd_llist_init(&llist_c, sizeof(int32));
-
-    llist_b._cmp = &int32_cmp; // Set comparator function pointer
-    llist_c._cmp = &int32_cmp; // Set comparator function pointer
 
     //! [Copying lists]
     cspd_llist_copy(&llist_b, &llist_a);
@@ -350,7 +329,7 @@ void sort_test(void)
     // Output: { 7 8 7 4 10 3 5 }
 
     //! [Bubble sort]
-    cspd_llist_bsort(&llist_a);
+    cspd_llist_bsort(&llist_a, int32_cmp);
     // cspd_print_llist(int32, &llist_a, false);
     // Output: { 3 4 5 7 7 8 10 }
     // cspd_print_llist(int32, &llist_a, true);
@@ -363,7 +342,7 @@ void sort_test(void)
     // Output: { 7 8 7 4 10 3 5 }
 
     //! [Quicksort]
-    cspd_llist_qsort(&llist_b, llist_b.head, llist_b.tail);
+    cspd_llist_qsort(&llist_b, llist_b.head, llist_b.tail, int32_cmp);
     // cspd_print_llist(int32, &llist_b, false);
     // Output: { 3 4 5 7 7 8 10 }
     // cspd_print_llist(int32, &llist_b, true);
@@ -375,7 +354,7 @@ void sort_test(void)
     // cspd_print_llist(int32, &llist_c, false);
     // Output: { 5 4 7 10 -1 19 4 3 33 3 7 8 7 }
 
-    cspd_llist_qsort(&llist_c, llist_c.head, llist_c.tail);
+    cspd_llist_qsort(&llist_c, llist_c.head, llist_c.tail, int32_cmp);
     // cspd_print_llist(int32, &llist_c, false);
     // Output: { -1 3 3 4 4 5 7 7 7 8 10 19 33 }
     // cspd_print_llist(int32, &llist_c, true);

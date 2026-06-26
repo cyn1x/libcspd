@@ -30,20 +30,6 @@
  *
  * @var cspd_vector::data
  * Memory which has been allocated for the vector to store data.
- *
- * @var cspd_vector::_cmp
- * Comparator function used for sorting or searching. The library contains some
- * basic types as seen below, which can be assigned to the `_cmp` variable. You
- * can also provide your own comparator functions.
- *
- * @b Example
- * The provided comparator functions can be defined in a header file.
- *
- * @include cspd_defs.test.h
- * Once defined, assign the address of the defined functions from the header
- * file to the comparator function pointer.
- *
- * @snippet cspd_vector.test.c Comparator function
  */
 
 /**
@@ -139,7 +125,7 @@
  */
 
 /**
- * @fn void cspd_vector_insert(cspd_vector *vec, size_t  idx, size_t  size,
+ * @fn void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
  * const void *data)
  *
  * @brief Inserts one or many elements at the specified index.
@@ -242,21 +228,17 @@
  */
 
 /**
- * @fn size_t cspd_vector_bsearch(cspd_vector *vec, const void *key)
+ * @fn size_t cspd_vector_bsearch(cspd_vector *vec, const void *key,
+ * cspd_cmp cmp)
  *
  * @brief Checks if an element exists in the vector.
  *
  * Uses a divide-and-conquer approach in checking whether an element exists in
- * the vector. Use of this function requires the comparator function pointer to
- * be set.
- *
- * @warning The `_cmp` function pointer in the `vector` struct must be assigned
- * before calling this function.
- *
- * @warning This function assumes that the vector is sorted before being called.
+ * the vector.
  *
  * @param vec The vector to be searched.
  * @param data The value to be searched for.
+ * @param cmp Comparator function.
  *
  * @returns An index of `size_t` of the element that was found or SIZE_MAX if
  * not found.
@@ -268,19 +250,16 @@
  */
 
 /**
- * @fn void cspd_vector_bsort(cspd_vector *vec)
+ * @fn void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
  *
  * @brief Sorts a vector using the bubblesort algorithm.
  *
  * Sorts a vector using the bubble sort algorithm. It is not recommended to use
  * this algorithm over the others available. However, it remains in the library
- * for demonstration purposes. Use of this function requires the comparator
- * function pointer to be set.
- *
- * @warning The `_cmp` function pointer in the `vector` struct must be assigned
- * before calling this function.
+ * for demonstration purposes.
  *
  * @param vec The vector to be sorted.
+ * @param cmp Comparator function.
  *
  * @b Example
  * @snippet cspd_vector.test.c Bubble sort
@@ -289,20 +268,8 @@
  */
 
 /**
- * @fn void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
- *
- * @brief Sorts a vector using the mergesort algorithm.
- *
- * Sorts a vector using the top-down implementation of the mergesort algorithm.
- * Use of this function requires the comparator function to be set.
- *
- * @param vec The vector to be sorted.
- *
- * @see https://en.wikipedia.org/wiki/Merge_sort
- */
-
-/**
- * @fn void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi)
+ * @fn void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
+ * cspd_cmp cmp)
  *
  * @brief Sorts a vector using the quicksort algorithm.
  *
@@ -312,10 +279,24 @@
  * @param vec The vector to be sorted.
  * @param lo Index of the first element in the vector
  * @param hi Index of the last element of in the vector
+ * @param cmp Comparator function.
  *
  * @returns The index of the next pivot point.
  *
  * @see https://en.wikipedia.org/wiki/Quicksort
+ */
+
+/**
+ * @fn void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
+ *
+ * @brief Sorts a vector using the mergesort algorithm.
+ *
+ * Sorts a vector using the top-down implementation of the mergesort algorithm.
+ *
+ * @param vec The vector to be sorted.
+ * @param cmp Comparator function.
+ *
+ * @see https://en.wikipedia.org/wiki/Merge_sort
  */
 
 #ifndef CSPD_VECTOR_H
@@ -339,8 +320,6 @@ typedef struct cspd_vector_t
     size_t data_size;
     void  *data;
 
-    int (*_cmp)(const void *, const void *);
-
 } cspd_vector;
 
 CSPD_API void   cspd_vector_init(cspd_vector *vec, size_t data_size);
@@ -354,9 +333,11 @@ CSPD_API void  *cspd_vector_resize(cspd_vector *vec, size_t size);
 CSPD_API void   cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
 CSPD_API void   cspd_vector_reverse(cspd_vector *vec);
 CSPD_API size_t cspd_vector_lsearch(cspd_vector *vec, const void *key);
-CSPD_API size_t cspd_vector_bsearch(cspd_vector *vec, const void *key);
-CSPD_API void   cspd_vector_bsort(cspd_vector *vec);
-CSPD_API void   cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi);
+CSPD_API size_t cspd_vector_bsearch(cspd_vector *vec, const void *key,
+                                    cspd_cmp cmp);
+CSPD_API void   cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
+CSPD_API void   cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
+                                  cspd_cmp cmp);
 CSPD_API void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp);
 
 #define cspd_print_vector(type, vec)                                           \
