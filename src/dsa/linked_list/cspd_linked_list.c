@@ -2,7 +2,7 @@
 
 #include "cspd_linked_list.h"
 #include "cspd_mem.h"
-#include <stdbool.h>
+#include <string.h>
 
 /**
  * @internal
@@ -19,7 +19,7 @@
  * @b Example
  * @snippet cspd_linked_list.test.c Initialize
  */
-static cspd_llnode *node_init(size_t data_size);
+static cspd_llnode *node_init(usize data_size);
 
 /**
  * @internal
@@ -48,7 +48,7 @@ static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp);
  */
 static void delete_node(cspd_llist *llist, cspd_llnode *node);
 
-void        cspd_llist_init(cspd_llist *llist, size_t data_size)
+void        cspd_llist_init(cspd_llist *llist, usize data_size)
 {
     llist->data_size = data_size;
 
@@ -56,7 +56,7 @@ void        cspd_llist_init(cspd_llist *llist, size_t data_size)
     llist->tail      = NULL;
 }
 
-cspd_llnode *node_init(size_t data_size)
+cspd_llnode *node_init(usize data_size)
 {
     cspd_llnode *node = cspd_malloc(sizeof(cspd_llnode));
 
@@ -112,7 +112,7 @@ void cspd_llist_prepend(cspd_llist *llist, void *data)
     llist->head = node;
 }
 
-void cspd_llist_insert(cspd_llist *llist, void *data, size_t idx)
+void cspd_llist_insert(cspd_llist *llist, void *data, usize idx)
 {
     cspd_llnode *node = node_init(llist->data_size);
     cspd_llnode *curr = llist->head;
@@ -126,7 +126,7 @@ void cspd_llist_insert(cspd_llist *llist, void *data, size_t idx)
         return;
     }
 
-    for (size_t i = 0; i < idx; i++) {
+    for (usize i = 0; i < idx; i++) {
         if (curr->next == NULL) {
             // TODO: handle out of bounds
 
@@ -373,9 +373,9 @@ cspd_llnode *cspd_llist_find(cspd_llist *llist, const void *key)
     return node;
 }
 
-size_t cspd_llist_index(cspd_llist *llist, cspd_llnode *node)
+usize cspd_llist_index(cspd_llist *llist, cspd_llnode *node)
 {
-    size_t       idx  = 0;
+    usize        idx  = 0;
     cspd_llnode *curr = llist->head;
     while (curr && curr != node) {
         idx++;

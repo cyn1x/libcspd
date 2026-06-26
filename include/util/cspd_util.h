@@ -4,7 +4,7 @@
  */
 
 /**
- * @fn swap(void *pa, void *pb, size_t size)
+ * @fn swap(void *pa, void *pb, usize size)
  *
  * @internal
  *
@@ -19,7 +19,7 @@
  */
 
 /**
- * @fn cspd_print_binary(void *data, size_t size)
+ * @fn cspd_print_binary(void *data, usize size)
  *
  * @brief Prints out the binary representation of the given data.
  *
@@ -34,6 +34,7 @@
 #define CSPD_UTIL_H
 
 #include "cspd_defs.h"
+#include "cspd_types.h"
 
 #ifdef __clang__
 #include <stddef.h>
@@ -43,8 +44,8 @@
 extern "C" {
 #endif // __cplusplus
 
-void          cspd_swap(void *pa, void *pb, size_t size);
-CSPD_API void cspd_print_binary(void *data, size_t size);
+void          cspd_swap(void *pa, void *pb, usize size);
+CSPD_API void cspd_print_binary(void *data, usize size);
 
 #ifdef __cplusplus
 }

@@ -4,7 +4,7 @@
 #include "cspd_types.h"
 #include <stdio.h>
 
-void cspd_swap(void *pa, void *pb, size_t size)
+void cspd_swap(void *pa, void *pb, usize size)
 {
     u8  tmp;
     u8 *a = pa, *b = pb;
@@ -16,7 +16,7 @@ void cspd_swap(void *pa, void *pb, size_t size)
     }
 }
 
-void cspd_print_binary(void *data, size_t size)
+void cspd_print_binary(void *data, usize size)
 {
     // https://code-vault.net/lesson/0iqp12va9m:1603820088926
     for (u64 i = 0; i < size; i++) {

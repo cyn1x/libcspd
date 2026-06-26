@@ -18,7 +18,7 @@
  */
 
 /**
- * @fn void cspd_stack_init(cspd_stack *stack, size_t data_size)
+ * @fn void cspd_stack_init(cspd_stack *stack, usize data_size)
  *
  * @brief Data structure representation of a stack.
  *
@@ -115,7 +115,7 @@ typedef struct cspd_stack_t
 
 } cspd_stack;
 
-CSPD_API void  cspd_stack_init(cspd_stack *stack, size_t data_size);
+CSPD_API void  cspd_stack_init(cspd_stack *stack, usize data_size);
 CSPD_API void  cspd_stack_push(cspd_stack *stack, void *data);
 CSPD_API void  cspd_stack_pop(cspd_stack *stack);
 CSPD_API void *cspd_stack_peek(cspd_stack *stack);

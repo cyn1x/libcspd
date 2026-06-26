@@ -2,7 +2,6 @@
 
 #include "cspd_bstree.h"
 #include "cspd_mem.h"
-#include <string.h>
 
 /**
  * @internal
@@ -15,13 +14,13 @@
 static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
                     cspd_cmp cmp);
 
-void        cspd_bstree_init(cspd_bstree *bstree, size_t data_size)
+void        cspd_bstree_init(cspd_bstree *bstree, usize data_size)
 {
     bstree->root      = NULL;
     bstree->data_size = data_size;
 }
 
-static cspd_bstnode *cspd_bstnode_init(void *data, size_t data_size)
+static cspd_bstnode *cspd_bstnode_init(void *data, usize data_size)
 {
     cspd_bstnode *node = cspd_malloc(sizeof(cspd_bstnode));
 

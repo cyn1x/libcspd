@@ -30,7 +30,7 @@
  */
 
 /**
- * @fn void cspd_bstree_init(cspd_bstree *bstree, size_t data_size);
+ * @fn void cspd_bstree_init(cspd_bstree *bstree, usize data_size);
  *
  * @brief
  *
@@ -96,17 +96,17 @@ typedef struct cspd_bstnode_t
 typedef struct cspd_bstree_t
 {
     cspd_bstnode *root;
-    size_t        data_size;
+    usize         data_size;
 } cspd_bstree;
 
-CSPD_API void          cspd_bstree_init(cspd_bstree *bstree, size_t data_size);
+CSPD_API void          cspd_bstree_init(cspd_bstree *bstree, usize data_size);
 CSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
 CSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
 
 #define cspd_print_bstree(type, vec)                                           \
     {                                                                          \
         printf("{ ");                                                          \
-        for (size_t i = 0; i < (vec)->size; ++i) {                             \
+        for (usize i = 0; i < (vec)->size; ++i) {                              \
             cspd_bstnode *_node = *(cspd_bstnode **)cspd_vector_get(vec, i);   \
             cspd_print((*(type *)_node->data), " ");                           \
         }                                                                      \

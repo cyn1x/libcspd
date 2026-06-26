@@ -4,50 +4,50 @@
 #include "cspd_linked_list.h"
 #include "cspd_mem.h"
 
-static void update_pointers(cspd_stack *stack_t);
+static void update_pointers(cspd_stack *stack);
 
-void        cspd_stack_init(cspd_stack *stack_t, size_t data_size)
+void        cspd_stack_init(cspd_stack *stack, size_t data_size)
 {
     cspd_llist llist;
     cspd_llist_init(&llist, data_size);
 
-    stack_t->llist = llist;
+    stack->llist = llist;
 }
 
-void cspd_stack_push(cspd_stack *stack_t, void *data)
+void cspd_stack_push(cspd_stack *stack, void *data)
 {
-    cspd_llist_prepend(&stack_t->llist, data);
-    update_pointers(stack_t);
+    cspd_llist_prepend(&stack->llist, data);
+    update_pointers(stack);
 }
 
-void cspd_stack_pop(cspd_stack *stack_t)
+void cspd_stack_pop(cspd_stack *stack)
 {
-    cspd_llnode *tmp = stack_t->top->next;
+    cspd_llnode *tmp = stack->top->next;
 
-    cspd_free(stack_t->top->data);
-    cspd_free(stack_t->top);
+    cspd_free(stack->top->data);
+    cspd_free(stack->top);
 
-    stack_t->llist.head = tmp;
+    stack->llist.head = tmp;
 
-    update_pointers(stack_t);
+    update_pointers(stack);
 }
 
-void *cspd_stack_peek(cspd_stack *stack_t)
+void *cspd_stack_peek(cspd_stack *stack)
 {
-    return stack_t->top->data;
+    return stack->top->data;
 }
 
-void cspd_stack_clear(cspd_stack *stack_t)
+void cspd_stack_clear(cspd_stack *stack)
 {
-    while (stack_t->top != NULL) {
-        cspd_stack_pop(stack_t);
+    while (stack->top != NULL) {
+        cspd_stack_pop(stack);
     }
 }
 
-static void update_pointers(cspd_stack *stack_t)
+static void update_pointers(cspd_stack *stack)
 {
-    if (stack_t->llist.head == stack_t->llist.tail) {
-        stack_t->bottom = stack_t->llist.tail;
+    if (stack->llist.head == stack->llist.tail) {
+        stack->bottom = stack->llist.tail;
     }
-    stack_t->top = stack_t->llist.head;
+    stack->top = stack->llist.head;
 }

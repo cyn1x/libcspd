@@ -31,7 +31,7 @@
  */
 
 /**
- * @fn void cspd_btree_init(cspd_btree *btree, size_t data_size);
+ * @fn void cspd_btree_init(cspd_btree *btree, usize data_size);
  *
  * @brief
  *
@@ -141,7 +141,7 @@
  */
 
 /**
- * @fn size_t cspd_btree_count(cspd_btnode *node);
+ * @fn usize cspd_btree_count(cspd_btnode *node);
  *
  * @brief
  *
@@ -196,12 +196,12 @@ typedef struct cspd_btnode_t
 
 typedef struct cspd_btree_t
 {
-    size_t       data_size;
+    usize        data_size;
     cspd_btnode *root;
 
 } cspd_btree;
 
-CSPD_API void         cspd_btree_init(cspd_btree *btree, size_t data_size);
+CSPD_API void         cspd_btree_init(cspd_btree *btree, usize data_size);
 CSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
                                      void *data);
 CSPD_API cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
@@ -213,13 +213,13 @@ CSPD_API void         cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
 CSPD_API void         cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
 CSPD_API void         cspd_btree_invert(cspd_btnode *node);
 CSPD_API i32          cspd_btree_height(cspd_btnode *node);
-CSPD_API size_t       cspd_btree_count(cspd_btnode *node);
+CSPD_API usize        cspd_btree_count(cspd_btnode *node);
 CSPD_API void         cspd_btree_clear(cspd_btree *btree);
 
 #define cspd_print_btree(type, vec)                                            \
     {                                                                          \
         printf("{ ");                                                          \
-        for (size_t i = 0; i < (vec)->size; ++i) {                             \
+        for (usize i = 0; i < (vec)->size; ++i) {                              \
             cspd_btnode *_node = *(cspd_btnode **)cspd_vector_get(vec, i);     \
             cspd_print((*(type *)_node->data), " ");                           \
         }                                                                      \

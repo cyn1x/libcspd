@@ -33,7 +33,7 @@
  */
 
 /**
- * @fn void cspd_vector_init(cspd_vector *vec, size_t data_size)
+ * @fn void cspd_vector_init(cspd_vector *vec, usize data_size)
  *
  * @brief Initializes a new vector.
  *
@@ -70,7 +70,7 @@
  */
 
 /**
- * @fn static inline void *cspd_vector_get(const cspd_vector *vec, size_t idx)
+ * @fn static inline void *cspd_vector_get(const cspd_vector *vec, usize idx)
  *
  * @brief Retrieves an element from the vector.
  *
@@ -86,7 +86,7 @@
  */
 
 /**
- * @fn void cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
+ * @fn void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
  *
  * @brief Copies data to the vector.
  *
@@ -125,7 +125,7 @@
  */
 
 /**
- * @fn void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
+ * @fn void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
  * const void *data)
  *
  * @brief Inserts one or many elements at the specified index.
@@ -143,7 +143,7 @@
  */
 
 /**
- * @fn void cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
+ * @fn void cspd_vector_erase(cspd_vector *vec, usize begin, usize end)
  *
  * @brief Erases one or many elements from a vector.
  *
@@ -174,7 +174,7 @@
  */
 
 /**
- * @fn void *cspd_vector_resize(cspd_vector *vec, size_t size)
+ * @fn void *cspd_vector_resize(cspd_vector *vec, usize size)
  *
  * @brief Resizes the vector.
  *
@@ -218,7 +218,7 @@
  * @param vec The vector to be searched.
  * @param key The value to be searched for.
  *
- * @returns An index of `size_t` of the element that was found or SIZE_MAX if
+ * @returns An index of `usize` of the element that was found or SIZE_MAX if
  * not found.
  *
  * @b Example
@@ -228,7 +228,7 @@
  */
 
 /**
- * @fn size_t cspd_vector_bsearch(cspd_vector *vec, const void *key,
+ * @fn usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
  * cspd_cmp cmp)
  *
  * @brief Checks if an element exists in the vector.
@@ -240,7 +240,7 @@
  * @param data The value to be searched for.
  * @param cmp Comparator function.
  *
- * @returns An index of `size_t` of the element that was found or SIZE_MAX if
+ * @returns An index of `usize` of the element that was found or SIZE_MAX if
  * not found.
  *
  * @b Example
@@ -268,7 +268,7 @@
  */
 
 /**
- * @fn void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
+ * @fn void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
  * cspd_cmp cmp)
  *
  * @brief Sorts a vector using the quicksort algorithm.
@@ -287,7 +287,7 @@
  */
 
 /**
- * @fn void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
+ * @fn void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp)
  *
  * @brief Sorts a vector using the mergesort algorithm.
  *
@@ -315,41 +315,41 @@ extern "C" {
 
 typedef struct cspd_vector_t
 {
-    size_t capacity;
-    size_t size;
-    size_t data_size;
-    void  *data;
+    usize capacity;
+    usize size;
+    usize data_size;
+    void *data;
 
 } cspd_vector;
 
-CSPD_API void   cspd_vector_init(cspd_vector *vec, size_t data_size);
-CSPD_API void   cspd_vector_set(cspd_vector *vec, size_t idx, const void *data);
-CSPD_API void   cspd_vector_push(cspd_vector *vec, const void *data);
-CSPD_API void   cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
-                                   const void *data);
-CSPD_API void   cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end);
-CSPD_API void   cspd_vector_clear(cspd_vector *vec);
-CSPD_API void  *cspd_vector_resize(cspd_vector *vec, size_t size);
-CSPD_API void   cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
-CSPD_API void   cspd_vector_reverse(cspd_vector *vec);
-CSPD_API size_t cspd_vector_lsearch(cspd_vector *vec, const void *key);
-CSPD_API size_t cspd_vector_bsearch(cspd_vector *vec, const void *key,
-                                    cspd_cmp cmp);
-CSPD_API void   cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
-CSPD_API void   cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
-                                  cspd_cmp cmp);
-CSPD_API void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp);
+CSPD_API void  cspd_vector_init(cspd_vector *vec, usize data_size);
+CSPD_API void  cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
+CSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
+CSPD_API void  cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
+                                  const void *data);
+CSPD_API void  cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
+CSPD_API void  cspd_vector_clear(cspd_vector *vec);
+CSPD_API void *cspd_vector_resize(cspd_vector *vec, usize size);
+CSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
+CSPD_API void  cspd_vector_reverse(cspd_vector *vec);
+CSPD_API usize cspd_vector_lsearch(cspd_vector *vec, const void *key);
+CSPD_API usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
+                                   cspd_cmp cmp);
+CSPD_API void  cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
+CSPD_API void  cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
+                                 cspd_cmp cmp);
+CSPD_API void  cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
 
 #define cspd_print_vector(type, vec)                                           \
     {                                                                          \
         printf("{ ");                                                          \
-        for (size_t i = 0; i < (vec)->size; ++i) {                             \
+        for (usize i = 0; i < (vec)->size; ++i) {                              \
             cspd_print((*(type *)cspd_vector_get(vec, i)), " ");               \
         }                                                                      \
         printf("} \n");                                                        \
     }
 
-static inline void *cspd_vector_get(const cspd_vector *vec, size_t idx)
+static inline void *cspd_vector_get(const cspd_vector *vec, usize idx)
 {
     return (u8 *)vec->data + vec->data_size * idx;
 }

@@ -3,6 +3,7 @@
 #include "cspd_vector.h"
 #include "cspd_mem.h"
 #include "cspd_util.h"
+#include <string.h>
 
 /**
  * @internal
@@ -26,8 +27,7 @@ static const int MIN_CAPACITY = 32;
  *
  * @returns The index of the next pivot point.
  */
-static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
-                           cspd_cmp cmp);
+static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp);
 
 /**
  * @internal
@@ -44,7 +44,7 @@ static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
  * @param cmp Comparator function pointer.
  *
  */
-static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
+static void split_merge(cspd_vector *vec_b, usize begin, usize end,
                         cspd_vector *vec_a, cspd_cmp cmp);
 
 /**
@@ -62,10 +62,10 @@ static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
  * @param vec_a The vector to be sorted
  * @param cmp Comparator function pointer.
  */
-static void merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
+static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
                   cspd_vector *vec_a, cspd_cmp cmp);
 
-void        cspd_vector_init(cspd_vector *vec, size_t data_size)
+void        cspd_vector_init(cspd_vector *vec, usize data_size)
 {
     vec->data_size = data_size;
     vec->capacity  = MIN_CAPACITY;
@@ -73,7 +73,7 @@ void        cspd_vector_init(cspd_vector *vec, size_t data_size)
     vec->data      = cspd_calloc(vec->capacity, vec->data_size);
 }
 
-void cspd_vector_set(cspd_vector *vec, size_t idx, const void *data)
+void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
 {
     void *dst = (u8 *)vec->data + idx * vec->data_size;
     memcpy(dst, data, vec->data_size);
@@ -88,11 +88,11 @@ void cspd_vector_push(cspd_vector *vec, const void *data)
     cspd_vector_set(vec, vec->size++, data);
 }
 
-void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
+void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
                         const void *data)
 {
     // TODO: handle index out of bounds
-    size_t amt = size / vec->data_size;
+    usize amt = size / vec->data_size;
 
     vec->size += amt;
     if (vec->size >= vec->capacity) {
@@ -103,19 +103,19 @@ void cspd_vector_insert(cspd_vector *vec, size_t idx, size_t size,
 
     // Use the previous vector_t size to determine the amount of bytes to be
     // moved before additional bytes are inserted
-    ptrdiff_t diff   = idx - (vec->size - amt);
-    size_t    mv_amt = llabs(diff);
+    isize diff   = idx - (vec->size - amt);
+    usize mv_amt = llabs(diff);
 
     memmove(dst, src, mv_amt * vec->data_size);
     memcpy(src, data, amt * vec->data_size);
 }
 
-void cspd_vector_erase(cspd_vector *vec, size_t begin, size_t end)
+void cspd_vector_erase(cspd_vector *vec, usize begin, usize end)
 {
     // TODO: check range is within bounds
-    void  *dst = cspd_vector_get(vec, begin);
-    void  *src = cspd_vector_get(vec, end);
-    size_t amt = end - begin;
+    void *dst = cspd_vector_get(vec, begin);
+    void *src = cspd_vector_get(vec, end);
+    usize amt = end - begin;
 
     // Invert the declarations above if erasing in a negative direction
     if (end < begin) {
@@ -138,7 +138,7 @@ void cspd_vector_clear(cspd_vector *vec)
     vec->data      = NULL;
 }
 
-void *cspd_vector_resize(cspd_vector *vec, size_t size)
+void *cspd_vector_resize(cspd_vector *vec, usize size)
 {
     if (size == 0) {
         vec->capacity *= 2;
@@ -162,7 +162,7 @@ void cspd_vector_copy(cspd_vector *dst, cspd_vector *src)
 
 void cspd_vector_reverse(cspd_vector *vec)
 {
-    for (size_t i = 0; i < vec->size / 2; i++) {
+    for (usize i = 0; i < vec->size / 2; i++) {
         void *src = cspd_vector_get(vec, i);
         void *dst = cspd_vector_get(vec, vec->size - 1 - i);
 
@@ -170,9 +170,9 @@ void cspd_vector_reverse(cspd_vector *vec)
     }
 }
 
-size_t cspd_vector_lsearch(cspd_vector *vec, const void *key)
+usize cspd_vector_lsearch(cspd_vector *vec, const void *key)
 {
-    for (size_t idx = 0; idx < vec->size; idx++) {
+    for (usize idx = 0; idx < vec->size; idx++) {
         void *cmp    = cspd_vector_get(vec, idx);
         int   exists = memcmp(cmp, key, vec->data_size);
 
@@ -184,15 +184,15 @@ size_t cspd_vector_lsearch(cspd_vector *vec, const void *key)
     return SIZE_MAX;
 }
 
-size_t cspd_vector_bsearch(cspd_vector *vec, const void *key, cspd_cmp cmp)
+usize cspd_vector_bsearch(cspd_vector *vec, const void *key, cspd_cmp cmp)
 {
-    size_t lo = 0;
-    size_t hi = vec->size - 1;
+    usize lo = 0;
+    usize hi = vec->size - 1;
 
     do {
-        size_t m     = (lo + (hi - lo) / 2);
-        void  *mid   = cspd_vector_get(vec, m);
-        int    match = cmp(mid, key);
+        usize m     = (lo + (hi - lo) / 2);
+        void *mid   = cspd_vector_get(vec, m);
+        int   match = cmp(mid, key);
 
         if (match == 0) {
             return m;
@@ -208,8 +208,8 @@ size_t cspd_vector_bsearch(cspd_vector *vec, const void *key, cspd_cmp cmp)
 
 void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
 {
-    for (size_t i = 0; i < vec->size; i++) {
-        for (size_t j = 0; j < vec->size - 1 - i; j++) {
+    for (usize i = 0; i < vec->size; i++) {
+        for (usize j = 0; j < vec->size - 1 - i; j++) {
             void *a      = cspd_vector_get(vec, j);
             void *b      = cspd_vector_get(vec, j + 1);
             int   result = cmp(a, b);
@@ -221,7 +221,7 @@ void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
     }
 }
 
-void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
+void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp)
 {
     cspd_vector vec_b;
     cspd_vector_init(&vec_b, vec_a->data_size);
@@ -232,27 +232,25 @@ void cspd_vector_msort(cspd_vector *vec_a, size_t size, cspd_cmp cmp)
     cspd_vector_clear(&vec_b);
 }
 
-void cspd_vector_qsort(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
-                       cspd_cmp cmp)
+void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
 {
     if (lo >= hi) {
         return;
     }
 
-    ptrdiff_t pvt_idx = partition(vec, lo, hi, cmp);
+    isize pvt_idx = partition(vec, lo, hi, cmp);
 
     cspd_vector_qsort(vec, lo, pvt_idx - 1, cmp);
     cspd_vector_qsort(vec, pvt_idx + 1, hi, cmp);
 }
 
-static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
-                           cspd_cmp cmp)
+static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
 {
-    void     *pvt = cspd_vector_get(vec, hi);
-    void     *tmp;
-    ptrdiff_t idx = lo - 1;
+    void *pvt = cspd_vector_get(vec, hi);
+    void *tmp;
+    isize idx = lo - 1;
 
-    for (ptrdiff_t i = lo; i < hi; ++i) {
+    for (isize i = lo; i < hi; ++i) {
         void *curr   = cspd_vector_get(vec, i);
 
         int   result = cmp(curr, pvt);
@@ -270,14 +268,14 @@ static ptrdiff_t partition(cspd_vector *vec, ptrdiff_t lo, ptrdiff_t hi,
     return idx;
 }
 
-static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
+static void split_merge(cspd_vector *vec_b, usize begin, usize end,
                         cspd_vector *vec_a, cspd_cmp cmp)
 {
     if (end - begin <= 1) {
         return;
     }
 
-    size_t mid = (end + begin) / 2;
+    usize mid = (end + begin) / 2;
 
     split_merge(vec_a, begin, mid, vec_b, cmp);
     split_merge(vec_a, mid, end, vec_b, cmp);
@@ -285,13 +283,13 @@ static void split_merge(cspd_vector *vec_b, size_t begin, size_t end,
     merge(vec_b, begin, mid, end, vec_a, cmp);
 }
 
-static void merge(cspd_vector *vec_b, size_t begin, size_t mid, size_t end,
+static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
                   cspd_vector *vec_a, cspd_cmp cmp)
 {
-    size_t i = begin;
-    size_t j = mid;
+    usize i = begin;
+    usize j = mid;
 
-    for (size_t k = begin; k < end; k++) {
+    for (usize k = begin; k < end; k++) {
         void *lrh    = cspd_vector_get(vec_a, i); // left run head
         void *rrh    = cspd_vector_get(vec_a, j); // right run head
         int   result = cmp(lrh, rrh);

@@ -2,6 +2,7 @@
 
 #include "cspd_btree.h"
 #include "cspd_mem.h"
+#include <string.h>
 
 /**
  * @internal
@@ -23,13 +24,13 @@ static void recursive_delete(cspd_btnode *node);
  */
 static void delete_node(cspd_btnode *node);
 
-void        cspd_btree_init(cspd_btree *btree, size_t data_size)
+void        cspd_btree_init(cspd_btree *btree, usize data_size)
 {
     btree->root      = NULL;
     btree->data_size = data_size;
 }
 
-static cspd_btnode *btnode_init(void *data, size_t data_size)
+static cspd_btnode *btnode_init(void *data, usize data_size)
 {
     cspd_btnode *node = cspd_malloc(sizeof(cspd_btnode));
 
@@ -199,13 +200,13 @@ i32 cspd_btree_height(cspd_btnode *node)
     return (lh > rh ? lh : rh) + 1;
 }
 
-size_t cspd_btree_count(cspd_btnode *node)
+usize cspd_btree_count(cspd_btnode *node)
 {
     cspd_vector vec;
     cspd_vector_init(&vec, sizeof(cspd_btnode *));
     cspd_btree_preorder(node, &vec);
 
-    size_t size = vec.size;
+    usize size = vec.size;
     cspd_vector_clear(&vec);
 
     return size;

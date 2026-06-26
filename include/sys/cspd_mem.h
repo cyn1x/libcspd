@@ -71,7 +71,7 @@
  */
 
 /**
- * @fn void *cspd_malloc(size_t size)
+ * @fn void *cspd_malloc(usize size)
  *
  * @internal
  *
@@ -87,7 +87,7 @@
  */
 
 /**
- * @fn *cspd_calloc(size_t number, size_t size)
+ * @fn *cspd_calloc(usize number, usize size)
  *
  * @internal
  *
@@ -96,8 +96,8 @@
  * Defaults to the default implementation of `calloc` in the C standard library
  * if no memory allocator has been defined by the library implementer.
  *
- * @param size_t Number of elements to allocate.
- * @param size_t Size in bytes of each element.
+ * @param usize Number of elements to allocate.
+ * @param usize Size in bytes of each element.
  *
  * @return Pointer to allocated memory, or `NULL` on failure.
  *
@@ -105,7 +105,7 @@
  */
 
 /**
- * @fn *cspd_realloc(void *block, size_t size)
+ * @fn *cspd_realloc(void *block, usize size)
  *
  * @internal
  *
@@ -116,7 +116,7 @@
  * if no memory reallocator has been defined by the library implementer.
  *
  * @param void Pointer to a previously allocated block of memory.
- * @param size_t Size in bytes of the new block.
+ * @param usize Size in bytes of the new block.
  *
  * @return Pointer to the reallocated memory, or `NULL` on failure.
  *
@@ -143,16 +143,15 @@
 #define CSPD_MEM_H
 
 #include "cspd_defs.h"
-#include <stdlib.h>
-#include <string.h>
+#include "cspd_types.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
-typedef void *(*cspd_malloc_func)(size_t size);
-typedef void *(*cspd_calloc_func)(size_t number, size_t size);
-typedef void *(*cspd_realloc_func)(void *block, size_t size);
+typedef void *(*cspd_malloc_func)(usize size);
+typedef void *(*cspd_calloc_func)(usize number, usize size);
+typedef void *(*cspd_realloc_func)(void *block, usize size);
 typedef void (*cspd_free_func)(void *block);
 
 CSPD_API void cspd_get_mem_functions(cspd_malloc_func  *malloc_func,
@@ -163,9 +162,9 @@ CSPD_API void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
                                      cspd_calloc_func  calloc_func,
                                      cspd_realloc_func realloc_func,
                                      cspd_free_func    free_func);
-void         *cspd_malloc(size_t size);
-void         *cspd_calloc(size_t number, size_t size);
-void         *cspd_realloc(void *block, size_t size);
+void         *cspd_malloc(usize size);
+void         *cspd_calloc(usize number, usize size);
+void         *cspd_realloc(void *block, usize size);
 void          cspd_free(void *block);
 
 #ifdef __cplusplus
