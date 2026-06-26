@@ -36,7 +36,17 @@ static cspd_llnode *node_init(size_t data_size);
  */
 static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp);
 
-static void         delete_node(cspd_llist *llist, cspd_llnode *node);
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ *
+ * @param llist Pointer to the linked list structure.
+ * @param llnode Pointer to the linked list node.
+ */
+static void delete_node(cspd_llist *llist, cspd_llnode *node);
 
 void        cspd_llist_init(cspd_llist *llist, size_t data_size)
 {

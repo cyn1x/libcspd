@@ -3,7 +3,24 @@
 #include "cspd_btree.h"
 #include "cspd_mem.h"
 
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ * @param node
+ */
 static void recursive_delete(cspd_btnode *node);
+
+/**
+ * @internal
+ *
+ * @brief
+ *
+ *
+ * @param node
+ */
 static void delete_node(cspd_btnode *node);
 
 void        cspd_btree_init(cspd_btree *btree, size_t data_size)

@@ -103,6 +103,8 @@
 /**
  * @fn void cspd_llist_insert(cspd_llist *llist, void *data, size_t idx)
  *
+ * @brief Prepends a new node before the node at the given index.
+ *
  * Initializes a new node and copies the given data into memory. The node is
  * inserted at the position given by `idx`, with the new node preceding the node
  * at position `idx`.
