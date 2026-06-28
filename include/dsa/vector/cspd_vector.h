@@ -320,6 +320,122 @@ static inline void cspd_vector_pop(cspd_vector *vec)
         printf("} \n");                                                        \
     }
 
+/**
+ * @brief Declares a typed vector and its associated functions for a given type.
+ *
+ * Generates a typedef for a `NAME_vector` type and the following function
+ * declarations:
+ *   - `NAME_vector_init()`
+ *   - `NAME_vector_set()`
+ *   - `NAME_vector_push()`
+ *   - `NAME_vector_insert()`
+ *   - `NAME_vector_erase()`
+ *   - `NAME_vector_clear()`
+ *   - `NAME_vector_resize()`
+ *   - `NAME_vector_copy()`
+ *   - `NAME_vector_reverse()`
+ *   - `NAME_vector_lsearch()`
+ *   - `NAME_vector_bsearch()`
+ *   - `NAME_vector_bsort()`
+ *   - `NAME_vector_qsort()`
+ *   - `NAME_vector_msort()`
+ *
+ * @param NAME  The name prefix used for the generated type and functions.
+ * @param TYPE  The element type whose size is used to initialize the vector.
+ *
+ * @note This macro must be invoked at file scope, not inside a function.
+ *
+ * @par Example:
+ * @code
+ *   cspd_vector_declare(int, int);
+ *
+ *   i32_vector v;
+ *   i32_vector_init(&v);
+ * @endcode
+ */
+#define cspd_vector_declare(NAME, TYPE)                                        \
+                                                                               \
+    typedef cspd_vector NAME##_vector;                                         \
+                                                                               \
+    static inline void  NAME##_vector_init(NAME##_vector *vec)                 \
+    {                                                                          \
+        cspd_vector_init(vec, sizeof(TYPE));                                   \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_set(NAME##_vector *vec, usize idx,        \
+                                         const TYPE *data)                     \
+    {                                                                          \
+        cspd_vector_set(vec, idx, (const void *)data);                         \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_push(NAME##_vector *vec,                  \
+                                          const TYPE    *data)                 \
+    {                                                                          \
+        cspd_vector_push(vec, (const void *)data);                             \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_insert(NAME##_vector *vec, usize idx,     \
+                                            const TYPE *data)                  \
+    {                                                                          \
+        cspd_vector_insert(vec, idx, sizeof(data), (const void *)data);        \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_erase(NAME##_vector *vec, usize begin,    \
+                                           usize end)                          \
+    {                                                                          \
+        cspd_vector_erase(vec, begin, end);                                    \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_clear(NAME##_vector *vec)                 \
+    {                                                                          \
+        cspd_vector_clear(vec);                                                \
+    }                                                                          \
+                                                                               \
+    static inline void *NAME##_vector_resize(NAME##_vector *vec, usize size)   \
+    {                                                                          \
+        return cspd_vector_resize(vec, size);                                  \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_copy(NAME##_vector *dst,                  \
+                                          NAME##_vector *src)                  \
+    {                                                                          \
+        cspd_vector_copy(dst, src);                                            \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_reverse(NAME##_vector *vec)               \
+    {                                                                          \
+        cspd_vector_reverse(vec);                                              \
+    }                                                                          \
+                                                                               \
+    static inline usize NAME##_vector_lsearch(NAME##_vector *vec,              \
+                                              const TYPE    *key)              \
+    {                                                                          \
+        return cspd_vector_lsearch(vec, (const void *)key);                    \
+    }                                                                          \
+                                                                               \
+    static inline usize NAME##_vector_bsearch(NAME##_vector *vec,              \
+                                              const TYPE *key, cspd_cmp cmp)   \
+    {                                                                          \
+        return cspd_vector_bsearch(vec, (const void *)key, cmp);               \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_bsort(NAME##_vector *vec, cspd_cmp cmp)   \
+    {                                                                          \
+        cspd_vector_bsort(vec, cmp);                                           \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_qsort(NAME##_vector *vec, isize lo,       \
+                                           isize hi, cspd_cmp cmp)             \
+    {                                                                          \
+        cspd_vector_qsort(vec, lo, hi, cmp);                                   \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_msort(NAME##_vector *vec, usize size,     \
+                                           cspd_cmp cmp)                       \
+    {                                                                          \
+        cspd_vector_msort(vec, size, cmp);                                     \
+    }
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

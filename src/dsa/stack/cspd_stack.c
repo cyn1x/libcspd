@@ -6,7 +6,7 @@
 
 static void update_pointers(cspd_stack *stack);
 
-void        cspd_stack_init(cspd_stack *stack, size_t data_size)
+void        cspd_stack_init(cspd_stack *stack, usize data_size)
 {
     cspd_llist llist;
     cspd_llist_init(&llist, data_size);

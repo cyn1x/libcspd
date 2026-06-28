@@ -56,7 +56,7 @@ CSPD_API void cspd_stack_init(cspd_stack *stack, usize data_size);
  * @param data_size
  *
  * @b Example
- * @snippet cspd_stack.test.c Enqueue
+ * @snippet cspd_stack.test.c Push
  */
 CSPD_API void cspd_stack_push(cspd_stack *stack, void *data);
 
@@ -96,6 +96,38 @@ CSPD_API void *cspd_stack_peek(cspd_stack *stack);
  * @snippet cspd_stack.test.c Clear
  */
 CSPD_API void cspd_stack_clear(cspd_stack *stack);
+
+/**
+ * @brief Declares a typed stack and its associated functions for a
+ * given type.
+ *
+ * Generates a typedef for a `NAME_stack` type and the following function
+ * declarations:
+ * -
+ *
+ * @param NAME  The name prefix used for the generated type and functions.
+ * @param TYPE  The element type whose size is used to initialize the stack.
+ *
+ * @note This macro must be invoked at file scope, not inside a function.
+ *
+ * @par Example:
+ * @code
+ *   cspd_stack_declare(i32, i32);
+ *
+ *   i32_stack s;
+ *   i32_stack_init(&s);
+ * @endcode
+ */
+#define cspd_stack_declare(NAME, TYPE)                                         \
+                                                                               \
+    typedef cspd_stack NAME##_stack;                                           \
+                                                                               \
+    static inline void NAME##_stack_init(NAME##_stack *stack)                  \
+    {                                                                          \
+        cspd_stack_init(stack, sizeof(TYPE));                                  \
+    }                                                                          \
+                                                                               \
+    // TODO: 0027 - Generic type definitions
 
 #ifdef __cplusplus
 }

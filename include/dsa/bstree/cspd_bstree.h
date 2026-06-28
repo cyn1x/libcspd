@@ -98,6 +98,39 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
         printf("} \n");                                                        \
     }
 
+/**
+ * @brief Declares a typed binary search tree and its associated functions for a
+ * given type.
+ *
+ * Generates a typedef for a `NAME_bstree` type and the following function
+ * declarations:
+ * -
+ *
+ * @param NAME  The name prefix used for the generated type and functions.
+ * @param TYPE  The element type whose size is used to initialize the binary
+ * search tree.
+ *
+ * @note This macro must be invoked at file scope, not inside a function.
+ *
+ * @par Example:
+ * @code
+ *   cspd_bstree_declare(i32, i32);
+ *
+ *   i32_bstree t;
+ *   i32_bstree_init(&t);
+ * @endcode
+ */
+#define cspd_bstree_declare(NAME, TYPE)                                        \
+                                                                               \
+    typedef cspd_bstree NAME##_bstree;                                         \
+                                                                               \
+    static inline void  NAME##_bstree_init(NAME##_bstree *bstree)              \
+    {                                                                          \
+        cspd_bstree_init(bstree, sizeof(TYPE));                                \
+    }                                                                          \
+                                                                               \
+    // TODO: 0027 - Generic type definitions
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

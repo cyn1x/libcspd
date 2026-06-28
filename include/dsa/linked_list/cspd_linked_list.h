@@ -293,7 +293,7 @@ CSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
 /**
  * @brief Sorts an array using the bubblesort algorithm.
  *
- * Sorts a vector using the bubble sort algorithm. It is not recommended to use
+ * Sorts a linked list the bubble sort algorithm. It is not recommended to use
  * this algorithm over the others available. However, it remains in the library
  * for demonstration purposes. Use of this function requires the comparator
  * function pointer to be set.
@@ -311,8 +311,8 @@ CSPD_API void cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp);
 /**
  * @brief Sorts an array using the quicksort algorithm.
  *
- * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
- * use of the Lomuto partition scheme.
+ * Sorts a linked list using the quicksort algorithm. This quicksort algorithm
+ * makes use of the Lomuto partition scheme.
  *
  * @param llist Pointer to the linked list structure.
  * @param lo Pointer to the first node in the linked list.
@@ -352,6 +352,39 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
         }                                                                      \
         printf("} \n");                                                        \
     }
+
+/**
+ * @brief Declares a typed linked list and its associated functions for a given
+ * type.
+ *
+ * Generates a typedef for a `NAME_llist` type and the following function
+ * declarations:
+ * -
+ *
+ * @param NAME  The name prefix used for the generated type and functions.
+ * @param TYPE  The element type whose size is used to initialize the linked
+ * list.
+ *
+ * @note This macro must be invoked at file scope, not inside a function.
+ *
+ * @par Example:
+ * @code
+ *   cspd_llist_declare(i32, i32);
+ *
+ *   i32_llist l;
+ *   i32_llist_init(&l);
+ * @endcode
+ */
+#define cspd_llist_declare(NAME, TYPE)                                         \
+                                                                               \
+    typedef cspd_llist NAME##_llist;                                           \
+                                                                               \
+    static inline void NAME##_llist_init(NAME##_llist *llist)                  \
+    {                                                                          \
+        cspd_llist_init(llist, sizeof(TYPE));                                  \
+    }                                                                          \
+                                                                               \
+    // TODO: 0027 - Generic type definitions
 
 #ifdef __cplusplus
 }

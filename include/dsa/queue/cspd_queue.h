@@ -96,6 +96,38 @@ CSPD_API void *cspd_queue_peek(cspd_queue *queue);
  */
 CSPD_API void cspd_queue_clear(cspd_queue *queue);
 
+/**
+ * @brief Declares a typed queue and its associated functions for a
+ * given type.
+ *
+ * Generates a typedef for a `NAME_queue` type and the following function
+ * declarations:
+ * -
+ *
+ * @param NAME  The name prefix used for the generated type and functions.
+ * @param TYPE  The element type whose size is used to initialize the queue.
+ *
+ * @note This macro must be invoked at file scope, not inside a function.
+ *
+ * @par Example:
+ * @code
+ *   cspd_queue_declare(i32, i32);
+ *
+ *   i32_queue q;
+ *   i32_queue_init(&q);
+ * @endcode
+ */
+#define cspd_queue_declare(NAME, TYPE)                                         \
+                                                                               \
+    typedef cspd_queue NAME##_queue;                                           \
+                                                                               \
+    static inline void NAME##_queue_init(NAME##_queue *queue)                  \
+    {                                                                          \
+        cspd_queue_init(queue, sizeof(TYPE));                                  \
+    }                                                                          \
+                                                                               \
+    // TODO: 0027 - Generic type definitions
+
 #ifdef __cplusplus
 }
 #endif // __cplusplus

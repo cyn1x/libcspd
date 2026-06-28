@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+//! [Generic type declaration]
+cspd_vector_declare(NAME, i32);
+//! [Generic type declaration]
+
 static void vector_test(void);
 static void linked_list_test(void);
 static void queue_test(void);
