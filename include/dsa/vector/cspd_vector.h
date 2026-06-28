@@ -2,21 +2,21 @@
  * @file cspd_vector.h
  */
 
-/**
- * @def cspd_print_vector(type, vec)
- *
- * @brief Prints the contents of the vector.
- *
- * Basic print function for C types residing in a vector by casting each element
- * to the specified type.
- *
- * @param type Type of data to be casted.
- * @param vec The vector to be printed out.
- */
+#ifndef CSPD_VECTOR_H
+#define CSPD_VECTOR_H
+
+#include "cspd_defs.h"
+#include "cspd_types.h"
+
+#ifdef __clang__
+#include <stddef.h>
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 
 /**
- * @typedef struct cspd_vector
- *
  * @brief Data structure for the vector.
  *
  * @var cspd_vector::capacity
@@ -31,10 +31,16 @@
  * @var cspd_vector::data
  * Memory which has been allocated for the vector to store data.
  */
+typedef struct cspd_vector_t
+{
+    usize capacity;
+    usize size;
+    usize data_size;
+    void *data;
+
+} cspd_vector;
 
 /**
- * @fn void cspd_vector_init(cspd_vector *vec, usize data_size)
- *
  * @brief Initializes a new vector.
  *
  * Sets a minimum capacity to prevent expensive memory reallocations soon after
@@ -48,46 +54,9 @@
  * @b Example
  * @snippet cspd_vector.test.c Initialize
  */
+CSPD_API void cspd_vector_init(cspd_vector *vec, usize data_size);
 
 /**
- * @fn static void *cspd_vector_back(const cspd_vector *vec)
- *
- * @brief Retrieves the last element in the vector.
- *
- * @param vec The vector to retrieve the element from.
- *
- * @returns Pointer to the last element in the vector.
- */
-
-/**
- * @fn static inline void *cspd_vector_front(const cspd_vector *vec)
- *
- * @brief Retrieves the first element in the vector.
- *
- * @param vec The vector to retrieve the element from.
- *
- * @returns Pointer to the first element in the vector.
- */
-
-/**
- * @fn static inline void *cspd_vector_get(const cspd_vector *vec, usize idx)
- *
- * @brief Retrieves an element from the vector.
- *
- * Retrieves an element from the vector at the specified index.
- *
- * @param vec The vector to retrieve an element from.
- * @param idx The index of the elment to retrieve.
- *
- * @returns A void pointer to the element.
- *
- * @b Example
- * @snippet cspd_vector.test.c Get element
- */
-
-/**
- * @fn void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
- *
  * @brief Copies data to the vector.
  *
  * Copies data to the specified vector index and calls `vector_update()` to
@@ -97,10 +66,9 @@
  * @param idx The index to copy the data to.
  * @param data The data to be copied into the vector.
  */
+CSPD_API void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
 
 /**
- * @fn void cspd_vector_push(cspd_vector *vec, const void *data)
- *
  * @brief Appends an element to the vector.
  *
  * Adds an element to the end of the vector but will perform a `realloc`
@@ -112,22 +80,9 @@
  * @b Example
  * @snippet cspd_vector.test.c Push elements
  */
+CSPD_API void cspd_vector_push(cspd_vector *vec, const void *data);
 
 /**
- * @fn static inline void cspd_vector_pop(cspd_vector *vec)
- *
- * @brief Removes the last element of the vector.
- *
- * Reduces the size of the vector by a single element and calls to update the
- * back pointer to the new last element after size reduction.
- *
- * @param vec The vector that requires the last element to be removed.
- */
-
-/**
- * @fn void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
- * const void *data)
- *
  * @brief Inserts one or many elements at the specified index.
  *
  * Inserts data at the specified index after calculating the amount of data to
@@ -141,10 +96,10 @@
  * @b Example
  * @snippet cspd_vector.test.c Inserting data
  */
+CSPD_API void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
+                                 const void *data);
 
 /**
- * @fn void cspd_vector_erase(cspd_vector *vec, usize begin, usize end)
- *
  * @brief Erases one or many elements from a vector.
  *
  * Erases data that has a size in bytes in either direction from the given
@@ -158,10 +113,9 @@
  * @b Example
  * @snippet cspd_vector.test.c Erasing data
  */
+CSPD_API void cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
 
 /**
- * @fn void cspd_vector_clear(cspd_vector *vec)
- *
  * @brief Removes all items from a vector.
  *
  * Removes all items from a vector by freeing the memory consumed. The vector
@@ -172,10 +126,9 @@
  *
  * @param vec The vector to be deleted.
  */
+CSPD_API void cspd_vector_clear(cspd_vector *vec);
 
 /**
- * @fn void *cspd_vector_resize(cspd_vector *vec, usize size)
- *
  * @brief Resizes the vector.
  *
  * Increases the size of a vector by doubling the current capacity. This is a
@@ -185,10 +138,9 @@
  *
  * @returns The resized vector.
  */
+CSPD_API void *cspd_vector_resize(cspd_vector *vec, usize size);
 
 /**
- * @fn void cspd_vector_copy(cspd_vector *dst, cspd_vector *src)
- *
  * @brief Copies data from one vector to the other.
  *
  * Copies data from vector `src` heap memory to vector `dst` heap memory.
@@ -196,20 +148,18 @@
  * @param dst The destination for the datasource to be copied to.
  * @param src The datasource for the copy.
  */
+CSPD_API void cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
 
 /**
- * @fn void cspd_vector_reverse(cspd_vector *vec)
- *
  * @brief Reverses the order of elements in a vector
  *
  * Reverses the order of elements in the given vector.
  *
  * @param vec The vector to be reversed.
  */
+CSPD_API void cspd_vector_reverse(cspd_vector *vec);
 
 /**
- * @fn void cspd_vector_lsearch(cspd_vector *vec, const void *key)
- *
  * @brief Checks if an element exists in the vector.
  *
  * Sequentially checks all elements until a match is found or the entire length
@@ -226,11 +176,9 @@
  *
  * @see https://en.wikipedia.org/wiki/Linear_search
  */
+CSPD_API usize cspd_vector_lsearch(cspd_vector *vec, const void *key);
 
 /**
- * @fn usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
- * cspd_cmp cmp)
- *
  * @brief Checks if an element exists in the vector.
  *
  * Uses a divide-and-conquer approach in checking whether an element exists in
@@ -248,10 +196,10 @@
  *
  * @see https://en.wikipedia.org/wiki/Binary_search
  */
+CSPD_API usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
+                                   cspd_cmp cmp);
 
 /**
- * @fn void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
- *
  * @brief Sorts a vector using the bubblesort algorithm.
  *
  * Sorts a vector using the bubble sort algorithm. It is not recommended to use
@@ -267,10 +215,9 @@
  * @see https://en.wikipedia.org/wiki/Bubble_sort
  */
 
+CSPD_API void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
+
 /**
- * @fn void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
- * cspd_cmp cmp)
- *
  * @brief Sorts a vector using the quicksort algorithm.
  *
  * Sorts a vector using the quicksort algorithm. This quicksort algorithm makes
@@ -285,10 +232,10 @@
  *
  * @see https://en.wikipedia.org/wiki/Quicksort
  */
+CSPD_API void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
+                                cspd_cmp cmp);
 
 /**
- * @fn void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp)
- *
  * @brief Sorts a vector using the mergesort algorithm.
  *
  * Sorts a vector using the top-down implementation of the mergesort algorithm.
@@ -298,76 +245,80 @@
  *
  * @see https://en.wikipedia.org/wiki/Merge_sort
  */
+CSPD_API void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
 
-#ifndef CSPD_VECTOR_H
-#define CSPD_VECTOR_H
-
-#include "cspd_defs.h"
-#include "cspd_types.h"
-
-#ifdef __clang__
-#include <stddef.h>
-#endif
-
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
-typedef struct cspd_vector_t
-{
-    usize capacity;
-    usize size;
-    usize data_size;
-    void *data;
-
-} cspd_vector;
-
-CSPD_API void  cspd_vector_init(cspd_vector *vec, usize data_size);
-CSPD_API void  cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
-CSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
-CSPD_API void  cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
-                                  const void *data);
-CSPD_API void  cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
-CSPD_API void  cspd_vector_clear(cspd_vector *vec);
-CSPD_API void *cspd_vector_resize(cspd_vector *vec, usize size);
-CSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
-CSPD_API void  cspd_vector_reverse(cspd_vector *vec);
-CSPD_API usize cspd_vector_lsearch(cspd_vector *vec, const void *key);
-CSPD_API usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
-                                   cspd_cmp cmp);
-CSPD_API void  cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
-CSPD_API void  cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
-                                 cspd_cmp cmp);
-CSPD_API void  cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
-
-#define cspd_print_vector(type, vec)                                           \
-    {                                                                          \
-        printf("{ ");                                                          \
-        for (usize i = 0; i < (vec)->size; ++i) {                              \
-            cspd_print((*(type *)cspd_vector_get(vec, i)), " ");               \
-        }                                                                      \
-        printf("} \n");                                                        \
-    }
-
+/**
+ * @brief Retrieves an element from the vector.
+ *
+ * Retrieves an element from the vector at the specified index.
+ *
+ * @param vec The vector to retrieve an element from.
+ * @param idx The index of the elment to retrieve.
+ *
+ * @returns A void pointer to the element.
+ *
+ * @b Example
+ * @snippet cspd_vector.test.c Get element
+ */
 static inline void *cspd_vector_get(const cspd_vector *vec, usize idx)
 {
     return (u8 *)vec->data + vec->data_size * idx;
 }
 
+/**
+ * @brief Retrieves the last element in the vector.
+ *
+ * @param vec The vector to retrieve the element from.
+ *
+ * @returns Pointer to the last element in the vector.
+ */
 static inline void *cspd_vector_back(const cspd_vector *vec)
 {
     return cspd_vector_get(vec, vec->size - 1);
 }
 
+/**
+ * @brief Retrieves the first element in the vector.
+ *
+ * @param vec The vector to retrieve the element from.
+ *
+ * @returns Pointer to the first element in the vector.
+ */
 static inline void *cspd_vector_front(const cspd_vector *vec)
 {
     return cspd_vector_get(vec, 0);
 }
 
+/**
+ * @brief Removes the last element of the vector.
+ *
+ * Reduces the size of the vector by a single element and calls to update the
+ * back pointer to the new last element after size reduction.
+ *
+ * @param vec The vector that requires the last element to be removed.
+ */
 static inline void cspd_vector_pop(cspd_vector *vec)
 {
     vec->size--;
 }
+
+/**
+ * @brief Prints the contents of the vector.
+ *
+ * Basic print function for C types residing in a vector by casting each element
+ * to the specified type.
+ *
+ * @param TYPE Type of data to be casted.
+ * @param VECTOR The vector to be printed out.
+ */
+#define cspd_print_vector(TYPE, VECTOR)                                        \
+    {                                                                          \
+        printf("{ ");                                                          \
+        for (usize i = 0; i < (VECTOR)->size; ++i) {                           \
+            cspd_print((*(TYPE *)cspd_vector_get(vector, i)), " ");            \
+        }                                                                      \
+        printf("} \n");                                                        \
+    }
 
 #ifdef __cplusplus
 }

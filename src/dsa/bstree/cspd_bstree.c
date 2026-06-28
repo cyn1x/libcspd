@@ -2,6 +2,7 @@
 
 #include "cspd_bstree.h"
 #include "cspd_mem.h"
+#include <string.h>
 
 /**
  * @internal
