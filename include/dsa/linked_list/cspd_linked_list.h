@@ -341,14 +341,14 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
  * @param llist The linked list to be printed out.
  * @param reverse Boolean to control order of printing.
  */
-#define cspd_print_llist(type, llist, reverse)                                 \
+#define cspd_print_llist(TYPE, LIST, REVERSE)                                  \
     {                                                                          \
         printf("{ ");                                                          \
-        cspd_llnode *_curr = !reverse ? (llist)->head : (llist)->tail;         \
+        cspd_llnode *_curr = !REVERSE ? (LIST)->head : (LIST)->tail;           \
                                                                                \
         while (_curr != NULL) {                                                \
-            cspd_print(*(type *)_curr->data, " ");                             \
-            _curr = !reverse ? _curr->next : _curr->prev;                      \
+            cspd_print(*(TYPE *)_curr->data, " ");                             \
+            _curr = !REVERSE ? _curr->next : _curr->prev;                      \
         }                                                                      \
         printf("} \n");                                                        \
     }

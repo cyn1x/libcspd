@@ -20,6 +20,11 @@ static void cspd_print_fn(const char *format, ...) __attribute__((unused));
 extern "C" {
 #endif // __cplusplus
 
+#ifdef __cplusplus
+#define cspd_print(T, V) ; // TODO: C++ implementation
+
+#else
+
 /**
  * @brief Determines the format specifier of a data type.
  *
@@ -29,14 +34,14 @@ extern "C" {
  */
 #define cspd_print_any(X)                                                      \
     _Generic((X),                                                              \
-        int8: "%" PRIi8,                                                       \
-        int16: "%" PRIi16,                                                     \
-        int32: "%" PRIi32,                                                     \
-        int64: "%" PRIi64,                                                     \
-        uint8: "%" PRIu8,                                                      \
-        uint16: "%" PRIu16,                                                    \
-        uint32: "%" PRIu32,                                                    \
-        uint64: "%" PRIu64,                                                    \
+        i8: "%" PRIi8,                                                         \
+        i16: "%" PRIi16,                                                       \
+        i32: "%" PRIi32,                                                       \
+        i64: "%" PRIi64,                                                       \
+        u8: "%" PRIu8,                                                         \
+        u16: "%" PRIu16,                                                       \
+        u32: "%" PRIu32,                                                       \
+        u64: "%" PRIu64,                                                       \
         void *: "%p")
 
 /**
@@ -60,11 +65,13 @@ static void cspd_print_fn(const char *format, ...)
  * to output after `T`, which could be a newline, blank space, or something
  * else.
  *
- * @param T The data to be printed.
- * @param V The value to output after the data has been printed.
+ * @param VALUE The data to be printed.
+ * @param ARGS Additional values to be printed.
  */
 
-#define cspd_print(T, V) cspd_print_fn(cspd_print_any(T), T), cspd_print_fn(V);
+#define cspd_print(VALUE, ARGS)                                                \
+    cspd_print_fn(cspd_print_any(VALUE), VALUE), cspd_print_fn(ARGS);
+#endif
 
 #ifdef __cplusplus
 }

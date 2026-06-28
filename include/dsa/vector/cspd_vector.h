@@ -309,13 +309,13 @@ static inline void cspd_vector_pop(cspd_vector *vec)
  * to the specified type.
  *
  * @param TYPE Type of data to be casted.
- * @param VECTOR The vector to be printed out.
+ * @param VEC The vector to be printed out.
  */
-#define cspd_print_vector(TYPE, VECTOR)                                        \
+#define cspd_print_vector(TYPE, VEC)                                           \
     {                                                                          \
         printf("{ ");                                                          \
-        for (usize i = 0; i < (VECTOR)->size; ++i) {                           \
-            cspd_print((*(TYPE *)cspd_vector_get(vector, i)), " ");            \
+        for (usize i = 0; i < (VEC)->size; ++i) {                              \
+            cspd_print((*(TYPE *)cspd_vector_get(VEC, i)), " ");               \
         }                                                                      \
         printf("} \n");                                                        \
     }
