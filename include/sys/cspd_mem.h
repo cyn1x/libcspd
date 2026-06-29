@@ -2,29 +2,43 @@
  * @file cspd_mem.h
  */
 
+#ifndef CSPD_MEM_H
+#define CSPD_MEM_H
+
+#include "cspd_defs.h"
+#include "cspd_types.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 /**
  * @typedef *cspd_malloc_func
  *
  * @brief Callback function type `cspd_malloc_func`.
  */
+typedef void *(*cspd_malloc_func)(usize size);
 
 /**
  * @typedef *cspd_calloc_func
  *
  * @brief Callback function type `cspd_calloc_func`.
  */
+typedef void *(*cspd_calloc_func)(usize number, usize size);
 
 /**
  * @typedef *cspd_realloc_func
  *
  * @brief Callback function type `cspd_realloc_func`.
  */
+typedef void *(*cspd_realloc_func)(void *block, usize size);
 
 /**
  * @typedef *cspd_free_func
  *
  * @brief Callback function type `cspd_free_func`.
  */
+typedef void (*cspd_free_func)(void *block);
 
 /**
  * @fn void void cspd_get_mem_functions (cspd_malloc_func *malloc_func,
@@ -47,6 +61,10 @@
  *
  * @sa cspd_set_mem_functions
  */
+CSPD_API void cspd_get_mem_functions(cspd_malloc_func  *malloc_func,
+                                     cspd_calloc_func  *calloc_func,
+                                     cspd_realloc_func *realloc_func,
+                                     cspd_free_func    *free_func);
 
 /**
  * @fn void cspd_set_mem_functions (cspd_malloc_func malloc_func,
@@ -69,6 +87,10 @@
  *
  * @sa cspd_get_mem_functions
  */
+CSPD_API void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
+                                     cspd_calloc_func  calloc_func,
+                                     cspd_realloc_func realloc_func,
+                                     cspd_free_func    free_func);
 
 /**
  * @fn void *cspd_malloc(usize size)
@@ -85,6 +107,7 @@
  *
  * @see https://en.wikipedia.org/wiki/C_standard_library
  */
+void *cspd_malloc(usize size);
 
 /**
  * @fn *cspd_calloc(usize number, usize size)
@@ -103,6 +126,7 @@
  *
  * @see https://en.wikipedia.org/wiki/C_standard_library
  */
+void *cspd_calloc(usize number, usize size);
 
 /**
  * @fn *cspd_realloc(void *block, usize size)
@@ -122,6 +146,7 @@
  *
  * @see https://en.wikipedia.org/wiki/C_standard_library
  */
+void *cspd_realloc(void *block, usize size);
 
 /**
  * @fn cspd_free(void *block)
@@ -138,34 +163,7 @@
  *
  * @see https://en.wikipedia.org/wiki/C_standard_library
  */
-
-#ifndef CSPD_MEM_H
-#define CSPD_MEM_H
-
-#include "cspd_defs.h"
-#include "cspd_types.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
-typedef void *(*cspd_malloc_func)(usize size);
-typedef void *(*cspd_calloc_func)(usize number, usize size);
-typedef void *(*cspd_realloc_func)(void *block, usize size);
-typedef void (*cspd_free_func)(void *block);
-
-CSPD_API void cspd_get_mem_functions(cspd_malloc_func  *malloc_func,
-                                     cspd_calloc_func  *calloc_func,
-                                     cspd_realloc_func *realloc_func,
-                                     cspd_free_func    *free_func);
-CSPD_API void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
-                                     cspd_calloc_func  calloc_func,
-                                     cspd_realloc_func realloc_func,
-                                     cspd_free_func    free_func);
-void         *cspd_malloc(usize size);
-void         *cspd_calloc(usize number, usize size);
-void         *cspd_realloc(void *block, usize size);
-void          cspd_free(void *block);
+void cspd_free(void *block);
 
 #ifdef __cplusplus
 }

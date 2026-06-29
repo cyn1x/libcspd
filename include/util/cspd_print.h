@@ -21,7 +21,9 @@ extern "C" {
 #endif // __cplusplus
 
 #ifdef __cplusplus
-#define cspd_print(T, V) ; // TODO: C++ implementation
+
+/**/
+#define cspd_print(VALUE, ARGS) ; // TODO: C++ implementation
 
 #else
 
