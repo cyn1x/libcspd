@@ -323,22 +323,8 @@ static inline void cspd_vector_pop(cspd_vector *vec)
 /**
  * @brief Declares a typed vector and its associated functions for a given type.
  *
- * Generates a typedef for a `NAME_vector` type and the following function
- * declarations:
- *   - `NAME_vector_init()`
- *   - `NAME_vector_set()`
- *   - `NAME_vector_push()`
- *   - `NAME_vector_insert()`
- *   - `NAME_vector_erase()`
- *   - `NAME_vector_clear()`
- *   - `NAME_vector_resize()`
- *   - `NAME_vector_copy()`
- *   - `NAME_vector_reverse()`
- *   - `NAME_vector_lsearch()`
- *   - `NAME_vector_bsearch()`
- *   - `NAME_vector_bsort()`
- *   - `NAME_vector_qsort()`
- *   - `NAME_vector_msort()`
+ * Generates a typedef for a `NAME_vector` type and the functions defined in
+ * this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
  * @param TYPE  The element type whose size is used to initialize the vector.
@@ -347,7 +333,7 @@ static inline void cspd_vector_pop(cspd_vector *vec)
  *
  * @par Example:
  * @code
- *   cspd_vector_declare(int, int);
+ *   cspd_vector_declare(i32, i32);
  *
  *   i32_vector v;
  *   i32_vector_init(&v);

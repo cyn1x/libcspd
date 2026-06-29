@@ -139,7 +139,7 @@ CSPD_API void cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
  * @brief Swaps two nodes in a linked list.
  *
  * Swaps two nodes, `a` and `b` in the given `cspd_llist`, by changing
- * `a->prev->next` from `a` to `b` (the next pointer of the node preceding `a`).
+ * `a->prev->next`from `a` to `b` (the next pointer of the node preceding `a`).
  * The node proceeding `a` has its `prev` pointer changed to point to `b`
  * (`a->next->prev`). Similarly, the same is done for node `b`
  * <STRONG>after</STRONG> `a` has been updated. Finally, the `a` node's `prev`
@@ -299,7 +299,7 @@ CSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
  * function pointer to be set.
  *
  * @param llist Pointer to the linked list structure.
- * @param cmp Comparator function pointer.
+ * @param cmp Comparatorfunction pointer.
  *
  * @b Example
  * @snippet cspd_linked_list.test.c Bubble sort
@@ -357,9 +357,8 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
  * @brief Declares a typed linked list and its associated functions for a given
  * type.
  *
- * Generates a typedef for a `NAME_llist` type and the following function
- * declarations:
- * -
+ * Generates a typedef for a `NAME_llist` and `NAME_llnode` type, and the
+ * functions defined in this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
  * @param TYPE  The element type whose size is used to initialize the linked
@@ -377,14 +376,93 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
  */
 #define cspd_llist_declare(NAME, TYPE)                                         \
                                                                                \
-    typedef cspd_llist NAME##_llist;                                           \
+    typedef cspd_llist  NAME##_llist;                                          \
+    typedef cspd_llnode NAME##_llnode;                                         \
                                                                                \
-    static inline void NAME##_llist_init(NAME##_llist *llist)                  \
+    static inline void  NAME##_llist_init(NAME##_llist *llist)                 \
     {                                                                          \
         cspd_llist_init(llist, sizeof(TYPE));                                  \
     }                                                                          \
                                                                                \
-    // TODO: 0027 - Generic type definitions
+    static inline void NAME##_llist_append(NAME##_llist *llist, TYPE *data)    \
+    {                                                                          \
+        cspd_llist_append(llist, (void *)data);                                \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_prepend(NAME##_llist *llist, TYPE *data)   \
+    {                                                                          \
+        cspd_llist_prepend(llist, (void *)data);                               \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_insert(NAME##_llist *llist, TYPE *data,    \
+                                           usize idx)                          \
+    {                                                                          \
+        cspd_llist_insert(llist, (void *)data, idx);                           \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_move(                                      \
+        NAME##_llist *llist, NAME##_llnode *node, NAME##_llnode *dst,          \
+        NAME##_llnode *dst_ptr)                                                \
+    {                                                                          \
+        cspd_llist_move(llist, node, dst, dst_ptr);                            \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_delete(NAME##_llist *llist,                \
+                                           const TYPE   *key)                  \
+    {                                                                          \
+        cspd_llist_delete(llist, (const void *)key);                           \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_erase(                                     \
+        NAME##_llist *llist, NAME##_llnode *start, NAME##_llnode *end)         \
+    {                                                                          \
+        cspd_llist_erase(llist, start, end);                                   \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_clear(NAME##_llist *llist)                 \
+    {                                                                          \
+        cspd_llist_clear(llist);                                               \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_copy(NAME##_llist *dst, NAME##_llist *src) \
+    {                                                                          \
+        cspd_llist_copy(dst, src);                                             \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_reverse(NAME##_llist *llist)               \
+    {                                                                          \
+        cspd_llist_reverse(llist);                                             \
+    }                                                                          \
+                                                                               \
+    static inline usize NAME##_llist_index(NAME##_llist  *llist,               \
+                                           NAME##_llnode *node)                \
+    {                                                                          \
+        return cspd_llist_index(llist, node);                                  \
+    }                                                                          \
+                                                                               \
+    static inline NAME##_llnode *NAME##_llist_find(NAME##_llist *llist,        \
+                                                   const TYPE   *key)          \
+    {                                                                          \
+        return cspd_llist_find(llist, (const void *)key);                      \
+    }                                                                          \
+                                                                               \
+    static inline NAME##_llnode *NAME##_llist_lsearch(NAME##_llist *llist,     \
+                                                      const TYPE   *key)       \
+    {                                                                          \
+        return cspd_llist_lsearch(llist, (const void *)key);                   \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_bsort(NAME##_llist *llist, cspd_cmp cmp)   \
+    {                                                                          \
+        cspd_llist_bsort(llist, cmp);                                          \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_llist_qsort(NAME##_llist  *llist,                \
+                                          NAME##_llnode *lo,                   \
+                                          NAME##_llnode *hi, cspd_cmp cmp)     \
+    {                                                                          \
+        cspd_llist_qsort(llist, lo, hi, cmp);                                  \
+    }
 
 #ifdef __cplusplus
 }

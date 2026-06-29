@@ -4,9 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-//! [Generic type declaration]
-cspd_vector_declare(NAME, i32);
-//! [Generic type declaration]
+// Declare generic vector type
+cspd_vector_declare(i32, i32);
 
 static void vector_test(void);
 static void linked_list_test(void);
@@ -38,7 +37,7 @@ void cspd_integration_tests(void)
 static void vector_test(void)
 {
     //! [Vector usage with custom data types]
-    cspd_vector vec;
+    i32_vector vec;
     cspd_vector_init(&vec,
                      sizeof(node *)); // Store pointers instead of full structs
 

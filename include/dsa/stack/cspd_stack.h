@@ -101,9 +101,8 @@ CSPD_API void cspd_stack_clear(cspd_stack *stack);
  * @brief Declares a typed stack and its associated functions for a
  * given type.
  *
- * Generates a typedef for a `NAME_stack` type and the following function
- * declarations:
- * -
+ * Generates a typedef for a `NAME_stack` type and the functions defined in
+ * this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
  * @param TYPE  The element type whose size is used to initialize the stack.
@@ -127,7 +126,25 @@ CSPD_API void cspd_stack_clear(cspd_stack *stack);
         cspd_stack_init(stack, sizeof(TYPE));                                  \
     }                                                                          \
                                                                                \
-    // TODO: 0027 - Generic type definitions
+    static inline void NAME##_stack_push(NAME##_stack *stack, TYPE *data)      \
+    {                                                                          \
+        cspd_stack_push(stack, (void *)data);                                  \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_stack_pop(NAME##_stack *stack)                   \
+    {                                                                          \
+        cspd_stack_pop(stack);                                                 \
+    }                                                                          \
+                                                                               \
+    static inline void *NAME##_stack_peek(NAME##_stack *stack)                 \
+    {                                                                          \
+        return cspd_stack_peek(stack);                                         \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_stack_clear(NAME##_stack *stack)                 \
+    {                                                                          \
+        cspd_stack_clear(stack);                                               \
+    }
 
 #ifdef __cplusplus
 }

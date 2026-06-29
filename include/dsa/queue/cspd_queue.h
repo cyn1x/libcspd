@@ -100,9 +100,8 @@ CSPD_API void cspd_queue_clear(cspd_queue *queue);
  * @brief Declares a typed queue and its associated functions for a
  * given type.
  *
- * Generates a typedef for a `NAME_queue` type and the following function
- * declarations:
- * -
+ * Generates a typedef for a `NAME_queue` type and the functions defined in
+ * this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
  * @param TYPE  The element type whose size is used to initialize the queue.
@@ -126,7 +125,25 @@ CSPD_API void cspd_queue_clear(cspd_queue *queue);
         cspd_queue_init(queue, sizeof(TYPE));                                  \
     }                                                                          \
                                                                                \
-    // TODO: 0027 - Generic type definitions
+    static inline void NAME##_queue_enqueue(NAME##_queue *queue, TYPE *data)   \
+    {                                                                          \
+        cspd_queue_enqueue(queue, (void *)data);                               \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_queue_deque(NAME##_queue *queue)                 \
+    {                                                                          \
+        cspd_queue_deque(queue);                                               \
+    }                                                                          \
+                                                                               \
+    static inline void *NAME##_queue_peek(NAME##_queue *queue)                 \
+    {                                                                          \
+        return cspd_queue_peek(queue);                                         \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_queue_clear(NAME##_queue *queue)                 \
+    {                                                                          \
+        cspd_queue_clear(queue);                                               \
+    }
 
 #ifdef __cplusplus
 }

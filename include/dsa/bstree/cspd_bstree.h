@@ -102,9 +102,8 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
  * @brief Declares a typed binary search tree and its associated functions for a
  * given type.
  *
- * Generates a typedef for a `NAME_bstree` type and the following function
- * declarations:
- * -
+ * Generates a typedef for a `NAME_bstree` type and the functions defined in
+ * this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
  * @param TYPE  The element type whose size is used to initialize the binary
@@ -122,14 +121,24 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
  */
 #define cspd_bstree_declare(NAME, TYPE)                                        \
                                                                                \
-    typedef cspd_bstree NAME##_bstree;                                         \
+    typedef cspd_bstnode NAME##_bstnode;                                       \
+    typedef cspd_bstree  NAME##_bstree;                                        \
                                                                                \
-    static inline void  NAME##_bstree_init(NAME##_bstree *bstree)              \
+    static inline void   NAME##_bstree_init(NAME##_bstree *bstree)             \
     {                                                                          \
         cspd_bstree_init(bstree, sizeof(TYPE));                                \
     }                                                                          \
                                                                                \
-    // TODO: 0027 - Generic type definitions
+    static inline NAME##_bstnode *NAME##_bstree_add(NAME##_bstree *bstree,     \
+                                                    TYPE          *data)       \
+    {                                                                          \
+        return cspd_bstree_add(bstree, (void *)data);                          \
+    }                                                                          \
+                                                                               \
+    static inline void cspd_bstree_clear(NAME##_bstree *bstree)                \
+    {                                                                          \
+        cspd_bstree_clear(bstree);                                             \
+    }
 
 #ifdef __cplusplus
 }
