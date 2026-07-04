@@ -7,6 +7,10 @@
 A cross-platform C library providing core data structures and utilities for efficient C program development. The purpose of these utilities is to provide a simple interface for leveraging common data structures when programming in C.
 
 ```c
+/**
+ * Simple program demonstrating one of many utilities available in libcspd.
+ */
+
 #include <cspd_assert.h>
 #include <cspd_print.h>
 #include <cspd_types.h>
@@ -23,7 +27,7 @@ typedef struct point_t
 cspd_vector_declare(point, point);
 
 /**
- * Simple program demonstrating one of many utilities available.
+ * Program entry point
  */
 int main(int argc, char *argv[])
 {
@@ -52,13 +56,7 @@ int main(int argc, char *argv[])
 }
 ```
 
-There is also support for integrating custom memory allocators via the `cspd_mem.h` interface. The default behaviour uses the `stdlib.h` memory functions.
-
-## Background
-
-This project started as a way to learn data structures and algorithms from the ground up, and grew into a set of tools I now use in my own pet projects. It's published here as a reference and source of inspiration for anyone building their own utility library or learning how common data structures are implemented in C.
-
-Contributions, bug reports, and forks are welcome.
+ℹ️ There is also support for integrating custom memory allocators via the `cspd_mem.h` interface. The default behaviour uses the `stdlib.h` memory functions.
 
 ## Installation
 
@@ -233,3 +231,11 @@ Housekeeping:
 - [ ] Host Doxygen documentation online
 - [ ] C++ wrappers for incompatible C functions
 - [x] Memory Allocator Plugin
+
+## Background
+
+This project started as a way to learn data structures and algorithms from the ground up, and grew into a set of tools I now use in my own pet projects after I decided to discard C++ for personal use entirely. I felt I was spending more time learning a language with an astronomical number of generational changes rather than doing the *thing*. I felt as though my confusion with abstractions in C++ was a sign of incompetence. However, it turned out that I was more interested in what goes on "under the hood", so I decided to write my own standard library. I have nothing against C++, or any other tool for that matter. If C++ was required in my working life, I would have no problem spending the time to be proficient at it through textbooks, conferences, and other mediums. Given my professional life does not require C++ — I could not care less for any of that, and I would rather do things from scratch and be more connected to the systems I write.
+
+It's published here as a reference and source of inspiration for anyone building their own utility library or learning how common data structures are implemented in C.
+
+Contributions, bug reports, and forks are welcome.
