@@ -7,33 +7,46 @@
 A cross-platform C library providing core data structures and utilities for efficient C program development. The purpose of these utilities is to provide a simple interface for leveraging common data structures when programming in C.
 
 ```c
-#include "cspd_print.h"
-#include "cspd_vector.h"
+#include <cspd_assert.h>
+#include <cspd_print.h>
+#include <cspd_types.h>
+#include <cspd_vector.h>
 
-/** 
+// Data structure representing a point in two-dimensional space
+typedef struct point_t
+{
+    f32 x;
+    f32 y;
+} point;
+
+// Declare vector with NAME prefix "point", and TYPE point
+cspd_vector_declare(point, point);
+
+/**
  * Simple program demonstrating one of many utilities available.
  */
 int main(int argc, char *argv[])
 {
     // Create a vector to store a contiguous array of elements
-    vector_t vec;
-    cspd_vector_init(&vec, sizeof(int32));
+    point_vector point_vec;
+    point_vector_init(&point_vec);
 
-    // Create 10 elements and push them into the vector
-    for (int32 i = 0; i < 10; ++i) {
-        int32 k = i;
-        cspd_vector_push(&vec, &k);
-    }
+    // Create three point structures to represent a triangle
+    point point_a = { 0.5,  1.0};
+    point point_b = { 0.5, -0.5};
+    point point_c = {-0.5,  0.5};
 
-    cspd_print_vector(int32, &vec);
-    // Output: { 0 1 2 3 4 5 6 7 8 9 }
+    // Push the three new points into the vector
+    point_vector_push(&point_vec, &point_a);
+    point_vector_push(&point_vec, &point_b);
+    point_vector_push(&point_vec, &point_c);
 
-    // Insert data into the vector
-    int32 data[] = {10, 11, 12};
-    cspd_vector_insert(&vec, 4, sizeof(data), &data);
+    cspd_assert(point_vec.size == 3);
 
-    cspd_print_vector(int32, &vec);
-    // Output: { 0 1 2 3 10 11 12 4 5 6 7 8 9 }
+    printf("a triangle has %zu points\n", point_vec.size);
+    // Output: a triangle has 3 points
+
+    point_vector_clear(&point_vec);
 
     return 0;
 }
