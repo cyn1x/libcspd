@@ -16,7 +16,7 @@
  *
  * @param EXPRESSION  The expression to be evaluated.
  */
-#define Assert(EXPRESSION)                                                     \
+#define cspd_assert(EXPRESSION)                                                \
     if (!(EXPRESSION)) {                                                       \
         *(void *)0 = 0;                                                        \
     }
@@ -35,6 +35,6 @@
  *
  * @see https://en.wikipedia.org/wiki/NOP_(code)#C_and_derivatives
  */
-#define Assert(EXPRESSION)
+#define cspd_assert(EXPRESSION)
 
 #endif
