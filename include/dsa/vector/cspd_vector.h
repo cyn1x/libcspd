@@ -361,9 +361,9 @@ static inline void cspd_vector_pop(cspd_vector *vec)
     }                                                                          \
                                                                                \
     static inline void NAME##_vector_insert(NAME##_vector *vec, usize idx,     \
-                                            const TYPE *data)                  \
+                                            usize size, const TYPE *data)      \
     {                                                                          \
-        cspd_vector_insert(vec, idx, sizeof(data), (const void *)data);        \
+        cspd_vector_insert(vec, idx, size, (const void *)data);                \
     }                                                                          \
                                                                                \
     static inline void NAME##_vector_erase(NAME##_vector *vec, usize begin,    \
