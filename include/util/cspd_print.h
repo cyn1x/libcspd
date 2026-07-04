@@ -36,7 +36,7 @@ extern "C" {
  */
 #define cspd_print_any(X)                                                      \
     _Generic((X),                                                              \
-        int8: "%" PRIi8,                                                       \
+        i8: "%" PRIi8,                                                         \
         i16: "%" PRIi16,                                                       \
         i32: "%" PRIi32,                                                       \
         i64: "%" PRIi64,                                                       \
