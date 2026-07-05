@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     (void)argc;
     (void)argv;
 
-    // TODO: #0020 - Dependency management
+    // TODO: 0020 - Dependency management
     // log_init(LOG_TRACE, stdout, NULL);
 
     cspd_vector_test();
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
 
     cspd_integration_tests();
 
-    // TODO: #0021 - Display test results
+    // TODO: 0021 - Display test results
 
     return 0;
 }
