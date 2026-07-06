@@ -1,6 +1,6 @@
 /**
  * @file cspd_cmp.h
- * Generic comparator function declaration.
+ * @brief Generic comparator function declaration.
  */
 
 #ifndef CSPD_CMP_H
@@ -15,7 +15,7 @@
  * @param T Data type to initialized for use with the comparator function.
  *
  * @b Example
- * @snippet cspd_defs.test.h Comparator type initialization
+ * @snippet cspd_cmp.test.h Comparator type declaration
  * @b Example
  * @snippet cspd_vector.test.c Comparator function
  */

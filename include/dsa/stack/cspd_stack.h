@@ -5,7 +5,7 @@
 #ifndef CSPD_STACK_H
 #define CSPD_STACK_H
 
-#include "cspd_defs.h"
+#include "cspd_exports.h"
 #include "cspd_linked_list.h"
 
 #ifdef __cplusplus

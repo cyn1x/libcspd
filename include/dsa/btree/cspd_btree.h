@@ -5,7 +5,7 @@
 #ifndef CSPD_BTREE_H
 #define CSPD_BTREE_H
 
-#include "cspd_defs.h"
+#include "cspd_exports.h"
 #include "cspd_queue.h"
 #include "cspd_vector.h"
 

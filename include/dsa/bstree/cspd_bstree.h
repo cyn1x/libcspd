@@ -5,7 +5,7 @@
 #ifndef CSPD_BSTREE_H
 #define CSPD_BSTREE_H
 
-#include "cspd_defs.h"
+#include "cspd_exports.h"
 #include "cspd_types.h"
 
 #ifdef __clang__

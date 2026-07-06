@@ -1,5 +1,5 @@
 #include "cspd_linked_list.test.h"
-#include "cspd_defs.test.h"
+#include "cspd_cmp.test.h"
 #include <assert.h>
 #include <cspd_linked_list.h>
 #include <cspd_print.h>

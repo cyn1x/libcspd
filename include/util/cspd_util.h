@@ -6,7 +6,7 @@
 #ifndef CSPD_UTIL_H
 #define CSPD_UTIL_H
 
-#include "cspd_defs.h"
+#include "cspd_exports.h"
 #include "cspd_types.h"
 
 #ifdef __clang__

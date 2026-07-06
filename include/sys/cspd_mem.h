@@ -5,7 +5,7 @@
 #ifndef CSPD_MEM_H
 #define CSPD_MEM_H
 
-#include "cspd_defs.h"
+#include "cspd_exports.h"
 #include "cspd_types.h"
 
 #ifdef __cplusplus

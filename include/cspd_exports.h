@@ -1,13 +1,14 @@
 /**
- * @file cspd_defs.h
- * Abstraction of library import and export definitions.
+ * @file cspd_exports.h
+ * @brief Abstraction of library import and export definitions.
+ *
  * Used to include in other header files which require their function
  * definitions to be exported, or source files for function definitions to be
  * imported for use with their associated declarations.
  */
 
-#ifndef CSPD_DEFS_H
-#define CSPD_DEFS_H
+#ifndef CSPD_EXPORTS_H
+#define CSPD_EXPORTS_H
 
 #ifdef _WIN32
 #pragma warning(disable : 5045)
@@ -25,4 +26,4 @@
 #define CSPD_API
 #endif // _WIN32
 
-#endif // CSPD_DEFS_H
+#endif // CSPD_EXPORTS_H

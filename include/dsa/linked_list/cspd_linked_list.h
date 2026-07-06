@@ -5,7 +5,7 @@
 #ifndef CSPD_LINKED_LIST_H
 #define CSPD_LINKED_LIST_H
 
-#include "cspd_defs.h"
+#include "cspd_exports.h"
 #include "cspd_types.h"
 
 #ifdef __clang__
