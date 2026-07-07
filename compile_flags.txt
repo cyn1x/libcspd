@@ -18,3 +18,7 @@
 ./include/util/
 -I
 ./tests/include/
+-I
+./tests/include/dsa/
+-I
+./tests/include/util/
