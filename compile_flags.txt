@@ -1,6 +1,8 @@
 -I
 ./include/
 -I
+./include/common/
+-I
 ./include/dsa/bstree/
 -I
 ./include/dsa/btree/
@@ -19,6 +21,6 @@
 -I
 ./tests/include/
 -I
-./tests/include/dsa/
+./tests/include/common/
 -I
-./tests/include/util/
+./tests/include/dsa/
