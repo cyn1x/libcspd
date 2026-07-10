@@ -1,6 +1,9 @@
 /**
- * @file cspd_util.h
- * General utilities and helpers.
+ * @file cspd_util
+ * @brief General utilities and helpers.
+ *
+ * Contains general utilities that are not semantically suited to other
+ * translation units in the library.
  */
 
 #ifndef CSPD_UTIL_H

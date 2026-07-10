@@ -10,16 +10,14 @@
  * @brief Comparator function initializer.
  *
  * Comparator function initializer that takes a data type to initialize the
- * comparator function for.
+ * function with the `TYPE` parameter prefixed to the function name.
  *
- * @param T Data type to initialized for use with the comparator function.
+ * @param TYPE Data type to initialized for use with the comparator function.
  *
  * @b Example
  * @snippet cspd_cmp.test.h Comparator type declaration
- * @b Example
- * @snippet cspd_vector.test.c Comparator function
  */
-#define cspd_cmp(T)                                                            \
+#define cspd_cmp(TYPE)                                                         \
     /**                                                                        \
      * @brief Compares two variables for equality and inequality.              \
      *                                                                         \
@@ -30,10 +28,10 @@
      *                                                                         \
      * @returns `-1` if `a < b`, `1` if `a > b`, or `0` if `a == b`.           \
      */                                                                        \
-    static inline int T##_cmp(const void *a, const void *b)                    \
+    static inline int TYPE##_cmp(const void *a, const void *b)                 \
     {                                                                          \
-        T arg1 = *(const T *)a;                                                \
-        T arg2 = *(const T *)b;                                                \
+        TYPE arg1 = *(const TYPE *)a;                                          \
+        TYPE arg2 = *(const TYPE *)b;                                          \
                                                                                \
         if (arg1 < arg2) {                                                     \
             return -1;                                                         \

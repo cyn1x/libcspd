@@ -1,6 +1,10 @@
 /**
  * @file cspd_assert.h
+ * @brief Assertion functions for evaluating conditions.
  */
+
+#ifndef CSPD_ASSERT_H
+#define CSPD_ASSERT_H
 
 #if DEBUG
 
@@ -37,4 +41,6 @@
  */
 #define cspd_assert(EXPRESSION)
 
-#endif
+#endif // DEBUG
+
+#endif // CSPD_ASSERT_H

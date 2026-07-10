@@ -6,55 +6,86 @@
 /**
  * @internal
  *
- * @brief
+ * @brief Default malloc function.
  *
+ * Allocate memory using the C standard library implementation in `stdlib.h`
+ * by calling `malloc`.
  *
+ * @param size Size in bytes to allocate.
  *
- * @param
+ * @return Pointer to allocated memory, or `NULL` on failure.
  *
- * @returns
+ * @see
+ * https://en.wikipedia.org/wiki/C_dynamic_memory_allocation#Overview_of_functions
  */
 static void *real_malloc(usize size);
 
 /**
  * @internal
  *
- * @brief
+ * @brief Default calloc function.
  *
+ * Allocate memory using the C standard library implementation in `stdlib.h`
+ * by calling `calloc`.
  *
+ * @param usize Number of elements to allocate.
+ * @param usize Size in bytes of each element.
  *
- * @param
+ * @return Pointer to allocated memory, or `NULL` on failure.
  *
- * @returns
+ * @see
+ * https://en.wikipedia.org/wiki/C_dynamic_memory_allocation#Overview_of_functions
  */
 static void *real_calloc(usize number, usize size);
 
 /**
  * @internal
  *
- * @brief
+ * @brief Default realloc function.
  *
+ * Reallocate memory using the C standard library implementation in `stdlib.h`
+ * by calling `realloc`.
  *
+ * @param void Pointer to a previously allocated block of memory.
+ * @param usize Size in bytes of the new block.
  *
- * @param
+ * @return Pointer to the reallocated memory, or `NULL` on failure.
  *
- * @returns
+ * @see
+ * https://en.wikipedia.org/wiki/C_dynamic_memory_allocation#Overview_of_functions
  */
 static void *real_realloc(void *block, usize size);
 
 /**
  * @internal
  *
- * @brief
+ * @brief Default free function.
  *
+ * Free memory using the C standard library implementation in `stdlib.h` by
+ * calling `free`.
  *
+ * @param void Pointer to a previously allocated block of memory.
  *
- * @param
- *
- * @returns
+ * @see
+ * https://en.wikipedia.org/wiki/C_dynamic_memory_allocation#Overview_of_functions
  */
 static void real_free(void *block);
 
+/**
+ * @brief Data structure encapsulating callbacks to memory functions.
+ *
+ * @var mem::cspd_malloc_func
+ * Callback function for malloc.
+ *
+ * @var mem::cspd_calloc_func
+ * Callback function for calloc.
+ *
+ * @var mem::cspd_realloc_func
+ * Callback function for realloc.
+ *
+ * @var mem::cspd_free_func
+ * Callback function for free.
+ */
 static struct
 {
     cspd_malloc_func  malloc_func;

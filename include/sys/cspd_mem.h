@@ -1,5 +1,9 @@
 /**
  * @file cspd_mem.h
+ * @brief Memory management.
+ *
+ * Configurable memory functions to attach with custom memory allocators. Uses
+ * memory functions in `stdlib.h` by default.
  */
 
 #ifndef CSPD_MEM_H
@@ -13,38 +17,26 @@ extern "C" {
 #endif // __cplusplus
 
 /**
- * @typedef *cspd_malloc_func
- *
  * @brief Callback function type `cspd_malloc_func`.
  */
 typedef void *(*cspd_malloc_func)(usize size);
 
 /**
- * @typedef *cspd_calloc_func
- *
  * @brief Callback function type `cspd_calloc_func`.
  */
 typedef void *(*cspd_calloc_func)(usize number, usize size);
 
 /**
- * @typedef *cspd_realloc_func
- *
  * @brief Callback function type `cspd_realloc_func`.
  */
 typedef void *(*cspd_realloc_func)(void *block, usize size);
 
 /**
- * @typedef *cspd_free_func
- *
  * @brief Callback function type `cspd_free_func`.
  */
 typedef void (*cspd_free_func)(void *block);
 
 /**
- * @fn void void cspd_get_mem_functions (cspd_malloc_func *malloc_func,
- * cspd_calloc_func *calloc_func, cspd_realloc_func *realloc_func,
- * cspd_free_func *free_func)
- *
  * @brief Retrieves the currently configured memory functions.
  *
  * Stores the addresses of the current configured memory functions to the
@@ -67,10 +59,6 @@ CSPD_API void cspd_get_mem_functions(cspd_malloc_func  *malloc_func,
                                      cspd_free_func    *free_func);
 
 /**
- * @fn void cspd_set_mem_functions (cspd_malloc_func malloc_func,
- * cspd_calloc_func calloc_func, cspd_realloc_func  realloc_func,
- * cspd_free_func free_func)
- *
  * @brief Overrides the default memory functions.
  *
  * Optional override for the implementer to set a custom memory allocator. All
@@ -93,8 +81,6 @@ CSPD_API void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
                                      cspd_free_func    free_func);
 
 /**
- * @fn void *cspd_malloc(usize size)
- *
  * @internal
  *
  * @brief Allocates memory using the currently configured allocator.
@@ -102,7 +88,8 @@ CSPD_API void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
  * Defaults to the `malloc` implementation in the C standard library
  * if no memory allocator has been defined by the library implementer.
  *
- * @param size Size in of bytes.
+ * @param size Size in bytes to allocate.
+ *
  * @return Pointer to allocated memory, or `NULL` on failure.
  *
  * @see https://en.wikipedia.org/wiki/C_standard_library
@@ -110,8 +97,6 @@ CSPD_API void cspd_set_mem_functions(cspd_malloc_func  malloc_func,
 void *cspd_malloc(usize size);
 
 /**
- * @fn *cspd_calloc(usize number, usize size)
- *
  * @internal
  *
  * @brief Allocates blocks of memory using the currently configured allocator.
@@ -129,8 +114,6 @@ void *cspd_malloc(usize size);
 void *cspd_calloc(usize number, usize size);
 
 /**
- * @fn *cspd_realloc(void *block, usize size)
- *
  * @internal
  *
  * @brief Reallocates a block of memory using the currently configured
@@ -149,8 +132,6 @@ void *cspd_calloc(usize number, usize size);
 void *cspd_realloc(void *block, usize size);
 
 /**
- * @fn cspd_free(void *block)
- *
  * @internal
  *
  * @brief Reallocates a block of memory using the currently configured

@@ -1,6 +1,6 @@
 /**
- * @file cspd_print.h
- * Generic `printf()` wrapper.
+ * @file cspd_print
+ * @brief Generic `printf()` wrapper functions.
  *
  * @see http://www.robertgamble.net/2012/01/c11-generic-selections.html
  */
@@ -73,7 +73,8 @@ static void cspd_print_fn(const char *format, ...)
 
 #define cspd_print(VALUE, ARGS)                                                \
     cspd_print_fn(cspd_print_any(VALUE), VALUE), cspd_print_fn(ARGS);
-#endif
+
+#endif // __cplusplus
 
 #ifdef __cplusplus
 }
