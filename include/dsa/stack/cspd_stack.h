@@ -136,9 +136,9 @@ CSPD_API void cspd_stack_clear(cspd_stack *stack);
         cspd_stack_pop(stack);                                                 \
     }                                                                          \
                                                                                \
-    static inline void *NAME##_stack_peek(NAME##_stack *stack)                 \
+    static inline TYPE *NAME##_stack_peek(NAME##_stack *stack)                 \
     {                                                                          \
-        return cspd_stack_peek(stack);                                         \
+        return (TYPE *)cspd_stack_peek(stack);                                 \
     }                                                                          \
                                                                                \
     static inline void NAME##_stack_clear(NAME##_stack *stack)                 \

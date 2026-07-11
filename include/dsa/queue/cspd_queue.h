@@ -135,9 +135,9 @@ CSPD_API void cspd_queue_clear(cspd_queue *queue);
         cspd_queue_deque(queue);                                               \
     }                                                                          \
                                                                                \
-    static inline void *NAME##_queue_peek(NAME##_queue *queue)                 \
+    static inline TYPE *NAME##_queue_peek(NAME##_queue *queue)                 \
     {                                                                          \
-        return cspd_queue_peek(queue);                                         \
+        return (TYPE *)cspd_queue_peek(queue);                                 \
     }                                                                          \
                                                                                \
     static inline void NAME##_queue_clear(NAME##_queue *queue)                 \
