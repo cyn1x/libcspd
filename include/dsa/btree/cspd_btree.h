@@ -1,5 +1,8 @@
 /**
  * @file cspd_btree.h
+ * @brief Binary tree data structures and algorithms.
+ *
+ * @see https://en.wikipedia.org/wiki/Binary_tree
  */
 
 #ifndef CSPD_BTREE_H
@@ -55,130 +58,184 @@ typedef struct cspd_btree_t
 } cspd_btree;
 
 /**
- * @brief
+ * @brief Initializes a new binary tree.
  *
+ * Sets `data_size` to the given parameter, and sets the `root` pointer to
+ * `NULL`.
  *
- *
- * @param btree
- * @param data_size
+ * @param btree Pointer to the binary search tree to be initialized.
+ * @param data_size The size of the data type in bytes.
  */
 CSPD_API void cspd_btree_init(cspd_btree *btree, usize data_size);
 
 /**
- * @brief
+ * @brief Adds a node to the binary tree.
  *
+ * Adds a node to the binary tree as a child of a parent node's `left` or
+ * `right` pointers, denoted as `leaf`.
  *
+ * @warning The `leaf` pointer must be `NULL` as overwriting nodes is not valid.
  *
- * @param btree
- * @param data
+ * @param btree Pointer to the binary tree.
+ * @param data Pointer to the data to be added.
+ *
+ * @returns Pointer to the node on success, or `NULL` on failure.
+ *
+ * @b Example
+ * @snippet cspd_btree.test.c Adding nodes
  */
 CSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
                                      void *data);
 
 /**
- * @brief
+ * @brief Inserts a node into the binary tree.
  *
+ * Inserts a node into the binary tree as a child to the given `parent` node. If
+ * `parent` has only one child, then the new node will be added as the second
+ * child to one of the unoccupied `left` or `right` pointers. If `parent` has
+ * two children, then the new node will be assigned to the `left` pointer of
+ * `parent` by default. The new node's `left` or `right` pointer will then
+ * reference the node that `parent` was pointing to prior to insertion.
  *
+ * @param btree Pointer to the binary tree.
+ * @param parent Pointer to the parent of the new node.
  *
- * @param btree
- * @param parent
+ * @returns Pointer to the node on success, or `NULL` on failure.
+ *
+ * @b Example
+ * @snippet cspd_btree.test.c Insertion
  */
 CSPD_API cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
                                         void *data);
 
 /**
- * @brief
+ * @brief Pre-order traversal of a binary tree.
  *
+ * Performs a pre-order traversal of a binary tree and pushes a reference to
+ * each node to the given `vec` in the order they are visited.
  *
+ * @param node Pointer to the node to start the pre-order traversal from.
+ * @param vec Pointer to the initialized vector to store the node references.
  *
- * @param node
- * @param vec
+ * @see https://en.wikipedia.org/wiki/Tree_traversal#Pre-order,_NLR
  */
 CSPD_API void cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
 
 /**
- * @brief
+ * @brief Post-order traversal of a binary tree.
  *
+ * Performs an in-order traversal of a binary tree and pushes a reference to
+ * each node to the given `vec` in the order they are visited.
  *
+ * @param node Pointer to the node to start the in-order traversal from.
+ * @param vec Pointer to the initialized vector to store the node references.
  *
- * @param node
- * @param vec
+ * @see https://en.wikipedia.org/wiki/Tree_traversal#In-order,_LNR
  */
 CSPD_API void cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
 
 /**
- * @brief
+ * @brief Post-order traversal of a binary tree.
  *
+ * Performs a post-order traversal of a binary tree and pushes a reference to
+ * each node to the given `vec` in the order they are visited.
  *
+ * @param node Pointer to the node to start the post-order traversal from.
+ * @param vec Pointer to the initialized vector to store the node references.
  *
- * @param node
- * @param vec
+ * @see https://en.wikipedia.org/wiki/Tree_traversal#Post-order,_LRN
  */
 CSPD_API void cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
 
 /**
- * @brief
+ * @brief Depth-first search of a binary tree.
  *
+ * Traverses a binary tree in level-order by visiting all of the nodes at each
+ * level before moving to the next level.
  *
+ * @param node Pointer to the node to start the depth-first search traversal.
+ * @param vec Pointer to the initialized vector to store the node references.
  *
- * @param node
- * @param vec
+ * @see https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search
  */
 CSPD_API void cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
 
 /**
- * @brief
+ * @brief Breadth-first search of a binary tree.
  *
+ * Performs a traversal of a binary tree in topological order. Adds each node to
+ * the given `vec` in the order they are visited.
  *
+ * @param node Pointer to the node to start the breadth-first search traversal.
+ * @param vec Pointer to the initialized vector to store the node references.
  *
- * @param node
- * @param vec
+ * @see https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search
  */
 CSPD_API void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
 
 /**
- * @brief
+ * @brief Inverts a binary tree.
  *
+ * Inverts a binary tree, or part of a binary tree, by swapping each `left` and
+ * `right` pointer from the given node until each node after `node` has been
+ * traversed.
  *
+ * @param node Pointer to the node of the binary tree to invert.
  *
- * @param node
+ * @b Example
+ * @snippet cspd_btree.test.c Inversion
  */
 CSPD_API void cspd_btree_invert(cspd_btnode *node);
 
 /**
- * @brief
+ * @brief Calculates the height of a binary tree.
  *
+ * Performs a depth-first traversal of a binary tree to determine the height
+ * from the given node.
  *
+ * @note Pass in the `root` of the binary tree to calculate the total height.
  *
- * @param node
+ * @param node The node to measure the height from.
+ *
+ * @returns The height of the binary tree from the given `node` pointer.
+ *
+ * @b Example
+ * @snippet cspd_btree.test.c Calculating height
+ *
+ * @see https://en.wikipedia.org/wiki/Binary_tree#Properties_of_binary_trees
  */
 CSPD_API i32 cspd_btree_height(cspd_btnode *node);
 
 /**
- * @brief
+ * @brief Counts the number of elements in a binary tree.
  *
+ * Visits each node in the binary tree in topological order and adds them to a
+ * vector. The size of the vector determines the total number of nodes in the
+ * binary tree.
  *
+ * @param btree The binary tree containing the nodes to be counted.
  *
- * @param node
+ * @returns The number of nodes in the binary tree.
  */
 CSPD_API usize cspd_btree_count(cspd_btnode *node);
 
 /**
- * @brief
+ * @brief Clears a binary tree.
  *
+ * Clears a binary tree by freeing the memory of each node.
  *
- *
- * @param btree
+ * @param btree The binary tree to be cleared.
  */
 CSPD_API void cspd_btree_clear(cspd_btree *btree);
 
 /**
  * @brief Prints the contents of the binary tree.
  *
+ * Basic print function for primtive types that casts each element to the
+ * specified type and prints it to standard output.
  *
- *
- * @param type Type of data to be casted.
- * @param vec
+ * @param TYPE Type of data to be casted.
+ * @param VECTOR The vector of nodes to be printed out.
  */
 #define cspd_print_btree(TYPE, VECTOR)                                         \
     {                                                                          \
@@ -206,7 +263,7 @@ CSPD_API void cspd_btree_clear(cspd_btree *btree);
  * @warning A `NAME_vector` and `NAME_queue` must be declared before declaring a
  * `NAME_btree`.
  *
- * @par Example:
+ * @par Example
  * @code
  *   cspd_btree_declare(i32, i32);
  *

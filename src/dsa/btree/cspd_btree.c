@@ -7,18 +7,22 @@
 /**
  * @internal
  *
- * @brief
+ * @brief Recursively deletes all nodes from the binary tree.
  *
+ * Recursively deletes all nodes from the given node. All nodes are deleted
+ * using depth-first search, where the nodes will be deleted from the bottom-up.
  *
- * @param node
+ * @param node Pointer to the node to recursively delete.
  */
 static void recursive_delete(cspd_btnode *node);
 
 /**
  * @internal
  *
- * @brief
+ * @brief Deletes a node from the binary tree.
  *
+ * Deletes a node from the binary tree after setting the node's `left` and
+ * `right` pointers to `NULL`.
  *
  * @param node
  */

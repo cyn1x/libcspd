@@ -1,5 +1,11 @@
 /**
  * @file cspd_queue.h
+ * @brief Queue data structures and algorithms.
+ *
+ * Typical implementation of a queue that is composed with a linked list data
+ * structure.
+ *
+ * @see https://en.wikipedia.org/wiki/Queue_(abstract_data_type)
  */
 
 #ifndef CSPD_QUEUE_H
@@ -48,36 +54,45 @@ typedef struct cspd_queue_t
 CSPD_API void cspd_queue_init(cspd_queue *queue, usize data_size);
 
 /**
- * @brief
+ * @brief Appends an element to the queue.
  *
+ * Enqueue an element to the queue by appending it to the back of the queue.
  *
+ * @note Uses a linked list to handle the first-in, first-out data structure.
  *
- * @param queue
- * @param data_size
+ * @param queue Pointer to the queue.
+ * @param data Pointer to the data block.
  *
  * @b Example
  * @snippet cspd_queue.test.c Enqueue
+ *
+ * @see https://en.wikipedia.org/wiki/FIFO_(computing_and_electronics)
  */
 CSPD_API void cspd_queue_enqueue(cspd_queue *queue, void *data);
 
 /**
- * @brief
+ * @brief Removes one element from the front of the queue.
  *
+ * Deque one element from the queue by removing it from the front, and freeing
+ * the associated memory. Sets the next element in the queue to `front` if the
+ * queue is not empty.
  *
- *
- * @param queue
+ * @param queue Pointer to the queue.
  *
  * @b Example
- * @snippet cspd_queue.test.c Dequeue
+ * @snippet cspd_queue.test.c Deque
  */
 CSPD_API void cspd_queue_deque(cspd_queue *queue);
 
 /**
- * @brief
+ * @brief Gets the pointer to the data block at the front of the queue.
  *
+ * Reads the data block associated with the element at the front of the queue
+ * without modifying the queue.
  *
+ * @param queue Pointer to the queue.
  *
- * @param queue
+ * @returns Pointer to the data block at the front of the queue.
  *
  * @b Example
  * @snippet cspd_queue.test.c Peek
@@ -85,11 +100,11 @@ CSPD_API void cspd_queue_deque(cspd_queue *queue);
 CSPD_API void *cspd_queue_peek(cspd_queue *queue);
 
 /**
- * @brief
+ * @brief Removes all elements from the queue.
  *
+ * Removes one element at a time from the queue until the queue is empty.
  *
- *
- * @param queue
+ * @param queue Pointer to the queue.
  *
  * @b Example
  * @snippet cspd_queue.test.c Clear
@@ -108,7 +123,7 @@ CSPD_API void cspd_queue_clear(cspd_queue *queue);
  *
  * @note This macro must be invoked at file scope, not inside a function.
  *
- * @par Example:
+ * @par Example
  * @code
  *   cspd_queue_declare(i32, i32);
  *

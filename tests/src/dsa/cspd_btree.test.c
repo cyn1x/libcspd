@@ -170,12 +170,12 @@ void cspd_btree_test(void)
         //     /-------------\          /-------\
         //     |             |         |        |
         //    (9)          (10)      (14)      (8)
-        //    /             /
-        //   |             /
-        // (15)          (1)
-        //             /-----\
-        //            |      |
-        //           (2)    (6)
+        //       \            \
+        //       |            |
+        //      (15)         (1)
+        //                 /-----\
+        //                |      |
+        //               (2)    (6)
 
         cspd_btree_invert(btree.root);
 
@@ -187,6 +187,20 @@ void cspd_btree_test(void)
         {
             cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 2);
             assert(*(i32 *)node->data == 9);
+            assert(*(i32 *)node->right->data == 15);
+        }
+
+        {
+            cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 4);
+            assert(*(i32 *)node->data == 10);
+            assert(*(i32 *)node->right->data == 1);
+        }
+
+        {
+            cspd_btnode *node = *(cspd_btnode **)cspd_vector_get(&vec, 5);
+            assert(*(i32 *)node->data == 1);
+            assert(*(i32 *)node->left->data == 2);
+            assert(*(i32 *)node->right->data == 6);
         }
 
         {
@@ -208,13 +222,22 @@ void cspd_btree_test(void)
     }
 
     //! [Calculating height]
+
+    //            7(4)
+    //          /      \
+    //       5(3)      23(1)
+    //      /   \      /   \
+    //   9(1) 10(2) 14(0) 8(0)
+    //     \      \
+    //    15(0)   1(1)
+    //           /   \
+    //        2(0)  6(0)
+
     u32 height = cspd_btree_height(btree.root);
     assert(height == 4);
     //! [Calculating height]
 
-    //! [Clearing the tree]
     cspd_btree_clear(&btree);
-    //! [Clearing the tree]
 }
 
 void bfs_test(void)

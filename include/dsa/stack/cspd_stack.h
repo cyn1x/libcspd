@@ -1,5 +1,11 @@
 /**
  * @file cspd_stack.h
+ * @brief Stack data structures and algorithms.
+ *
+ * Typical implementation of a stack that is composed with a linked list data
+ * structure.
+ *
+ * @see https://en.wikipedia.org/wiki/Stack_(abstract_data_type)
  */
 
 #ifndef CSPD_STACK_H
@@ -48,12 +54,14 @@ typedef struct cspd_stack_t
 CSPD_API void cspd_stack_init(cspd_stack *stack, usize data_size);
 
 /**
- * @brief
+ * @brief Prepends data to the stack.
  *
+ * Pushes an element onto the stack by prepending it to the top of the stack.
  *
+ * @note Uses a linked list to handle the last-in, first-out data structure.
  *
- * @param stack
- * @param data_size
+ * @param stack Pointer to the stack.
+ * @param data Pointer to the data block.
  *
  * @b Example
  * @snippet cspd_stack.test.c Push
@@ -61,12 +69,13 @@ CSPD_API void cspd_stack_init(cspd_stack *stack, usize data_size);
 CSPD_API void cspd_stack_push(cspd_stack *stack, void *data);
 
 /**
- * @brief
+ * @brief Removes one element from the top of the stack.
  *
+ * Pop one element from the stack by removing it from the top, and freeing
+ * the associated memory. Sets the next element in the stack to `top` if the
+ * stack is not empty.
  *
- *
- * @param stack
- * @param data_size
+ * @param stack Pointer to the stack.
  *
  * @b Example
  * @snippet cspd_stack.test.c Pop
@@ -74,11 +83,14 @@ CSPD_API void cspd_stack_push(cspd_stack *stack, void *data);
 CSPD_API void cspd_stack_pop(cspd_stack *stack);
 
 /**
- * @brief
+ * @brief Gets the pointer to the data block at the top of the stack.
  *
+ * Reads the data block associated with the element at the top of the stack
+ * without modifying the stack.
  *
+ * @param stack Pointer to the stack.
  *
- * @param stack
+ * @returns Pointer to the data block at the top of the stack.
  *
  * @b Example
  * @snippet cspd_stack.test.c Peek
@@ -86,11 +98,11 @@ CSPD_API void cspd_stack_pop(cspd_stack *stack);
 CSPD_API void *cspd_stack_peek(cspd_stack *stack);
 
 /**
- * @brief
+ * @brief Removes all elements from the stack.
  *
+ * Pops one element at a time from the stack until the queue is empty.
  *
- *
- * @param stack
+ * @param stack Pointer to the stack.
  *
  * @b Example
  * @snippet cspd_stack.test.c Clear
@@ -109,7 +121,7 @@ CSPD_API void cspd_stack_clear(cspd_stack *stack);
  *
  * @note This macro must be invoked at file scope, not inside a function.
  *
- * @par Example:
+ * @par Example
  * @code
  *   cspd_stack_declare(i32, i32);
  *

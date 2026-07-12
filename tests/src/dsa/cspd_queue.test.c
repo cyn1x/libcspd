@@ -18,26 +18,32 @@ void cspd_queue_test(void)
 {
     cspd_queue queue = queue_setup();
 
-    int        a     = 1;
-    int        b     = 4;
-    int        c     = 7;
-    int        d     = 9;
-    int        e     = 2;
+    //! [Enqueue]
+    int a = 1;
+    int b = 4;
+    int c = 7;
+    int d = 9;
+    int e = 2;
 
     cspd_queue_enqueue(&queue, &a);
     cspd_queue_enqueue(&queue, &b);
     cspd_queue_enqueue(&queue, &c);
     cspd_queue_enqueue(&queue, &d);
     cspd_queue_enqueue(&queue, &e);
+    //! [Enqueue]
 
     {
+        //! [Peek]
         void *data = cspd_queue_peek(&queue);
         assert(*(i32 *)data == 1);
+        //! [Peek]
     }
 
     {
+        //! [Deque]
         cspd_queue_deque(&queue);
         assert(*(i32 *)queue.front->data == 4);
+        //! [Deque]
     }
 
     cspd_queue_clear(&queue);

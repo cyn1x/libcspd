@@ -1,5 +1,8 @@
 /**
  * @file cspd_vector.h
+ * @brief Dynamic array data structures and algorithms.
+ *
+ * @see https://en.wikipedia.org/wiki/Array_(data_structure)
  */
 
 #ifndef CSPD_VECTOR_H
@@ -331,7 +334,7 @@ static inline void cspd_vector_pop(cspd_vector *vec)
  *
  * @note This macro must be invoked at file scope, not inside a function.
  *
- * @par Example:
+ * @par Example
  * @code
  *   cspd_vector_declare(i32, i32);
  *

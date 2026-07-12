@@ -1,5 +1,8 @@
 /**
  * @file cspd_linked_list.h
+ * @brief Linked list data structures and algorithms.
+ *
+ * @see https://en.wikipedia.org/wiki/Linked_list
  */
 
 #ifndef CSPD_LINKED_LIST_H
@@ -333,13 +336,13 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
 /**
  * @brief Prints the contents of the linked list.
  *
- * Basic print function for C types residing in a linked list by casting each
- * element to the specified type. The linked list can be printed in reverse if
- * instructed.
+ * Basic print function for primtive types that casts each element to the
+ * specified type and prints them to standard output. The linked list can be
+ * printed in reverse if instructed.
  *
- * @param type Type of data to be casted.
- * @param llist The linked list to be printed out.
- * @param reverse Boolean to control order of printing.
+ * @param TYPE Type of data to be casted.
+ * @param LIST The linked list to be printed out.
+ * @param REVERSE Boolean to control order of printing.
  */
 #define cspd_print_llist(TYPE, LIST, REVERSE)                                  \
     {                                                                          \
@@ -366,7 +369,7 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
  *
  * @note This macro must be invoked at file scope, not inside a function.
  *
- * @par Example:
+ * @par Example
  * @code
  *   cspd_llist_declare(i32, i32);
  *
