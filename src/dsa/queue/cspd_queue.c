@@ -24,6 +24,9 @@ void cspd_queue_enqueue(cspd_queue *queue, void *data)
 
 void cspd_queue_deque(cspd_queue *queue)
 {
+    if (queue->front == NULL)
+        return;
+
     cspd_llnode *tmp = queue->front->next;
 
     cspd_free(queue->front->data);
