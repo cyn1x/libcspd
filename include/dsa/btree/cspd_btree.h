@@ -237,11 +237,11 @@ CSPD_API void cspd_btree_clear(cspd_btree *btree);
  * @param TYPE Type of data to be casted.
  * @param VECTOR The vector of nodes to be printed out.
  */
-#define cspd_print_btree(TYPE, VECTOR)                                         \
+#define cspd_print_btree(TYPE, VEC)                                            \
     {                                                                          \
         printf("{ ");                                                          \
-        for (usize i = 0; i < (VECTOR)->size; ++i) {                           \
-            cspd_btnode *_node = *(cspd_btnode **)cspd_vector_get(VECTOR, i);  \
+        for (usize i = 0; i < (VEC)->size; ++i) {                              \
+            cspd_btnode *_node = ((cspd_btnode **)(VEC)->data)[i];             \
             cspd_print((*(TYPE *)_node->data), " ");                           \
         }                                                                      \
         printf("} \n");                                                        \

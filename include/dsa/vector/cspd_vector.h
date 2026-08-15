@@ -311,7 +311,7 @@ static inline void cspd_vector_pop(cspd_vector *vec)
     {                                                                          \
         printf("{ ");                                                          \
         for (usize i = 0; i < (VEC)->size; ++i) {                              \
-            cspd_print((*(TYPE *)cspd_vector_get(VEC, i)), " ");               \
+            cspd_print(((TYPE *)(VEC)->data)[i], " ");                         \
         }                                                                      \
         printf("} \n");                                                        \
     }
