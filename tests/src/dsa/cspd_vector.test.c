@@ -9,24 +9,16 @@ static void        sort_test(void);
 
 static cspd_vector setup(void)
 {
+    //! [Add range]
     cspd_vector vec;
+    i32         values[] = {7, 8, 7, 4, 10, 3, 5};
+
     cspd_vector_init(&vec, sizeof(i32));
+    cspd_vector_addrange(&vec, sizeof(values), values);
 
-    i32 a = 7;
-    i32 b = 8;
-    i32 c = 7;
-    i32 d = 4;
-    i32 e = 10;
-    i32 f = 3;
-    i32 g = 5;
-
-    cspd_vector_push(&vec, &a);
-    cspd_vector_push(&vec, &b);
-    cspd_vector_push(&vec, &c);
-    cspd_vector_push(&vec, &d);
-    cspd_vector_push(&vec, &e);
-    cspd_vector_push(&vec, &f);
-    cspd_vector_push(&vec, &g);
+    // cspd_print_vector(i32, &vec);
+    // Output: { 7 8 7 4 10 3 5 }
+    //! [Add range]
 
     return vec;
 }

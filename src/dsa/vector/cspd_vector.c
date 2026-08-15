@@ -8,9 +8,33 @@
 /**
  * @internal
  *
- * @brief Default minimum capacity of the vector.
+ * @brief Copies data to the vector.
+ *
+ * Calculates the index position by multiplying the given `idx` by
+ * `vec->data_size`, and copies the `data` to that index.
+ *
+ * @param vec The vector to have data copied into.
+ * @param idx The index to copy the data to.
+ * @param data The data to be copied into the vector.
  */
-static const int MIN_CAPACITY = 32;
+static void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
+
+/**
+ * @internal
+ *
+ * @brief Resizes the vector.
+ *
+ * Increases the size of a vector by doubling the current capacity. This is a
+ * helper function for other operations and should not be directly used.
+ *
+ * @note If the vector has just been initialized (i.e. `vec->size` and
+ * `vec->capacity` are zero), the initial starting size will be set to the given
+ * `size` parameter.
+ *
+ * @param vec The vector to be resized.
+ * @param size The minimum required capacity.
+ */
+static void cspd_vector_resize(cspd_vector *vec, usize size);
 
 /**
  * @internal
@@ -68,9 +92,8 @@ static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
 void        cspd_vector_init(cspd_vector *vec, usize data_size)
 {
     vec->data_size = data_size;
-    vec->capacity  = MIN_CAPACITY;
+    vec->capacity  = 0;
     vec->size      = 0;
-    vec->data      = cspd_calloc(vec->capacity, vec->data_size);
 }
 
 void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
@@ -82,10 +105,22 @@ void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
 void cspd_vector_push(cspd_vector *vec, const void *data)
 {
     if (vec->size == vec->capacity) {
-        vec->capacity *= 2;
-        vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
+        cspd_vector_resize(vec, vec->size + 1);
     }
     cspd_vector_set(vec, vec->size++, data);
+}
+
+void cspd_vector_addrange(cspd_vector *vec, usize size, const void *data)
+{
+    usize amt = size / vec->data_size;
+
+    vec->size += amt;
+    if (vec->size >= vec->capacity) {
+        cspd_vector_resize(vec, vec->capacity + amt);
+    }
+    void *src = cspd_vector_get(vec, vec->size - amt);
+
+    memcpy(src, data, amt * vec->data_size);
 }
 
 void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
@@ -96,7 +131,7 @@ void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
 
     vec->size += amt;
     if (vec->size >= vec->capacity) {
-        vec = cspd_vector_resize(vec, 0);
+        cspd_vector_resize(vec, vec->size);
     }
     void *src = cspd_vector_get(vec, idx);
     void *dst = cspd_vector_get(vec, idx + amt);
@@ -138,18 +173,19 @@ void cspd_vector_clear(cspd_vector *vec)
     vec->data      = NULL;
 }
 
-void *cspd_vector_resize(cspd_vector *vec, usize size)
+void cspd_vector_resize(cspd_vector *vec, usize size)
 {
-    if (size == 0) {
-        vec->capacity *= 2;
-    } else {
+    if (vec->capacity == 0) {
         vec->capacity = size;
+        vec->data     = cspd_calloc(vec->capacity, vec->data_size);
+        return;
     }
 
-    // TODO: check if realloc was valid
-    vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
+    while (vec->capacity < size) {
+        vec->capacity *= 2;
+    }
 
-    return vec;
+    vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
 }
 
 void cspd_vector_copy(cspd_vector *dst, cspd_vector *src)

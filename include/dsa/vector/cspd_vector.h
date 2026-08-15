@@ -1,6 +1,6 @@
 /**
  * @file cspd_vector.h
- * @brief Dynamic array data structures and algorithms.
+ * @brief Dynamic one-dimensional array data structures and algorithms.
  *
  * @see https://en.wikipedia.org/wiki/Array_(data_structure)
  */
@@ -46,10 +46,10 @@ typedef struct cspd_vector_t
 /**
  * @brief Initializes a new vector.
  *
- * Sets a minimum capacity to prevent expensive memory reallocations soon after
- * initializing. Memory is allocated by calling `calloc` to zero
- * the allocated memory as not all of it will likely be initialized by the user
- * after initialization.
+ * Prepares a vector for first-time use by initializing all data structure
+ * members to their initial values.
+ *
+ * @remark Memory is not allocated on initialization.
  *
  * @param vec The vector to be initialized.
  * @param data_size The size of the data type in bytes.
@@ -60,22 +60,11 @@ typedef struct cspd_vector_t
 CSPD_API void cspd_vector_init(cspd_vector *vec, usize data_size);
 
 /**
- * @brief Copies data to the vector.
- *
- * Copies data to the specified vector index and calls `vector_update()` to
- * cover the case of the `front` or `back` pointers being change.
- *
- * @param vec The vector to have data copied into.
- * @param idx The index to copy the data to.
- * @param data The data to be copied into the vector.
- */
-CSPD_API void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
-
-/**
  * @brief Appends an element to the vector.
  *
- * Adds an element to the end of the vector but will perform a `realloc`
- * beforehand if the vector is at maximum capacity.
+ * Adds an element to the end of the vector. If the vector `size` is equal to
+ * its `capacity`, the vector will be resized and a realloc will be
+ * performed before adding the new element.
  *
  * @param vec The vector to add an item to.
  * @param data The data to be appended in the vector.
@@ -84,6 +73,24 @@ CSPD_API void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
  * @snippet cspd_vector.test.c Push elements
  */
 CSPD_API void cspd_vector_push(cspd_vector *vec, const void *data);
+
+/**
+ * @brief Adds a range of elements to the vector.
+ *
+ * Appends a range of elements to the end of the vector. If the vector `size` is
+ * equal to its `capacity`, the vector `capacity` will be set to the current
+ * size plus the number of elements to append, and a realloc will be performed
+ * before adding the new range of elements.
+ *
+ * @param vec The vector to add an item to.
+ * @param size The size of the items in bytes.
+ * @param data The data to be appended in the vector.
+ *
+ * @b Example
+ * @snippet cspd_vector.test.c Add range
+ */
+CSPD_API void cspd_vector_addrange(cspd_vector *vec, usize size,
+                                   const void *data);
 
 /**
  * @brief Inserts one or many elements at the specified index.
@@ -130,18 +137,6 @@ CSPD_API void cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
  * @param vec The vector to be deleted.
  */
 CSPD_API void cspd_vector_clear(cspd_vector *vec);
-
-/**
- * @brief Resizes the vector.
- *
- * Increases the size of a vector by doubling the current capacity. This is a
- * helper function for other operations and should not be directly used.
- *
- * @param vec The vector to be resized.
- *
- * @returns The resized vector.
- */
-CSPD_API void *cspd_vector_resize(cspd_vector *vec, usize size);
 
 /**
  * @brief Copies data from one vector to the other.
@@ -231,8 +226,6 @@ CSPD_API void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
  * @param hi Index of the last element of in the vector
  * @param cmp Comparator function.
  *
- * @returns The index of the next pivot point.
- *
  * @see https://en.wikipedia.org/wiki/Quicksort
  */
 CSPD_API void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
@@ -295,8 +288,8 @@ static inline void *cspd_vector_front(const cspd_vector *vec)
 /**
  * @brief Removes the last element of the vector.
  *
- * Reduces the size of the vector by a single element and calls to update the
- * back pointer to the new last element after size reduction.
+ * Removes the last element in the vector by reducing the size of the vector by
+ * a single element.
  *
  * @param vec The vector that requires the last element to be removed.
  */
@@ -351,16 +344,16 @@ static inline void cspd_vector_pop(cspd_vector *vec)
         cspd_vector_init(vec, sizeof(TYPE));                                   \
     }                                                                          \
                                                                                \
-    static inline void NAME##_vector_set(NAME##_vector *vec, usize idx,        \
-                                         const TYPE *data)                     \
-    {                                                                          \
-        cspd_vector_set(vec, idx, (const void *)data);                         \
-    }                                                                          \
-                                                                               \
     static inline void NAME##_vector_push(NAME##_vector *vec,                  \
                                           const TYPE    *data)                 \
     {                                                                          \
         cspd_vector_push(vec, (const void *)data);                             \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_vector_addrange(NAME##_vector *vec, usize size,  \
+                                              const TYPE *data)                \
+    {                                                                          \
+        cspd_vector_addrange(vec, size, (const void *)data);                   \
     }                                                                          \
                                                                                \
     static inline void NAME##_vector_insert(NAME##_vector *vec, usize idx,     \
@@ -378,11 +371,6 @@ static inline void cspd_vector_pop(cspd_vector *vec)
     static inline void NAME##_vector_clear(NAME##_vector *vec)                 \
     {                                                                          \
         cspd_vector_clear(vec);                                                \
-    }                                                                          \
-                                                                               \
-    static inline void *NAME##_vector_resize(NAME##_vector *vec, usize size)   \
-    {                                                                          \
-        return cspd_vector_resize(vec, size);                                  \
     }                                                                          \
                                                                                \
     static inline void NAME##_vector_copy(NAME##_vector *dst,                  \
