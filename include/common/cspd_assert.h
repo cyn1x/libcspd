@@ -22,7 +22,7 @@
  */
 #define cspd_assert(EXPRESSION)                                                \
     if (!(EXPRESSION)) {                                                       \
-        *(void *)0 = 0;                                                        \
+        *(int *)0 = 0;                                                         \
     }
 
 #else
