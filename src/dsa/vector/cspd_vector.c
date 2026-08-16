@@ -28,8 +28,8 @@ static void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
  * helper function for other operations and should not be directly used.
  *
  * @note If the vector has just been initialized (i.e. `vec->size` and
- * `vec->capacity` are zero), the initial starting size will be set to the given
- * `size` parameter.
+ * `vec->capacity` are zero), the given `size` parameter will be the initial
+ * starting size.
  *
  * @param vec The vector to be resized.
  * @param size The minimum required capacity.
@@ -177,7 +177,7 @@ void cspd_vector_resize(cspd_vector *vec, usize size)
 {
     if (vec->capacity == 0) {
         vec->capacity = size;
-        vec->data     = cspd_calloc(vec->capacity, vec->data_size);
+        vec->data     = cspd_malloc(vec->data_size * size);
         return;
     }
 
