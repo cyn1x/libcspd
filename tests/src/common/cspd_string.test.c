@@ -14,13 +14,14 @@ void        cspd_string_test(void)
     test_init();
     test_append();
     test_concat();
-    // test_join();
+    test_join();
 }
 
 static void test_init(void)
 {
     cspd_string str_a;
     cspd_string str_b;
+    cspd_string str = cspd_string_new("hello,world");
 
     cspd_string_init(&str_a, 0);
     cspd_string_init(&str_b, NULL);
@@ -99,7 +100,7 @@ static void test_concat(void)
 
     cspd_string_clear(&tmp);
 
-    cspd_print_fn("%s", str.data);
+    // cspd_print_fn("%s", str.data);
     // Output: helloworld
 
     cspd_assert(((char *)str.data)[0] == 'h');
@@ -149,7 +150,7 @@ static void test_join()
     cspd_assert(((char *)str.data)[10] == 'd');
     cspd_assert(((char *)str.data)[11] == '\0');
 
-    cspd_print_fn("%s", str.data);
+    // cspd_print_fn("%s", str.data);
     // Output: hello,world
 
     cspd_string_clear(&str);

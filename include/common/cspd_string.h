@@ -100,12 +100,15 @@ CSPD_API void cspd_string_concat(cspd_string *str, char *parts[], usize count);
 /**
  * @brief Joins strings together using a separator character.
  *
- * Sequentially joins strings and separates them with the specified delimiter.
+ * Joins strings in the order they are specified and separates them with the
+ * given delimiter character.
  *
  * @param str Pointer to the destination string.
  * @param count The number of strings to join.
  * @param parts Pointer to the array of strings.
- * @param sep The separator to place between each string.
+ * @param delim The separator to place between each string.
+ *
+ * @snippet cspd_string.test.c Join string
  */
 CSPD_API void cspd_string_join(cspd_string *str, char delim, char *parts[],
                                usize count);

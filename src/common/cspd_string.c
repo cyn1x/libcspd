@@ -67,8 +67,30 @@ void cspd_string_concat(cspd_string *str, char *parts[], usize count)
     }
 }
 
-void cspd_string_join(cspd_string *str, char sep, char *parts[], usize count)
+void cspd_string_join(cspd_string *str, char delim, char *parts[], usize count)
 {
+    usize len = count - 1; // One delimiter between each pair
+    for (usize i = 0; i < count; ++i) {
+        len += strlen(parts[i]);
+    }
+
+    usize size = (sizeof(char) * len) + 1;
+    if (str->length + len >= str->capacity) {
+        cspd_string_reserve(str, str->capacity + size);
+    }
+
+    char *dst = str->data + str->length;
+    for (usize i = 0; i < count; ++i) {
+        if (i > 0) {
+            *dst++ = delim;
+        }
+        usize len = strlen(parts[i]);
+        memcpy(dst, parts[i], len);
+        dst += len;
+    }
+
+    *dst++ = '\0';
+    str->length += len;
 }
 
 void cspd_string_reserve(cspd_string *str, usize size)
