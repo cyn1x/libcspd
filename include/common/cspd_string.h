@@ -107,18 +107,21 @@ CSPD_API void cspd_string_concat(cspd_string *str, char *parts[], usize count);
  * @param parts Pointer to the array of strings.
  * @param sep The separator to place between each string.
  */
-CSPD_API void cspd_string_join(cspd_string *str, char sep, char *parts[],
+CSPD_API void cspd_string_join(cspd_string *str, char delim, char *parts[],
                                usize count);
 
 /**
  * @brief Resizes a string.
  *
- * Resizes a string to the given new size.
+ * Reserves the required space for a string.
+ *
+ * @info Use to reserve space ahead of time to prevent repetitive memory
+ * allocations.
  *
  * @param str Pointer to the string to be resized.
  * @param size The new size in bytes.
  */
-CSPD_API void cspd_string_resize(cspd_string *str, usize size);
+CSPD_API void cspd_string_reserve(cspd_string *str, usize size);
 
 /**
  * @brief Deletes a string.

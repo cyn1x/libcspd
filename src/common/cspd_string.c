@@ -52,12 +52,12 @@ void cspd_string_append(cspd_string *str, char cstr[])
     usize size = (sizeof(char) * len) + 1;
     usize idx  = str->length;
 
-    str->length += len;
-    if (str->length >= str->capacity) {
-        cspd_string_resize(str, str->capacity + size);
+    if (str->length + len >= str->capacity) {
+        cspd_string_reserve(str, str->capacity + size);
     }
 
     memcpy((char *)str->data + idx, cstr, size);
+    str->length += len;
 }
 
 void cspd_string_concat(cspd_string *str, char *parts[], usize count)
@@ -71,9 +71,9 @@ void cspd_string_join(cspd_string *str, char sep, char *parts[], usize count)
 {
 }
 
-void cspd_string_resize(cspd_string *str, usize size)
+void cspd_string_reserve(cspd_string *str, usize size)
 {
-    str->data = cspd_realloc(str->data, sizeof(char) * str->length);
+    str->data = cspd_realloc(str->data, sizeof(char) * size);
     if (!str->data) {
         // TODO: Handle error
     }
