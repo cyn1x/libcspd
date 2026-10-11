@@ -3,6 +3,7 @@
 #include "cspd_linked_list.test.h"
 #include "cspd_queue.test.h"
 #include "cspd_stack.test.h"
+#include "cspd_string.test.h"
 #include "cspd_vector.test.h"
 // #include <log.h>
 
@@ -19,6 +20,8 @@ int main(int argc, char *argv[])
     cspd_queue_test();
     cspd_stack_test();
     cspd_btree_test();
+
+    cspd_string_test();
 
     cspd_integration_tests();
 
