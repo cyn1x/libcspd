@@ -8,6 +8,8 @@
 
 #if DEBUG
 
+#include "cspd_print.h"
+
 /**
  * @internal
  *
@@ -20,10 +22,16 @@
  *
  * @param EXPRESSION  The expression to be evaluated.
  */
+
 #define cspd_assert(EXPRESSION)                                                \
-    if (!(EXPRESSION)) {                                                       \
-        *(int *)0 = 0;                                                         \
-    }
+    do {                                                                       \
+        if (!(EXPRESSION)) {                                                   \
+            fprintf(stderr,                                                    \
+                    "Assertion failed: `%s`, file %s, line %d, function %s ",  \
+                    #EXPRESSION, __FILE__, __LINE__, __func__);                \
+            abort();                                                           \
+        }                                                                      \
+    } while (0)
 
 #else
 
@@ -39,7 +47,7 @@
  *
  * @see https://en.wikipedia.org/wiki/NOP_(code)#C_and_derivatives
  */
-#define cspd_assert(EXPRESSION)
+#define cspd_assert(EXPRESSION) ((void)0)
 
 #endif // DEBUG
 
