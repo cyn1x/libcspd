@@ -207,35 +207,40 @@ Legend:
 
 &#x2705; done &nbsp;|&nbsp; &#x1F504; in progress &nbsp;|&nbsp; &#x23F3; planned
 
-Current features:
+### Data Structures
 
 - &#x2705; Vector
 - &#x2705; Linked List
 - &#x2705; Stack
 - &#x2705; Queue
 - &#x2705; Binary Tree
-
-Future Plans:
-
 - &#x1F504; Binary Search Tree
 - &#x1F504; Hash map
 - &#x1F504; Heap
+- &#x23F3; AVL Tree
 - &#x23F3; B-tree
 - &#x23F3; R-tree
-- &#x23F3; AVL Tree
 
-Housekeeping:
+### Core Utilities
 
-- [ ] Benchmarks
+- &#x2705; Memory allocator plugin
+- &#x23F3; [libc](https://en.wikipedia.org/wiki/C_standard_library) opt-out (`CSPD_NO_LIBC`, freestanding-friendly core)
+- &#x1F504; String builder
+
+### Performance
+
+- &#x23F3; Benchmarks
+- &#x23F3; SIMD optimisation (string and memory routines)
+
+### Tooling & Housekeeping
+
 - [ ] Basic demo application
 - [ ] Host Doxygen documentation online
 - [ ] C++ wrappers for incompatible C functions
-- [x] Memory Allocator Plugin
+- [ ] Single-header (stb-style) build option
 
 ## Background
 
 This project started as a way to learn data structures and algorithms from the ground up, and grew into a set of tools I now use in my own pet projects after I decided to discard C++ for personal use entirely. I felt I was spending more time learning a language with an astronomical number of generational changes rather than doing the *thing*. I felt as though my confusion with abstractions in C++ was a sign of incompetence. However, it turned out that I was more interested in what goes on "under the hood", so I decided to write my own standard library. I have nothing against C++, or any other tool for that matter. If C++ was required in my working life, I would have no problem spending the time to be proficient at it through textbooks, conferences, and other mediums.
 
 It's published here as a reference and source of inspiration for anyone building their own utility library or learning how common data structures are implemented in C.
-
-Contributions, bug reports, and forks are welcome.
