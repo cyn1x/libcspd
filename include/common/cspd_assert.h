@@ -9,6 +9,7 @@
 #if DEBUG
 
 #include "cspd_print.h"
+#include <stdlib.h>
 
 /**
  * @internal
