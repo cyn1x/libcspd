@@ -64,12 +64,13 @@ CSPD_API void cspd_string_init(cspd_string *str, usize len);
  *
  * @param cstr The pointer to the string to initialize.
  *
- * @returns A new string.
+ * @returns A new string containing the given sequence of characters.
  *
  * @par Example
  * @code
- *   cspd_string str;
- *   cspd_string_init(&str);
+ *   cspd_string str = cspd_string_new("hello,world");
+ *   cspd_print_fn("%s", str.data);
+ *   // Output: hello,world
  * @endcode
  */
 CSPD_API cspd_string cspd_string_new(char cstr[]);
@@ -83,6 +84,8 @@ CSPD_API cspd_string cspd_string_new(char cstr[]);
  * @param str The pointer to the string to initialize.
  * @param arr The pointer to the char array.
  * @param size The size of the char array.
+ *
+ * @snippet cspd_string.test.c Append string
  */
 CSPD_API void cspd_string_append(cspd_string *str, char cstr[]);
 
@@ -94,6 +97,8 @@ CSPD_API void cspd_string_append(cspd_string *str, char cstr[]);
  * @param str Pointer to the destination string.
  * @param parts Pointer to the array of strings.
  * @param count The number of strings to concatenate.
+ *
+ * @snippet cspd_string.test.c Concat string
  */
 CSPD_API void cspd_string_concat(cspd_string *str, char *parts[], usize count);
 
