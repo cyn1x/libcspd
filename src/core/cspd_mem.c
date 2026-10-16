@@ -1,7 +1,6 @@
 #define CSPD_EXPORTS
 
 #include "cspd_mem.h"
-#include <stdlib.h>
 
 /**
  * @internal

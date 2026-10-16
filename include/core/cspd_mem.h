@@ -9,6 +9,9 @@
 #ifndef CSPD_MEM_H
 #define CSPD_MEM_H
 
+#include <stdlib.h> // IWYU pragma: export
+#include <string.h> // IWYU pragma: export
+
 #include "cspd_exports.h"
 #include "cspd_types.h"
 

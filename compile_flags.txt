@@ -1,7 +1,7 @@
 -I
 ./include/
 -I
-./include/common/
+./include/core/
 -I
 ./include/dsa/bstree/
 -I
@@ -15,12 +15,8 @@
 -I
 ./include/dsa/vector/
 -I
-./include/sys/
--I
-./include/util/
--I
 ./tests/include/
 -I
-./tests/include/common/
+./tests/include/core/
 -I
 ./tests/include/dsa/

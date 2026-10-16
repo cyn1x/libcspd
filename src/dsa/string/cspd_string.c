@@ -3,7 +3,6 @@
 #include "cspd_string.h"
 #include "cspd_assert.h"
 #include "cspd_mem.h"
-#include <string.h>
 
 void cspd_string_init(cspd_string *str, usize len)
 {
