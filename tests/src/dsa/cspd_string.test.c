@@ -34,6 +34,7 @@ static void test_init(void)
 
     cspd_string_clear(&str_a);
     cspd_string_clear(&str_b);
+    cspd_string_clear(&str_c);
 }
 
 static void test_append(void)
