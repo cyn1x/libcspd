@@ -149,9 +149,6 @@ CSPD_API void cspd_string_clear(cspd_string *str);
  * Returns a read-only (i.e. the value, not reference) copy of the character at
  * the index position.
  *
- * @warning Should be called when a string is no longer required to prevent
- * memory leaks.
- *
  * @param str Pointer to the string.
  * @param idx The index to retrieve.
  */
