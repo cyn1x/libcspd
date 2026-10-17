@@ -148,19 +148,22 @@ void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
 void cspd_vector_erase(cspd_vector *vec, usize begin, usize end)
 {
     // TODO: check range is within bounds
-    void *dst = cspd_vector_get(vec, begin);
-    void *src = cspd_vector_get(vec, end);
-    usize amt = end - begin;
+    void *dst = NULL;
+    void *src = NULL;
+    usize amt = 0;
 
-    // Invert the declarations above if erasing in a negative direction
     if (end < begin) {
         void *tmp = dst;
-        dst       = src;
-        src       = tmp;
-        amt       = begin - end;
+        dst       = cspd_vector_get(vec, end);
+        src       = cspd_vector_get(vec, begin + 1);
+        amt       = begin - end + 1;
+    } else {
+        dst = cspd_vector_get(vec, begin);
+        src = cspd_vector_get(vec, end + 1);
+        amt = end - begin + 1;
     }
 
-    memmove(dst, src, (vec->size - amt) * vec->data_size);
+    memmove(dst, src, amt * vec->data_size);
     vec->size -= amt;
 }
 

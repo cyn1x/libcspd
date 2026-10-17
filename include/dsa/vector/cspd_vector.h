@@ -112,9 +112,11 @@ CSPD_API void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
 /**
  * @brief Erases one or many elements from a vector.
  *
- * Erases data that has a size in bytes in either direction from the given
- * index. The memory will be compacted after the erasure with the vector size
- * updated in addition.
+ * Erases data that has a size in bytes either direction from the given index.
+ * The memory will be compacted after the erasure with the vector size updated
+ * in addition.
+ *
+ * @info The erasure is inclusive @p begin and @p end, i.e. [begin, end].
  *
  * @param vec The vector to erase data from.
  * @param begin The starting position of the erasure.
