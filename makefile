@@ -19,6 +19,7 @@ SRCDIR := src
 LIBDIR := lib/$(SYSTEM)/$(CONFIG)_$(ARCH)
 OBJDIR := obj/$(SYSTEM)/$(CONFIG)_$(ARCH)
 BINDIR := bin/$(SYSTEM)/$(CONFIG)_$(ARCH)
+TESTDIR := tests/src
 
 # Define commands to retrieve `*.c` source and `*.o` intermediate files
 TEST := $(shell find $(TESTDIR) -type f -name '*.c')

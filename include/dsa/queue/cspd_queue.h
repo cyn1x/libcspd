@@ -125,7 +125,7 @@ CSPD_API void cspd_queue_clear(cspd_queue *queue);
  *
  * @par Example
  * @code
- *   cspd_queue_declare(i32, i32);
+ *   cspd_queue_declare(i32, i32)
  *
  *   i32_queue q;
  *   i32_queue_init(&q);

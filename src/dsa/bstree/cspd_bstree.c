@@ -54,5 +54,7 @@ static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
 {
     int result = cmp(root->data, node->data);
 
-    // TODO: implementation
+    // TODO: #0008 - Binary search tree implementation
+
+    (void)bstree;
 }

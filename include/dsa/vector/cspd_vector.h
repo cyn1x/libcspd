@@ -329,7 +329,7 @@ static inline void cspd_vector_pop(cspd_vector *vec)
  *
  * @par Example
  * @code
- *   cspd_vector_declare(i32, i32);
+ *   cspd_vector_declare(i32, i32)
  *
  *   i32_vector v;
  *   i32_vector_init(&v);

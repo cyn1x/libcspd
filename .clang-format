@@ -198,11 +198,15 @@ SpacesInSquareBrackets: false
 SpaceBeforeSquareBrackets: false
 BitFieldColonSpacing: Both
 Standard:        Latest
-StatementAttributeLikeMacros:
-  - Q_EMIT
-StatementMacros:
-  - Q_UNUSED
-  - QT_REQUIRE_VERSION
+StatementAttributeLikeMacros: []
+StatementMacros:   
+  - cspd_cmp
+  - cspd_vector_declare
+  - cspd_llist_declare
+  - cspd_queue_declare
+  - cspd_stack_declare
+  - cspd_btree_declare
+  - cspd_bstree_declare
 TabWidth:        8
 UseCRLF:         false
 UseTab:          Never

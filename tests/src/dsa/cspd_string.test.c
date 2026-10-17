@@ -120,9 +120,9 @@ static void test_join(void)
     cspd_string str      = cspd_string_new("");
     cspd_string tmp_a    = cspd_string_new("hello");
     cspd_string tmp_b    = cspd_string_new("world");
+
     char        sep      = ',';
     char        actual[] = "hello,world\0";
-
     char       *parts[]  = {
         tmp_a.data,
         tmp_b.data,
@@ -132,6 +132,9 @@ static void test_join(void)
 
     cspd_string_clear(&tmp_a);
     cspd_string_clear(&tmp_b);
+
+    cspd_assert(str.capacity == 12);
+    cspd_assert(str.length == 11);
 
     for (usize i = 0; i < strlen(actual); ++i) {
         cspd_assert(((char *)str.data)[i] == actual[i]);

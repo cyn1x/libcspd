@@ -12,6 +12,10 @@
 #ifndef CSPD_TYPES_H
 #define CSPD_TYPES_H
 
+#ifdef __clang__
+#include <stddef.h>
+#endif
+
 #include <math.h>
 #include <stdbool.h>
 #include <stdint.h>

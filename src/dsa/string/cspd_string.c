@@ -83,9 +83,9 @@ void cspd_string_join(cspd_string *str, char delim, char *parts[], usize count)
         if (i > 0) {
             *dst++ = delim;
         }
-        len = strlen(parts[i]);
-        memcpy(dst, parts[i], len);
-        dst += len;
+        usize amt = strlen(parts[i]);
+        memcpy(dst, parts[i], amt);
+        dst += amt;
     }
 
     *dst++ = '\0';

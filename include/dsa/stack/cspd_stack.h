@@ -123,7 +123,7 @@ CSPD_API void cspd_stack_clear(cspd_stack *stack);
  *
  * @par Example
  * @code
- *   cspd_stack_declare(i32, i32);
+ *   cspd_stack_declare(i32, i32)
  *
  *   i32_stack s;
  *   i32_stack_init(&s);

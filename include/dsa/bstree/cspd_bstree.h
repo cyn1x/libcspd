@@ -121,7 +121,7 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
  *
  * @par Example
  * @code
- *   cspd_bstree_declare(i32, i32);
+ *   cspd_bstree_declare(i32, i32)
  *
  *   i32_bstree t;
  *   i32_bstree_init(&t);

@@ -371,7 +371,7 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
  *
  * @par Example
  * @code
- *   cspd_llist_declare(i32, i32);
+ *   cspd_llist_declare(i32, i32)
  *
  *   i32_llist l;
  *   i32_llist_init(&l);

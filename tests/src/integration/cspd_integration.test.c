@@ -5,7 +5,7 @@
 #include <string.h>
 
 // Declare generic vector type
-cspd_vector_declare(i32, i32);
+cspd_vector_declare(i32, i32)
 
 static void vector_test(void);
 static void linked_list_test(void);
@@ -72,10 +72,18 @@ static void vector_test(void)
     //! [Vector usage with custom data types]
 }
 
-static void linked_list_test(void) {}
+static void linked_list_test(void)
+{
+}
 
-static void queue_test(void) {}
+static void queue_test(void)
+{
+}
 
-static void stack_test(void) {}
+static void stack_test(void)
+{
+}
 
-static void binary_tree_test(void) {}
+static void binary_tree_test(void)
+{
+}
