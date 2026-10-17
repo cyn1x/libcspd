@@ -1,8 +1,8 @@
 #define CSPD_EXPORTS
 
 #include "cspd_util.h"
+#include "cspd_print.h" // IWYU pragma: keep
 #include "cspd_types.h"
-#include <stdio.h>
 
 void cspd_swap(void *pa, void *pb, usize size)
 {

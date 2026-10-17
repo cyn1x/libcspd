@@ -20,6 +20,7 @@
 #include "cspd_mem.h"
 #include "cspd_print.h"
 #include "cspd_types.h"
+#include "cspd_util.h"
 
 /*
  * Data Structures & Algorithms
@@ -29,6 +30,7 @@
 #include "cspd_linked_list.h"
 #include "cspd_queue.h"
 #include "cspd_stack.h"
+#include "cspd_string.h"
 #include "cspd_vector.h"
 
 // IWYU pragma: end_exports

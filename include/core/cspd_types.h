@@ -38,7 +38,7 @@
  * #include <stdlib.h>
  *
  * // Declare comparator function of type `i32`
- * cspd_cmp(i32);
+ * cspd_cmp(i32)
  *
  * int main(int argc, char *argv[])
  * {

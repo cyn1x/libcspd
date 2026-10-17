@@ -41,13 +41,12 @@ typedef struct cspd_string_t
 /**
  * @brief Initializes an uninitialized string.
  *
- * Initializes a string by reserving the required capacity from the given
- * length. The struct will be zero-initialized if `len` is `NULL` or `0`.
+ * Initializes a string by reserving a starting capacity of 16 bytes; an initial
+ * length of 15 plus 1 byte for the null terminator.
  *
  * @warning Should only be called once for an uninitialized string.
  *
  * @param str The pointer to the string to initialize.
- * @param len The amount of characters to reserve space for.
  *
  * @par Example
  * @code
@@ -55,7 +54,7 @@ typedef struct cspd_string_t
  *   cspd_string_init(&str);
  * @endcode
  */
-CSPD_API void cspd_string_init(cspd_string *str, usize len);
+CSPD_API void cspd_string_init(cspd_string *str);
 
 /**
  * @brief Creates a new string.
@@ -73,7 +72,7 @@ CSPD_API void cspd_string_init(cspd_string *str, usize len);
  *   // Output: hello,world
  * @endcode
  */
-CSPD_API cspd_string cspd_string_new(char cstr[]);
+CSPD_API cspd_string cspd_string_new(char *cstr);
 
 /**
  * @brief Adds an array of characters to a string.

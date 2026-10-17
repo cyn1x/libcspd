@@ -24,11 +24,13 @@ static void test_init(void)
     cspd_string str_b;
     cspd_string str_c = cspd_string_new("hello,world");
 
-    cspd_string_init(&str_a, 0);
-    cspd_string_init(&str_b, 8);
+    cspd_string_init(&str_a);
+    cspd_string_init(&str_b);
 
-    cspd_assert(str_a.capacity == 0 && str_a.length == 0 && str_a.data == NULL);
-    cspd_assert(str_b.capacity >= 8 && str_b.length == 0 && str_b.data != NULL);
+    cspd_assert(str_a.capacity == 16 && str_a.length == 0 &&
+                str_a.data != NULL);
+    cspd_assert(str_b.capacity >= 16 && str_b.length == 0 &&
+                str_b.data != NULL);
     cspd_assert(str_c.capacity >= 12 && str_c.length == 11 &&
                 str_c.data != NULL);
 
@@ -43,7 +45,7 @@ static void test_append(void)
         //! [Append string]
         cspd_string str;
 
-        cspd_string_init(&str, 7);
+        cspd_string_init(&str);
         cspd_string_append(&str, "libcspd");
 
         cspd_assert(cspd_string_at(&str, 0) == 'l');
@@ -60,10 +62,10 @@ static void test_append(void)
     }
 
     cspd_string str;
-    cspd_string_init(&str, 5);         // length = 5, capacity = 6
+    cspd_string_init(&str);            // length = 5, capacity = 6
     cspd_string_append(&str, "hello"); // requires capacity = 6, i.e. "hello\0"
 
-    cspd_assert(str.capacity == 6);
+    cspd_assert(str.capacity == 16);
     cspd_assert(str.length == 5);
 
     cspd_assert(cspd_string_at(&str, 0) == 'h');
@@ -74,6 +76,9 @@ static void test_append(void)
     cspd_assert(cspd_string_at(&str, 5) == '\0');
 
     cspd_string_append(&str, "world");
+
+    cspd_assert(str.capacity == 16);
+    cspd_assert(str.length == 10);
 
     cspd_assert(cspd_string_at(&str, 5) == 'w');
     cspd_assert(cspd_string_at(&str, 6) == 'o');
@@ -107,6 +112,9 @@ static void test_concat(void)
     // cspd_print_fn("%s", str.data);
     // Output: helloworld
 
+    cspd_assert(str.capacity == 16);
+    cspd_assert(str.length == 10);
+
     for (usize i = 0; i < strlen(actual); ++i) {
         cspd_assert(((char *)str.data)[i] == actual[i]);
     }
@@ -134,7 +142,7 @@ static void test_join(void)
     cspd_string_clear(&tmp_a);
     cspd_string_clear(&tmp_b);
 
-    cspd_assert(str.capacity == 12);
+    cspd_assert(str.capacity == 16);
     cspd_assert(str.length == 11);
 
     for (usize i = 0; i < strlen(actual); ++i) {

@@ -3,7 +3,6 @@
 #include "cspd_vector.h"
 #include "cspd_mem.h"
 #include "cspd_util.h"
-#include <string.h>
 
 /**
  * @internal
