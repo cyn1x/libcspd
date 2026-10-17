@@ -104,7 +104,6 @@ void cspd_string_reserve(cspd_string *str, usize size)
 void cspd_string_clear(cspd_string *str)
 {
     cspd_free(str->data);
-    cspd_assert(errno == 0);
     str->capacity = 0;
     str->length   = 0;
     str->data     = NULL;
