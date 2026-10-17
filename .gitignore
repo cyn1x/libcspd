@@ -1,6 +1,16 @@
+# Visual Studio
 .vs/
+
+# Output directories for intermediary and binary files
 obj/
 lib/
 bin/
+
+# Doxygen
 doc/html
+
+# Clangd language server
+compile_flags.txt
+
+# Environment variables for Win32 build
 env.ini
