@@ -69,9 +69,9 @@ typedef struct cspd_llist_t
  * @param data_size The size of the data type in bytes.
  *
  * @b Example
- * @snippet cspd_linked_list.test.c Initialize
+ * @snippet cspd_linked_list.test.c Initialize linked list
  */
-CSPD_API void cspd_llist_init(cspd_llist *llist, usize data_size);
+CSPD_API void  cspd_llist_init(cspd_llist *llist, usize data_size);
 
 /**
  * @brief Adds a node to the end of the linked list.
@@ -86,7 +86,7 @@ CSPD_API void cspd_llist_init(cspd_llist *llist, usize data_size);
  * @b Example
  * @snippet cspd_linked_list.test.c Appending nodes
  */
-CSPD_API void cspd_llist_append(cspd_llist *llist, void *data);
+CSPD_API void  cspd_llist_append(cspd_llist *llist, void *data);
 
 /**
  * @brief Adds a node to the start of the linked list.
@@ -102,7 +102,7 @@ CSPD_API void cspd_llist_append(cspd_llist *llist, void *data);
  * @b Example
  * @snippet cspd_linked_list.test.c Prepending nodes
  */
-CSPD_API void cspd_llist_prepend(cspd_llist *llist, void *data);
+CSPD_API void  cspd_llist_prepend(cspd_llist *llist, void *data);
 
 /**
  * @brief Prepends a new node before the node at the given index.
@@ -118,7 +118,7 @@ CSPD_API void cspd_llist_prepend(cspd_llist *llist, void *data);
  * @b Example
  * @snippet cspd_linked_list.test.c Inserting nodes
  */
-CSPD_API void cspd_llist_insert(cspd_llist *llist, void *data, usize idx);
+CSPD_API void  cspd_llist_insert(cspd_llist *llist, void *data, usize idx);
 
 /**
  * @brief Moves a node in the linked list to the given destination.
@@ -135,8 +135,8 @@ CSPD_API void cspd_llist_insert(cspd_llist *llist, void *data, usize idx);
  * @b Example
  * @snippet cspd_linked_list.test.c Moving nodes
  */
-CSPD_API void cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
-                              cspd_llnode *dst, cspd_llnode *dst_ptr);
+CSPD_API void  cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
+                               cspd_llnode *dst, cspd_llnode *dst_ptr);
 
 /**
  * @brief Swaps two nodes in a linked list.
@@ -164,8 +164,8 @@ CSPD_API void cspd_llist_move(cspd_llist *llist, cspd_llnode *node,
  * @b Example
  * @snippet cspd_linked_list.test.c Swapping nodes
  */
-CSPD_API void cspd_llist_swap(cspd_llist *llist, cspd_llnode *a,
-                              cspd_llnode *b);
+CSPD_API void  cspd_llist_swap(cspd_llist *llist, cspd_llnode *a,
+                               cspd_llnode *b);
 
 /**
  * @brief Deletes a node in a linked list.
@@ -179,7 +179,7 @@ CSPD_API void cspd_llist_swap(cspd_llist *llist, cspd_llnode *a,
  * @b Example
  * @snippet cspd_linked_list.test.c Deleting nodes
  */
-CSPD_API void cspd_llist_delete(cspd_llist *llist, const void *keyt);
+CSPD_API void  cspd_llist_delete(cspd_llist *llist, const void *keyt);
 
 /**
  * @brief Erases a range of nodes in a linked list.
@@ -193,8 +193,8 @@ CSPD_API void cspd_llist_delete(cspd_llist *llist, const void *keyt);
  * @b Example
  * @snippet cspd_linked_list.test.c Example
  */
-CSPD_API void cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
-                               cspd_llnode *end);
+CSPD_API void  cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
+                                cspd_llnode *end);
 
 /**
  * @brief Clears all nodes from a linked list.
@@ -208,7 +208,7 @@ CSPD_API void cspd_llist_erase(cspd_llist *llist, cspd_llnode *start,
  * @b Example
  * @snippet cspd_linked_list.test.c Clearing lists
  */
-CSPD_API void cspd_llist_clear(cspd_llist *llist);
+CSPD_API void  cspd_llist_clear(cspd_llist *llist);
 
 /**
  * @brief Copies data from one linked list to another.
@@ -224,7 +224,7 @@ CSPD_API void cspd_llist_clear(cspd_llist *llist);
  * @b Example
  * @snippet cspd_linked_list.test.c Copying lists
  */
-CSPD_API void cspd_llist_copy(cspd_llist *dst, cspd_llist *src);
+CSPD_API void  cspd_llist_copy(cspd_llist *dst, cspd_llist *src);
 
 /**
  * @brief Reverses nodes in a linked list.
@@ -237,7 +237,7 @@ CSPD_API void cspd_llist_copy(cspd_llist *dst, cspd_llist *src);
  * @b Example
  * @snippet cspd_linked_list.test.c Reversing nodes
  */
-CSPD_API void cspd_llist_reverse(cspd_llist *llist);
+CSPD_API void  cspd_llist_reverse(cspd_llist *llist);
 
 /**
  * @brief Returns the index of a node in a linked list.
@@ -309,7 +309,7 @@ CSPD_API cspd_llnode *cspd_llist_lsearch(cspd_llist *llist, const void *key);
  *
  * @see https://en.wikipedia.org/wiki/Bubble_sort
  */
-CSPD_API void cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp);
+CSPD_API void         cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp);
 
 /**
  * @brief Sorts an array using the quicksort algorithm.
@@ -330,8 +330,8 @@ CSPD_API void cspd_llist_bsort(cspd_llist *llist, cspd_cmp cmp);
  *
  * @see https://en.wikipedia.org/wiki/Quicksort
  */
-CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
-                               cspd_llnode *hi, cspd_cmp cmp);
+CSPD_API void         cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
+                                       cspd_llnode *hi, cspd_cmp cmp);
 
 /**
  * @brief Prints the contents of the linked list.

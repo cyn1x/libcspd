@@ -12,7 +12,7 @@
 #define CSPD_STACK_H
 
 #include "cspd_exports.h"
-#include "cspd_linked_list.h"
+#include "cspd_llist.h"
 
 #ifdef __cplusplus
 extern "C" {

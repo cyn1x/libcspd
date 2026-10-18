@@ -1,7 +1,6 @@
 #define CSPD_EXPORTS
 
 #include "cspd_queue.h"
-#include "cspd_linked_list.h"
 #include "cspd_mem.h"
 
 void cspd_queue_init(cspd_queue *queue, size_t data_size)

@@ -1,7 +1,6 @@
 #define CSPD_EXPORTS
 
 #include "cspd_stack.h"
-#include "cspd_linked_list.h"
 #include "cspd_mem.h"
 
 static void update_pointers(cspd_stack *stack);
