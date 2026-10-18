@@ -121,8 +121,9 @@ void cspd_llist_insert(cspd_llist *llist, void *data, usize idx)
     memcpy(node->data, data, llist->data_size);
 
     if (idx == 0) {
-        node->next  = llist->head;
-        llist->head = node;
+        node->next        = llist->head;
+        llist->head->prev = node;
+        llist->head       = node;
 
         return;
     }
