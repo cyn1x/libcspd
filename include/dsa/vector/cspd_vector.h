@@ -57,7 +57,7 @@ typedef struct cspd_vector_t
  * @b Example
  * @snippet cspd_vector.test.c Initialize vector
  */
-CSPD_API void  cspd_vector_init(cspd_vector *vec, usize data_size);
+CSPD_API void cspd_vector_init(cspd_vector *vec, usize data_size);
 
 /**
  * @brief Appends an element to the vector.
@@ -72,7 +72,7 @@ CSPD_API void  cspd_vector_init(cspd_vector *vec, usize data_size);
  * @b Example
  * @snippet cspd_vector.test.c Push elements
  */
-CSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
+CSPD_API void cspd_vector_push(cspd_vector *vec, const void *data);
 
 /**
  * @brief Adds a range of elements to the vector.
@@ -89,8 +89,8 @@ CSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
  * @b Example
  * @snippet cspd_vector.test.c Add range
  */
-CSPD_API void  cspd_vector_addrange(cspd_vector *vec, usize size,
-                                    const void *data);
+CSPD_API void cspd_vector_addrange(cspd_vector *vec, usize size,
+                                   const void *data);
 
 /**
  * @brief Inserts one or many elements at the specified index.
@@ -106,8 +106,8 @@ CSPD_API void  cspd_vector_addrange(cspd_vector *vec, usize size,
  * @b Example
  * @snippet cspd_vector.test.c Inserting elements
  */
-CSPD_API void  cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
-                                  const void *data);
+CSPD_API void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
+                                 const void *data);
 
 /**
  * @brief Erases one or many elements from a vector.
@@ -125,7 +125,7 @@ CSPD_API void  cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
  * @b Example
  * @snippet cspd_vector.test.c Erasing elements
  */
-CSPD_API void  cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
+CSPD_API void cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
 
 /**
  * @brief Removes all items from a vector.
@@ -141,7 +141,7 @@ CSPD_API void  cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
  * @b Example
  * @snippet cspd_vector.test.c Delete vector
  */
-CSPD_API void  cspd_vector_clear(cspd_vector *vec);
+CSPD_API void cspd_vector_clear(cspd_vector *vec);
 
 /**
  * @brief Copies data from one vector to the other.
@@ -151,7 +151,7 @@ CSPD_API void  cspd_vector_clear(cspd_vector *vec);
  * @param dst The destination for the datasource to be copied to.
  * @param src The datasource for the copy.
  */
-CSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
+CSPD_API void cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
 
 /**
  * @brief Reverses the order of elements in a vector
@@ -160,7 +160,7 @@ CSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
  *
  * @param vec The vector to be reversed.
  */
-CSPD_API void  cspd_vector_reverse(cspd_vector *vec);
+CSPD_API void cspd_vector_reverse(cspd_vector *vec);
 
 /**
  * @brief Checks if an element exists in the vector.
@@ -218,7 +218,7 @@ CSPD_API usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
  * @see https://en.wikipedia.org/wiki/Bubble_sort
  */
 
-CSPD_API void  cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
+CSPD_API void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
 
 /**
  * @brief Sorts a vector using the quicksort algorithm.
@@ -236,8 +236,8 @@ CSPD_API void  cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
  *
  * @see https://en.wikipedia.org/wiki/Quicksort
  */
-CSPD_API void  cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
-                                 cspd_cmp cmp);
+CSPD_API void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
+                                cspd_cmp cmp);
 
 /**
  * @brief Sorts a vector using the mergesort algorithm.
@@ -252,7 +252,7 @@ CSPD_API void  cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
  *
  * @see https://en.wikipedia.org/wiki/Merge_sort
  */
-CSPD_API void  cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
+CSPD_API void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
 
 /**
  * @brief Retrieves an element from the vector.
@@ -354,7 +354,7 @@ static inline void cspd_vector_pop(cspd_vector *vec)
                                                                                \
     typedef cspd_vector NAME##_vector;                                         \
                                                                                \
-    static inline void  NAME##_vector_init(NAME##_vector *vec)                 \
+    static inline void NAME##_vector_init(NAME##_vector *vec)                  \
     {                                                                          \
         cspd_vector_init(vec, sizeof(TYPE));                                   \
     }                                                                          \

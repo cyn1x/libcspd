@@ -35,7 +35,7 @@ _Static_assert((QUANT & (QUANT - 1)) == 0, "QUANT must be a power of two");
  * @param idx The index to copy the data to.
  * @param data The data to be copied into the vector.
  */
-static void  cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
+static void set(cspd_vector *vec, usize idx, const void *data);
 
 /**
  * @internal
@@ -52,7 +52,7 @@ static void  cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
  * @param vec The vector to be resized.
  * @param size The minimum required capacity.
  */
-static void  cspd_vector_resize(cspd_vector *vec, usize size);
+static void resize(cspd_vector *vec, usize size);
 
 /**
  * @internal
@@ -86,8 +86,8 @@ static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp);
  * @param cmp Comparator function pointer.
  *
  */
-static void  split_merge(cspd_vector *vec_b, usize begin, usize end,
-                         cspd_vector *vec_a, cspd_cmp cmp);
+static void split_merge(cspd_vector *vec_b, usize begin, usize end,
+                        cspd_vector *vec_a, cspd_cmp cmp);
 
 /**
  * @internal
@@ -104,10 +104,10 @@ static void  split_merge(cspd_vector *vec_b, usize begin, usize end,
  * @param vec_a The vector to be sorted
  * @param cmp Comparator function pointer.
  */
-static void  merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
-                   cspd_vector *vec_a, cspd_cmp cmp);
+static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
+                  cspd_vector *vec_a, cspd_cmp cmp);
 
-void         cspd_vector_init(cspd_vector *vec, usize data_size)
+void cspd_vector_init(cspd_vector *vec, usize data_size)
 {
     cspd_assert(vec != NULL);
 
@@ -125,18 +125,12 @@ void         cspd_vector_init(cspd_vector *vec, usize data_size)
     }
 }
 
-void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
-{
-    void *dst = (u8 *)vec->data + idx * vec->data_size;
-    memcpy(dst, data, vec->data_size);
-}
-
 void cspd_vector_push(cspd_vector *vec, const void *data)
 {
     if (vec->size == vec->capacity) {
-        cspd_vector_resize(vec, vec->size + 1);
+        resize(vec, vec->size + 1);
     }
-    cspd_vector_set(vec, vec->size++, data);
+    set(vec, vec->size++, data);
 }
 
 void cspd_vector_addrange(cspd_vector *vec, usize size, const void *data)
@@ -145,7 +139,7 @@ void cspd_vector_addrange(cspd_vector *vec, usize size, const void *data)
 
     vec->size += amt;
     if (vec->size >= vec->capacity) {
-        cspd_vector_resize(vec, vec->capacity + amt);
+        resize(vec, vec->capacity + amt);
     }
     void *src = cspd_vector_get(vec, vec->size - amt);
 
@@ -160,7 +154,7 @@ void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
 
     vec->size += amt;
     if (vec->size >= vec->capacity) {
-        cspd_vector_resize(vec, vec->size);
+        resize(vec, vec->size);
     }
     void *src = cspd_vector_get(vec, idx);
     void *dst = cspd_vector_get(vec, idx + amt);
@@ -198,24 +192,10 @@ void cspd_vector_clear(cspd_vector *vec)
     vec->data      = NULL;
 }
 
-void cspd_vector_resize(cspd_vector *vec, usize size)
-{
-    if (vec->capacity == 0) {
-        cspd_vector_init(vec, vec->data_size);
-        return;
-    }
-
-    while (vec->capacity < size) {
-        vec->capacity *= 2;
-    }
-
-    vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
-}
-
 void cspd_vector_copy(cspd_vector *dst, cspd_vector *src)
 {
     // The destination vector_t is assumed to be empty
-    cspd_vector_resize(dst, src->capacity);
+    resize(dst, src->capacity);
     dst->size = src->size;
     memcpy(dst->data, src->data, src->size * src->data_size);
 }
@@ -281,17 +261,6 @@ void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
     }
 }
 
-void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp)
-{
-    cspd_vector vec_b;
-    cspd_vector_init(&vec_b, vec_a->data_size);
-
-    cspd_vector_copy(&vec_b, vec_a);
-    split_merge(vec_a, 0, size, &vec_b, cmp);
-
-    cspd_vector_clear(&vec_b);
-}
-
 void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
 {
     if (lo >= hi) {
@@ -304,6 +273,37 @@ void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
     cspd_vector_qsort(vec, pvt_idx + 1, hi, cmp);
 }
 
+void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp)
+{
+    cspd_vector vec_b;
+    cspd_vector_init(&vec_b, vec_a->data_size);
+
+    cspd_vector_copy(&vec_b, vec_a);
+    split_merge(vec_a, 0, size, &vec_b, cmp);
+
+    cspd_vector_clear(&vec_b);
+}
+
+static void set(cspd_vector *vec, usize idx, const void *data)
+{
+    void *dst = (u8 *)vec->data + idx * vec->data_size;
+    memcpy(dst, data, vec->data_size);
+}
+
+static void resize(cspd_vector *vec, usize size)
+{
+    if (vec->capacity == 0) {
+        cspd_vector_init(vec, vec->data_size);
+        return;
+    }
+
+    while (vec->capacity < size) {
+        vec->capacity *= 2;
+    }
+
+    vec->data = cspd_realloc(vec->data, vec->data_size * vec->capacity);
+}
+
 static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
 {
     void *pvt = cspd_vector_get(vec, hi);
@@ -311,9 +311,9 @@ static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
     isize idx = lo - 1;
 
     for (isize i = lo; i < hi; ++i) {
-        void *curr   = cspd_vector_get(vec, i);
+        void *curr = cspd_vector_get(vec, i);
 
-        int   result = cmp(curr, pvt);
+        int result = cmp(curr, pvt);
         if (result != 1) {
             idx++;
             tmp = cspd_vector_get(vec, idx);

@@ -8,9 +8,12 @@
 /******************************************************************************
  * Helper Declarations
  *****************************************************************************/
+
+/* Creates a vector with values from the given array. */
 #define tv_from(ARR)                                                           \
     tv_from_impl((ARR), sizeof(ARR) / sizeof((ARR)[0]), sizeof((ARR)[0]))
 
+/* Verifies a vector holds the expected values in order. */
 #define tv_expect(TYPE, VEC, ARR)                                              \
     do {                                                                       \
         const cspd_vector *_v = (VEC);                                         \
@@ -30,28 +33,30 @@ static cspd_vector tv_from_impl(const void *values, usize count,
 /******************************************************************************
  * Test Declarations
  *****************************************************************************/
-static void        test_vec_init(void);
-static void        test_vec_push(void);
-static void        test_vec_addrange(void);
-static void        test_vec_insert(void);
-static void        test_vec_erase(void);
-static void        test_vec_clear(void);
-static void        test_vec_copy(void);
-static void        test_vec_reverse(void);
-static void        test_vec_lsearch(void);
-static void        test_vec_bsearch(void);
-static void        test_vec_bsort(void);
-static void        test_vec_qsort(void);
-static void        test_vec_msort(void);
-static void        test_vec_get(void);
-static void        test_vec_back(void);
-static void        test_vec_front(void);
-static void        test_vec_pop(void);
+
+static void test_vec_init(void);
+static void test_vec_push(void);
+static void test_vec_addrange(void);
+static void test_vec_insert(void);
+static void test_vec_erase(void);
+static void test_vec_clear(void);
+static void test_vec_copy(void);
+static void test_vec_reverse(void);
+static void test_vec_lsearch(void);
+static void test_vec_bsearch(void);
+static void test_vec_bsort(void);
+static void test_vec_qsort(void);
+static void test_vec_msort(void);
+static void test_vec_get(void);
+static void test_vec_back(void);
+static void test_vec_front(void);
+static void test_vec_pop(void);
 
 /******************************************************************************
  * Test Runner
  *****************************************************************************/
-void               cspd_vector_test(void)
+
+void cspd_vector_test(void)
 {
     test_vec_init();
     test_vec_push();
@@ -133,7 +138,7 @@ static void test_vec_addrange(void)
     // cspd_print_vector(i32, &vec);
     // Output: { 3 5 6 1 }
 
-    i32         data[] = {8, 7, 4, 2};
+    i32 data[] = {8, 7, 4, 2};
     cspd_vector_addrange(&vec, sizeof(data), data);
 
     // cspd_print_vector(i32, &vec);
@@ -156,7 +161,7 @@ static void test_vec_insert(void)
         // cspd_print_vector(i32, &vec);
         // Output: { 0 1 4 5 6 7 8 9 }
 
-        i32         data[] = {3, 4};
+        i32 data[] = {3, 4};
         cspd_vector_insert(&vec, 3, sizeof(data), data);
 
         // cspd_print_vector(i32, &vec);
@@ -175,7 +180,7 @@ static void test_vec_insert(void)
         i32         values[] = {0, 1, 2};
         cspd_vector vec      = tv_from(values);
 
-        i32         b[]      = {-3, -2, -1};
+        i32 b[]              = {-3, -2, -1};
         cspd_vector_insert(&vec, 0, sizeof(b), b);
 
         i32 expected[] = {-3, -2, -1, 0, 1, 2};
@@ -189,7 +194,7 @@ static void test_vec_insert(void)
         i32         values[] = {0, 1, 2};
         cspd_vector vec      = tv_from(values);
 
-        i32         c[]      = {3, 4, 5};
+        i32 c[]              = {3, 4, 5};
         cspd_vector_insert(&vec, 3, sizeof(c), c);
 
         i32 expected[] = {0, 1, 2, 3, 4, 5};
@@ -373,8 +378,8 @@ static void test_vec_lsearch(void)
     // cspd_print_vector(i32, &vec);
     // Output: { 3 5 6 1 0 1 2 3 }
 
-    i32         key = 6;
-    usize       idx = cspd_vector_lsearch(&vec, &key);
+    i32   key = 6;
+    usize idx = cspd_vector_lsearch(&vec, &key);
 
     cspd_assert(idx == 2);
     //! [Linear search]
@@ -415,8 +420,8 @@ static void test_vec_bsearch(void)
         // cspd_print_vector(i32, &vec);
         // Output: { 3 5 6 1 0 1 2 3 }
 
-        i32         key = 6;
-        usize       idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
+        i32   key = 6;
+        usize idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
         cspd_assert(idx == SIZE_MAX);
 
         cspd_vector_clear(&vec);
