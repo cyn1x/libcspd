@@ -2,7 +2,30 @@
 
 #include "cspd_bstree.h"
 #include "cspd_mem.h"
-#include <string.h>
+
+/**
+ * @internal
+ *
+ * @brief Recursively deletes all nodes from the binary search tree.
+ *
+ * Recursively deletes all nodes from the given node. All nodes are deleted
+ * using depth-first search, where the nodes will be deleted from the bottom-up.
+ *
+ * @param node Pointer to the node to recursively delete.
+ */
+static void recursive_delete(cspd_bstnode *node);
+
+/**
+ * @internal
+ *
+ * @brief Deletes a node from the binary search tree.
+ *
+ * Deletes a node from the binary search tree after setting the node's `left`
+ * and `right` pointers to `NULL`.
+ *
+ * @param node
+ */
+static void delete_node(cspd_bstnode *node);
 
 /**
  * @internal
@@ -46,6 +69,8 @@ cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data)
 
     cspd_bstnode *leaf = bstree->root;
 
+    (void)leaf;
+
     return node;
 }
 
@@ -56,5 +81,34 @@ static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
 
     // TODO: #0008 - Binary search tree implementation
 
+    (void)result;
     (void)bstree;
+}
+
+void cspd_bstree_clear(cspd_bstree *bstree)
+{
+    recursive_delete(bstree->root);
+
+    bstree->root      = NULL;
+    bstree->data_size = 0;
+}
+
+static void recursive_delete(cspd_bstnode *node)
+{
+    if (!node) {
+        return;
+    }
+
+    recursive_delete(node->left);
+    recursive_delete(node->right);
+
+    delete_node(node);
+}
+
+static void delete_node(cspd_bstnode *node)
+{
+    node->left  = NULL;
+    node->right = NULL;
+    cspd_free(node->data);
+    cspd_free(node);
 }

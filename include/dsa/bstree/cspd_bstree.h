@@ -34,9 +34,9 @@ extern "C" {
  */
 typedef struct cspd_bstnode_t
 {
-    void           *data;
-    struct bstnode *left;
-    struct bstnode *right;
+    void                  *data;
+    struct cspd_bstnode_t *left;
+    struct cspd_bstnode_t *right;
 } cspd_bstnode;
 
 /**
@@ -63,7 +63,7 @@ typedef struct cspd_bstree_t
  * @param bstree Pointer to the binary search tree to be initialized.
  * @param data_size The size of the data type in bytes.
  */
-CSPD_API void cspd_bstree_init(cspd_bstree *bstree, usize data_size);
+CSPD_API void          cspd_bstree_init(cspd_bstree *bstree, usize data_size);
 
 /**
  * @brief
@@ -84,7 +84,7 @@ CSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
  *
  * @param bstree
  */
-CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
+CSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
 
 /**
  * @brief Prints the contents of the binary search tree.
