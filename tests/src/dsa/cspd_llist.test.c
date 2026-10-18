@@ -56,28 +56,28 @@ static cspd_llist tl_from_impl(void *values, usize count, usize data_size);
  * Test Declarations
  *****************************************************************************/
 
-static void       test_llist_init(void);
-static void       test_llist_append(void);
-static void       test_llist_prepend(void);
-static void       test_llist_insert(void);
-static void       test_llist_move(void);
-static void       test_llist_swap(void);
-static void       test_llist_delete(void);
-static void       test_llist_erase(void);
-static void       test_llist_clear(void);
-static void       test_llist_copy(void);
-static void       test_llist_reverse(void);
-static void       test_llist_index(void);
-static void       test_llist_find(void);
-static void       test_llist_lsearch(void);
-static void       test_llist_bsort(void);
-static void       test_llist_qsort(void);
+static void test_llist_init(void);
+static void test_llist_append(void);
+static void test_llist_prepend(void);
+static void test_llist_insert(void);
+static void test_llist_move(void);
+static void test_llist_swap(void);
+static void test_llist_delete(void);
+static void test_llist_erase(void);
+static void test_llist_clear(void);
+static void test_llist_copy(void);
+static void test_llist_reverse(void);
+static void test_llist_index(void);
+static void test_llist_find(void);
+static void test_llist_lsearch(void);
+static void test_llist_bsort(void);
+static void test_llist_qsort(void);
 
 /******************************************************************************
  * Test Runner
  *****************************************************************************/
 
-void              cspd_llist_test(void)
+void cspd_llist_test(void)
 {
     test_llist_init();
     test_llist_append();
@@ -181,7 +181,7 @@ static void test_llist_prepend(void)
         // cspd_print_llist(i32, &llist, false);
         // Output: { 7 8 7 3 10 4 5 }
 
-        i32        data = 1;
+        i32 data = 1;
         cspd_llist_prepend(&llist, &data);
 
         // cspd_print_llist(i32, &llist, false);
@@ -217,7 +217,7 @@ static void test_llist_prepend(void)
         i32        values[] = {2};
         cspd_llist llist    = tl_from(values);
 
-        i32        data     = 1;
+        i32 data            = 1;
         cspd_llist_prepend(&llist, &data);
 
         i32 expected[] = {1, 2};
@@ -237,7 +237,7 @@ static void test_llist_insert(void)
         // cspd_print_llist(i32, &llist, false);
         // Output: { 1 7 8 7 3 10 4 5 }
 
-        i32        data = 9;
+        i32 data = 9;
         cspd_llist_insert(&llist, &data, 5);
 
         // cspd_print_llist(i32, &llist, false);
@@ -259,7 +259,7 @@ static void test_llist_insert(void)
         i32        values[] = {1, 2, 3};
         cspd_llist llist    = tl_from(values);
 
-        i32        data     = 0;
+        i32 data            = 0;
         cspd_llist_insert(&llist, &data, 0);
 
         i32 expected[] = {0, 1, 2, 3};
@@ -273,7 +273,7 @@ static void test_llist_insert(void)
         i32        values[] = {0, 1, 2};
         cspd_llist llist    = tl_from(values);
 
-        i32        data     = 9;
+        i32 data            = 9;
         cspd_llist_insert(&llist, &data, 2);
 
         i32 expected[] = {0, 1, 9, 2};
@@ -512,7 +512,7 @@ static void test_llist_delete(void)
         // Output: { 5 4 10 9 3 7 8 7 1 }
 
         // Delete a node from the middle
-        i32        key = 10;
+        i32 key = 10;
         cspd_llist_delete(&llist, &key);
 
         // cspd_print_llist(i32, &llist, false);
@@ -547,7 +547,7 @@ static void test_llist_delete(void)
         i32        values[] = {1, 2, 3};
         cspd_llist llist    = tl_from(values);
 
-        i32        key      = 9;
+        i32 key             = 9;
         cspd_llist_delete(&llist, &key);
 
         tl_expect(i32, &llist, values);
@@ -560,7 +560,7 @@ static void test_llist_delete(void)
         i32        values[] = {7, 8, 7};
         cspd_llist llist    = tl_from(values);
 
-        i32        key      = 7;
+        i32 key             = 7;
         cspd_llist_delete(&llist, &key);
 
         i32 expected[] = {8, 7};
@@ -574,7 +574,7 @@ static void test_llist_delete(void)
         i32        values[] = {1};
         cspd_llist llist    = tl_from(values);
 
-        i32        key      = 1;
+        i32 key             = 1;
         cspd_llist_delete(&llist, &key);
 
         tl_expect_empty(&llist);
@@ -599,15 +599,15 @@ static void test_llist_delete(void)
 static void test_llist_erase(void)
 {
     {
-        i32          values[] = {4, 9, 7, 8, 7, 1};
-        cspd_llist   llist    = tl_from(values);
+        i32        values[] = {4, 9, 7, 8, 7, 1};
+        cspd_llist llist    = tl_from(values);
 
         //! [Erasing nodes]
         // cspd_print_llist(i32, &llist, false);
         // Output: { 4 9 7 8 7 1 }
 
-        i32          start  = 4;
-        i32          end    = 1;
+        i32 start           = 4;
+        i32 end             = 1;
 
         cspd_llnode *node_a = cspd_llist_find(&llist, &start);
         cspd_llnode *node_b = cspd_llist_find(&llist, &end);
@@ -841,7 +841,7 @@ static void test_llist_index(void)
     // cspd_print_llist(i32, &llist, false);
     // Output: { 5 4 10 9 3 7 8 7 1 }
 
-    usize      idx = cspd_llist_index(&llist, llist.head->next->next);
+    usize idx = cspd_llist_index(&llist, llist.head->next->next);
 
     cspd_assert(idx == 2);
     //! [Index of a node]
@@ -854,15 +854,15 @@ static void test_llist_index(void)
 
 static void test_llist_find(void)
 {
-    i32          values[] = {4, 9, 7, 8, 7, 1};
-    cspd_llist   llist    = tl_from(values);
+    i32        values[] = {4, 9, 7, 8, 7, 1};
+    cspd_llist llist    = tl_from(values);
 
     //! [Finding nodes]
     // cspd_print_llist(i32, &llist, false);
     // Output: { 4 9 7 8 7 1 }
 
-    i32          start  = 4;
-    i32          end    = 1;
+    i32 start           = 4;
+    i32 end             = 1;
 
     cspd_llnode *node_a = cspd_llist_find(&llist, &start);
     cspd_llnode *node_b = cspd_llist_find(&llist, &end);
@@ -883,8 +883,8 @@ static void test_llist_find(void)
 
 static void test_llist_lsearch(void)
 {
-    i32          values[] = {7, 8, 7, 3, 10, 4, 5};
-    cspd_llist   llist    = tl_from(values);
+    i32        values[] = {7, 8, 7, 3, 10, 4, 5};
+    cspd_llist llist    = tl_from(values);
 
     //! [Linear search]
     // cspd_print_llist(i32, &llist, false);

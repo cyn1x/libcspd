@@ -45,25 +45,14 @@ static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp);
  * @param llist Pointer to the linked list structure.
  * @param llnode Pointer to the linked list node.
  */
-static void         delete_node(cspd_llist *llist, cspd_llnode *node);
+static void delete_node(cspd_llist *llist, cspd_llnode *node);
 
-void                cspd_llist_init(cspd_llist *llist, usize data_size)
+void cspd_llist_init(cspd_llist *llist, usize data_size)
 {
     llist->data_size = data_size;
 
     llist->head      = NULL;
     llist->tail      = NULL;
-}
-
-cspd_llnode *node_init(usize data_size)
-{
-    cspd_llnode *node = cspd_malloc(sizeof(cspd_llnode));
-
-    node->data        = cspd_malloc(data_size);
-    node->prev        = NULL;
-    node->next        = NULL;
-
-    return node;
 }
 
 void cspd_llist_append(cspd_llist *llist, void *data)
@@ -434,6 +423,17 @@ void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo, cspd_llnode *hi,
     cspd_llist_qsort(llist, pvt->next, hi, cmp);
 }
 
+static cspd_llnode *node_init(usize data_size)
+{
+    cspd_llnode *node = cspd_malloc(sizeof(cspd_llnode));
+
+    node->data        = cspd_malloc(data_size);
+    node->prev        = NULL;
+    node->next        = NULL;
+
+    return node;
+}
+
 static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp)
 {
     cspd_llnode *pvt  = hi;
@@ -462,7 +462,7 @@ static cspd_llnode *partition(cspd_llnode *lo, cspd_llnode *hi, cspd_cmp cmp)
     return idx;
 }
 
-void delete_node(cspd_llist *llist, cspd_llnode *node)
+static void delete_node(cspd_llist *llist, cspd_llnode *node)
 {
     cspd_llnode *prev = node->prev;
     cspd_llnode *next = node->next;
