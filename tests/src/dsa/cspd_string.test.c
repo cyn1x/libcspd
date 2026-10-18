@@ -5,18 +5,41 @@
 #include <cspd_vector.h>
 #include <string.h>
 
+/******************************************************************************
+ * Helper Declarations
+ *****************************************************************************/
+
+/* Creates a string with values from the given char array. */
+#define ts_from(ARR)                                                           \
+    ts_from_impl((ARR), sizeof(ARR) / sizeof((ARR)[0]), sizeof((ARR)[0]))
+
+static cspd_string ts_from_impl(const char *cstr, usize count);
+static void        ts_expect_impl(cspd_string *str, const char *actual);
+
+/******************************************************************************
+ * Test Declarations
+ *****************************************************************************/
+
 static void test_init(void);
 static void test_append(void);
 static void test_concat(void);
 static void test_join(void);
 
-void        cspd_string_test(void)
+/******************************************************************************
+ * Test Runner
+ *****************************************************************************/
+
+void cspd_string_test(void)
 {
     test_init();
     test_append();
     test_concat();
     test_join();
 }
+
+/******************************************************************************
+ * Test Definitions
+ *****************************************************************************/
 
 static void test_init(void)
 {
@@ -101,7 +124,7 @@ static void test_concat(void)
     char        cstr[]   = "world";
     char        actual[] = "helloworld\0";
 
-    char       *parts[]  = {
+    const char *parts[]  = {
         tmp.data,
         cstr,
     };
@@ -132,7 +155,7 @@ static void test_join(void)
 
     char        sep      = ',';
     char        actual[] = "hello,world\0";
-    char       *parts[]  = {
+    const char *parts[]  = {
         tmp_a.data,
         tmp_b.data,
     };
@@ -154,4 +177,25 @@ static void test_join(void)
 
     cspd_string_clear(&str);
     //! [Join string]
+}
+
+/******************************************************************************
+ * Helper Definitions
+ *****************************************************************************/
+
+static cspd_string ts_from_impl(const char *cstr, usize count)
+{
+    cspd_string str;
+
+    cspd_string_init(&str);
+    cspd_string_concat(&str, &cstr, count);
+
+    return str;
+}
+
+static void ts_expect_impl(cspd_string *str, const char *actual)
+{
+    for (usize i = 0; i < strlen(actual); ++i) {
+        cspd_assert(((char *)str->data)[i] == actual[i]);
+    }
 }

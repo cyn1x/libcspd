@@ -86,7 +86,7 @@ CSPD_API cspd_string cspd_string_new(char *cstr);
  *
  * @snippet cspd_string.test.c Append string
  */
-CSPD_API void cspd_string_append(cspd_string *str, char cstr[]);
+CSPD_API void cspd_string_append(cspd_string *str, const char cstr[]);
 
 /**
  * @brief Joins strings together.
@@ -99,7 +99,8 @@ CSPD_API void cspd_string_append(cspd_string *str, char cstr[]);
  *
  * @snippet cspd_string.test.c Concat string
  */
-CSPD_API void cspd_string_concat(cspd_string *str, char *parts[], usize count);
+CSPD_API void cspd_string_concat(cspd_string *str, const char *parts[],
+                                 usize count);
 
 /**
  * @brief Joins strings together using a separator character.
@@ -114,8 +115,8 @@ CSPD_API void cspd_string_concat(cspd_string *str, char *parts[], usize count);
  *
  * @snippet cspd_string.test.c Join string
  */
-CSPD_API void cspd_string_join(cspd_string *str, char delim, char *parts[],
-                               usize count);
+CSPD_API void cspd_string_join(cspd_string *str, const char delim,
+                               const char *parts[], usize count);
 
 /**
  * @brief Resizes a string.

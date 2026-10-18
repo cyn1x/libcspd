@@ -19,7 +19,7 @@
  *
  * @note Must be a power of two, as the rounding uses a bitmask.
  */
-#define QUANT 16
+#define QUANT    16
 
 // Enforce the power-of-two requirement documented on QUANT.
 _Static_assert((QUANT & (QUANT - 1)) == 0, "QUANT must be a power of two");
@@ -45,8 +45,8 @@ cspd_string cspd_string_new(char *cstr)
 {
     cspd_string str;
 
-    usize       len  = strlen(cstr);
-    usize       size = (sizeof(char) * len) + 1;
+    usize len  = strlen(cstr);
+    usize size = (sizeof(char) * len) + 1;
 
     if (len < MIN_SIZE) {
         size = QUANT;
@@ -65,7 +65,7 @@ cspd_string cspd_string_new(char *cstr)
     return str;
 }
 
-void cspd_string_append(cspd_string *str, char cstr[])
+void cspd_string_append(cspd_string *str, const char cstr[])
 {
     usize len  = strlen(cstr);
     usize size = (sizeof(char) * len) + 1;
@@ -79,14 +79,15 @@ void cspd_string_append(cspd_string *str, char cstr[])
     str->length += len;
 }
 
-void cspd_string_concat(cspd_string *str, char *parts[], usize count)
+void cspd_string_concat(cspd_string *str, const char *parts[], usize count)
 {
     for (usize i = 0; i < count; ++i) {
         cspd_string_append(str, parts[i]);
     }
 }
 
-void cspd_string_join(cspd_string *str, char delim, char *parts[], usize count)
+void cspd_string_join(cspd_string *str, char delim, const char *parts[],
+                      usize count)
 {
     usize len = count - 1; // One delimiter between each pair
     for (usize i = 0; i < count; ++i) {
