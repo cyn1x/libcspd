@@ -1,12 +1,12 @@
 /**
- * @file cspd_linked_list.h
+ * @file cspd_llist.h
  * @brief Linked list data structures and algorithms.
  *
  * @see https://en.wikipedia.org/wiki/Linked_list
  */
 
-#ifndef CSPD_LINKED_LIST_H
-#define CSPD_LINKED_LIST_H
+#ifndef CSPD_LLIST_H
+#define CSPD_LLIST_H
 
 #include "cspd_exports.h"
 #include "cspd_types.h"
@@ -471,4 +471,4 @@ CSPD_API void cspd_llist_qsort(cspd_llist *llist, cspd_llnode *lo,
 }
 #endif // __cplusplus
 
-#endif // CSPD_LINKED_LIST_H
+#endif // CSPD_LLIST_H
