@@ -5,6 +5,25 @@
 #include "cspd_util.h"
 
 /**
+ * @brief Minimum capacity of the vector.
+ *
+ * Any allocation smaller than this value is raised to this value.
+ */
+#define MIN_SIZE 32
+
+/**
+ * @brief Capacity granularity in bytes.
+ *
+ * Allocation sizes are rounded up to a multiple of this value.
+ *
+ * @note Must be a power of two, as the rounding uses a bitmask.
+ */
+#define QUANT    32
+
+// Enforce the power-of-two requirement documented on QUANT.
+_Static_assert((QUANT & (QUANT - 1)) == 0, "QUANT must be a power of two");
+
+/**
  * @internal
  *
  * @brief Copies data to the vector.
@@ -16,7 +35,7 @@
  * @param idx The index to copy the data to.
  * @param data The data to be copied into the vector.
  */
-static void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
+static void  cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
 
 /**
  * @internal
@@ -33,7 +52,7 @@ static void cspd_vector_set(cspd_vector *vec, usize idx, const void *data);
  * @param vec The vector to be resized.
  * @param size The minimum required capacity.
  */
-static void cspd_vector_resize(cspd_vector *vec, usize size);
+static void  cspd_vector_resize(cspd_vector *vec, usize size);
 
 /**
  * @internal
@@ -67,8 +86,8 @@ static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp);
  * @param cmp Comparator function pointer.
  *
  */
-static void split_merge(cspd_vector *vec_b, usize begin, usize end,
-                        cspd_vector *vec_a, cspd_cmp cmp);
+static void  split_merge(cspd_vector *vec_b, usize begin, usize end,
+                         cspd_vector *vec_a, cspd_cmp cmp);
 
 /**
  * @internal
@@ -85,14 +104,25 @@ static void split_merge(cspd_vector *vec_b, usize begin, usize end,
  * @param vec_a The vector to be sorted
  * @param cmp Comparator function pointer.
  */
-static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
-                  cspd_vector *vec_a, cspd_cmp cmp);
+static void  merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
+                   cspd_vector *vec_a, cspd_cmp cmp);
 
-void        cspd_vector_init(cspd_vector *vec, usize data_size)
+void         cspd_vector_init(cspd_vector *vec, usize data_size)
 {
+    cspd_assert(vec != NULL);
+
     vec->data_size = data_size;
     vec->capacity  = 0;
     vec->size      = 0;
+    vec->data      = NULL;
+
+    usize len      = MIN_SIZE;
+    usize size     = len * vec->data_size;
+    vec->data      = cspd_calloc(size, vec->data_size);
+
+    if (vec->data) {
+        vec->capacity = len;
+    }
 }
 
 void cspd_vector_set(cspd_vector *vec, usize idx, const void *data)
@@ -146,28 +176,21 @@ void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
 
 void cspd_vector_erase(cspd_vector *vec, usize begin, usize end)
 {
-    // TODO: check range is within bounds
-    void *dst = NULL;
-    void *src = NULL;
-    usize amt = 0;
+    // TODO: #0034 - Check range is within bounds
+    usize lo   = begin < end ? begin : end;
+    usize hi   = begin < end ? end : begin;
+    usize amt  = hi - lo + 1;
+    usize tail = vec->size - (hi + 1); // elements after the erased range
 
-    if (end < begin) {
-        void *tmp = dst;
-        dst       = cspd_vector_get(vec, end);
-        src       = cspd_vector_get(vec, begin + 1);
-        amt       = begin - end + 1;
-    } else {
-        dst = cspd_vector_get(vec, begin);
-        src = cspd_vector_get(vec, end + 1);
-        amt = end - begin + 1;
-    }
-
-    memmove(dst, src, amt * vec->data_size);
+    memmove(cspd_vector_get(vec, lo), cspd_vector_get(vec, hi + 1),
+            tail * vec->data_size);
     vec->size -= amt;
 }
 
 void cspd_vector_clear(cspd_vector *vec)
 {
+    cspd_assert(vec != NULL);
+
     cspd_free(vec->data);
     vec->data_size = 0;
     vec->capacity  = 0;
@@ -178,8 +201,7 @@ void cspd_vector_clear(cspd_vector *vec)
 void cspd_vector_resize(cspd_vector *vec, usize size)
 {
     if (vec->capacity == 0) {
-        vec->capacity = size;
-        vec->data     = cspd_malloc(vec->data_size * size);
+        cspd_vector_init(vec, vec->data_size);
         return;
     }
 

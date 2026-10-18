@@ -1,36 +1,102 @@
 #include "cspd_vector.test.h"
 #include "cspd_cmp.test.h"
-#include <assert.h>
+#include <cspd_assert.h>
 #include <cspd_print.h>
+#include <cspd_types.h>
 #include <cspd_vector.h>
-#include <stdlib.h>
 
-static void        sort_test(void);
+/******************************************************************************
+ * Helper Declarations
+ *****************************************************************************/
+#define tv_from(ARR)                                                           \
+    tv_from_impl((ARR), sizeof(ARR) / sizeof((ARR)[0]), sizeof((ARR)[0]))
 
-static cspd_vector setup(void)
+#define tv_expect(TYPE, VEC, ARR)                                              \
+    do {                                                                       \
+        const cspd_vector *_v = (VEC);                                         \
+        const TYPE        *_e = (ARR);                                         \
+        usize              _n = sizeof(ARR) / sizeof((ARR)[0]);                \
+                                                                               \
+        cspd_assert(_v->data_size == sizeof(TYPE));                            \
+        cspd_assert(_v->size == _n);                                           \
+        for (usize _i = 0; _i < _n; ++_i) {                                    \
+            cspd_assert(*(TYPE *)cspd_vector_get(_v, _i) == _e[_i]);           \
+        }                                                                      \
+    } while (0)
+
+static cspd_vector tv_from_impl(const void *values, usize count,
+                                usize data_size);
+
+/******************************************************************************
+ * Test Declarations
+ *****************************************************************************/
+static void        test_vec_init(void);
+static void        test_vec_push(void);
+static void        test_vec_addrange(void);
+static void        test_vec_insert(void);
+static void        test_vec_erase(void);
+static void        test_vec_clear(void);
+static void        test_vec_copy(void);
+static void        test_vec_reverse(void);
+static void        test_vec_lsearch(void);
+static void        test_vec_bsearch(void);
+static void        test_vec_bsort(void);
+static void        test_vec_qsort(void);
+static void        test_vec_msort(void);
+static void        test_vec_get(void);
+static void        test_vec_back(void);
+static void        test_vec_front(void);
+static void        test_vec_pop(void);
+
+/******************************************************************************
+ * Test Runner
+ *****************************************************************************/
+void               cspd_vector_test(void)
 {
-    //! [Add range]
-    cspd_vector vec;
-    i32         values[] = {7, 8, 7, 4, 10, 3, 5};
-
-    cspd_vector_init(&vec, sizeof(i32));
-    cspd_vector_addrange(&vec, sizeof(values), values);
-
-    // cspd_print_vector(i32, &vec);
-    // Output: { 7 8 7 4 10 3 5 }
-    //! [Add range]
-
-    return vec;
+    test_vec_init();
+    test_vec_push();
+    test_vec_addrange();
+    test_vec_insert();
+    test_vec_erase();
+    test_vec_clear();
+    test_vec_copy();
+    test_vec_reverse();
+    test_vec_lsearch();
+    test_vec_bsearch();
+    test_vec_bsort();
+    test_vec_qsort();
+    test_vec_msort();
+    test_vec_get();
+    test_vec_back();
+    test_vec_front();
+    test_vec_pop();
 }
 
-void cspd_vector_test(void)
+/******************************************************************************
+ * Test Definitions
+ *****************************************************************************/
+
+static void test_vec_init(void)
 {
-    //! [Initialize]
+    //! [Initialize vector]
     cspd_vector vec;
     cspd_vector_init(&vec, sizeof(i32));
-    //! [Initialize]
 
+    // cspd_print_vector(i32, &vec);
+    // Output: { }
+
+    cspd_assert(vec.capacity == 32 && vec.size == 0 && vec.data != NULL);
+    //! [Initialize vector]
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_push(void)
+{
     //! [Push elements]
+    cspd_vector vec;
+    cspd_vector_init(&vec, sizeof(i32));
+
     i32 w = 3;
     i32 x = 5;
     i32 y = 6;
@@ -44,211 +110,480 @@ void cspd_vector_test(void)
     // cspd_print_vector(i32, &vec);
     // Output: { 3 5 6 1 }
 
-    {
-        //! [Get element]
-        i32 value;
-        i32 e = 5;
-        value = *(i32 *)cspd_vector_get(&vec, 1);
-        assert(value == e);
-        //! [Get element]
+    for (i32 i = 0; i < 8; ++i) {
+        cspd_vector_push(&vec, &i);
     }
 
+    // cspd_print_vector(i32, &vec);
+    // Output: { 3 5 6 1 0 1 2 3 4 5 6 7 }
+
+    cspd_assert(vec.capacity == 32);
+    cspd_assert(vec.size == 12);
+    cspd_assert(((i32 *)vec.data)[10] == 6);
+    //! [Push elements]
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_addrange(void)
+{
+    i32         values[] = {3, 5, 6, 1};
+    cspd_vector vec      = tv_from(values);
+    //! [Add range]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 3 5 6 1 }
+
+    i32         data[] = {8, 7, 4, 2};
+    cspd_vector_addrange(&vec, sizeof(data), data);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 3 5 6 1 8 7 4 2 }
+
+    cspd_assert(vec.capacity == 32);
+    cspd_assert(vec.size == 8);
+    //! [Add range]
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_insert(void)
+{
     {
-        //! [Push elements]
-        for (i32 i = 0; i < 8; ++i) {
-            i32 k = i;
-            cspd_vector_push(&vec, &k);
-        }
+        i32         values[] = {0, 1, 2, 5, 6, 7, 8, 9};
+        cspd_vector vec      = tv_from(values);
+
+        //! [Inserting elements]
+        // cspd_print_vector(i32, &vec);
+        // Output: { 0 1 4 5 6 7 8 9 }
+
+        i32         data[] = {3, 4};
+        cspd_vector_insert(&vec, 3, sizeof(data), data);
 
         // cspd_print_vector(i32, &vec);
-        // Output: { 3 5 6 1 0 1 2 3 4 5 6 7 }
+        // Output: { 0 1 2 3 4 5 6 7 8 9 }
+        //! [Inserting elements]
 
-        assert(vec.size == 12);
-        i32 value = ((i32 *)vec.data)[10];
-        assert(value == 6);
-        //! [Push elements]
+        i32 expected[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        tv_expect(i32, &vec, expected);
+
+        cspd_vector_clear(&vec);
+    }
+
+    /* Edge cases */
+    {
+        // Edge case: front
+        i32         values[] = {0, 1, 2};
+        cspd_vector vec      = tv_from(values);
+
+        i32         b[]      = {-3, -2, -1};
+        cspd_vector_insert(&vec, 0, sizeof(b), b);
+
+        i32 expected[] = {-3, -2, -1, 0, 1, 2};
+        tv_expect(i32, &vec, expected);
+
+        cspd_vector_clear(&vec);
     }
 
     {
-        //! [Linear search]
-        i32   k   = 6;
-        usize idx = cspd_vector_lsearch(&vec, &k);
-        assert(idx == 2);
-        assert(*(i32 *)cspd_vector_back(&vec) == 7);
-        //! [Linear search]
+        // Edge case: back
+        i32         values[] = {0, 1, 2};
+        cspd_vector vec      = tv_from(values);
+
+        i32         c[]      = {3, 4, 5};
+        cspd_vector_insert(&vec, 3, sizeof(c), c);
+
+        i32 expected[] = {0, 1, 2, 3, 4, 5};
+        tv_expect(i32, &vec, expected);
+
+        cspd_vector_clear(&vec);
     }
 
     {
-        //! [Erasing data]
+        // Edge case: empty vector
+        cspd_vector vec;
+        cspd_vector_init(&vec, sizeof(i32));
+
+        i32 d[] = {7, 8};
+        cspd_vector_insert(&vec, 0, sizeof(d), d);
+
+        i32 expected[] = {7, 8};
+        tv_expect(i32, &vec, expected);
+
+        cspd_vector_clear(&vec);
+    }
+}
+
+static void test_vec_erase(void)
+{
+    {
+        i32         values[] = {3, 5, 6, 1, 0, 8, 7, 4, 2};
+        cspd_vector vec      = tv_from(values);
+
+        //! [Erasing elements]
+        // cspd_print_vector(i32, &vec);
+        // Output: { 3 5 6 1 0 8 7 4 2 }
+
         cspd_vector_erase(&vec, 5, 8);
+
+        // cspd_print_vector(i32, &vec);
+        // Output: { 3 5 6 1 0 }
+
+        cspd_assert(vec.size == 5);
+        //! [Erasing elements]
+
+        i32 expected[] = {3, 5, 6, 1, 0};
+        tv_expect(i32, &vec, expected);
+
+        cspd_vector_clear(&vec);
+    }
+
+    /* Edge cases */
+    {
+        // Edge case: single element
+        i32         values[] = {3, 5, 6, 1};
+        cspd_vector vec      = tv_from(values);
+
+        // cspd_print_vector(i32, &vec);
+        // Output: { 3 5 6 1 }
+
+        cspd_vector_erase(&vec, 0, 0);
+
+        // cspd_print_vector(i32, &vec);
+        // Output: { 5 6 1 }
+
+        cspd_assert(vec.size == 3);
+        cspd_assert(*(i32 *)cspd_vector_front(&vec) == 5);
+        cspd_assert(*(i32 *)cspd_vector_get(&vec, 1) == 6);
+        cspd_assert(*(i32 *)cspd_vector_back(&vec) == 1);
+
+        cspd_vector_clear(&vec);
+    }
+
+    {
+        // Edge case: reversed range
+        i32         values[] = {3, 5, 6, 1, 0, 5, 6, 7};
+        cspd_vector vec      = tv_from(values);
 
         // cspd_print_vector(i32, &vec);
         // Output: { 3 5 6 1 0 5 6 7 }
 
-        i32 value = *(i32 *)cspd_vector_get(&vec, 5);
-        assert(value == 5);
-        assert(*(i32 *)cspd_vector_front(&vec) == 3);
-        assert(vec.size == 8);
-    }
+        cspd_vector_erase(&vec, 4, 0);
 
-    cspd_vector_erase(&vec, 4, 0);
-    // cspd_print_vector(i32, &vec);
-    // Output: { 0 4 5 6 7 }
-    assert(*(i32 *)cspd_vector_front(&vec) == 5);
-    assert(*(i32 *)cspd_vector_back(&vec) == 7);
-    assert(vec.size == 3);
-    //! [Erasing data]
+        // cspd_print_vector(i32, &vec);
+        // Output: { 5 6 7 }
 
-    //! [Inserting data]
-    /*i32 a_vals[] = {1, 2, 3};
-    cspd_vector_insert(&vec, 1, sizeof(a_vals), &a_vals);
-    // cspd_print_vector(i32, &vec);
-    // Output: { 0 1 2 3 4 5 6 7 }
-    assert(*(i32 *)cspd_vector_front(&vec) == 0);
+        cspd_assert(vec.size == 3);
+        cspd_assert(*(i32 *)cspd_vector_get(&vec, 1) == 6);
+        cspd_assert(*(i32 *)cspd_vector_front(&vec) == 5);
+        cspd_assert(*(i32 *)cspd_vector_back(&vec) == 7);
 
-    i32 b_vals[] = {-3, -2, -1};
-    cspd_vector_insert(&vec, 0, sizeof(b_vals), &b_vals);
-    // cspd_print_vector(i32, &vec);
-    // Output: { -3 -2 -1 0 1 2 3 4 5 6 7 }
-    // printf("%d\n", *(i32 *)vec.back);
-    // Output: 7
-    assert(*(i32 *)cspd_vector_front(&vec) == -3);
-    assert(*(i32 *)cspd_vector_back(&vec) == 7);
-
-    i32 c_vals[] = {8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
-    cspd_vector_insert(&vec, 11, sizeof(c_vals), &c_vals);
-    // cspd_print_vector(i32, &vec);
-    // Output: { -3 -2 -1 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
-    assert(*(i32 *)cspd_vector_back(&vec) == 19);
-    //! [Inserting data]
-
-    i32 d_vals[] = {-17, -16, -15, -14, -13, -12, -11,
-                    -10, -9,  -8,  -7,  -6,  -5,  -4};
-    cspd_vector_insert(&vec, 0, sizeof(d_vals), &d_vals);
-    // cspd_print_vector(i32, &vec);
-    // Output: { -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0
-    // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 }
-    assert(*(i32 *)cspd_vector_front(&vec) == -17);
-    assert(*(i32 *)cspd_vector_back(&vec) == 19);
-
-    cspd_vector_pop(&vec);
-    assert(*(i32 *)cspd_vector_back(&vec) == 18);
-
-    // Reverse the vector
-    cspd_vector_reverse(&vec);
-    // cspd_print_vector(i32, &vec);
-    // Output: { 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 -1 -2 -3 -4 -5
-    // -6 -7 -8 -9 -10 -11 -12 -13 -14 -15 -16 -17 }
-    assert(*(i32 *)cspd_vector_front(&vec) == 18);
-    assert(*(i32 *)cspd_vector_back(&vec) == -17);
-
-    //! [Bubble sort]
-    cspd_vector_bsort(&vec, i32_cmp);
-    // cspd_print_vector(i32, &vec);
-    // Output: { -17 -16 -15 -14 -13 -12 -11 -10 -9 -8 -7 -6 -5 -4 -3 -2 -1 0
-    // 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 }
-    //! [Bubble sort]
-
-    {
-        // built-in binary search
-        i32    k   = 9;
-        usize *res = bsearch(&k, vec.data, vec.size, vec.data_size, i32_cmp);
-        assert(*(i32 *)res == 9);
+        cspd_vector_clear(&vec);
     }
 
     {
-        //! [Custom binary search]
-        i32   n   = -2;
-        usize idx = cspd_vector_bsearch(&vec, &n, i32_cmp);
-        assert(idx == 15);
-        //! [Custom binary search]
+        // Edge case: whole vector
+        i32         values[] = {3, 5, 6, 1};
+        cspd_vector vec      = tv_from(values);
+
+        // cspd_print_vector(i32, &vec);
+        // Output: { 3 5 6 1 }
+
+        cspd_vector_erase(&vec, 0, 3);
+
+        // cspd_print_vector(i32, &vec);
+        // Output: { }
+
+        cspd_assert(vec.size == 0);
+
+        cspd_vector_clear(&vec);
     }
-
-    i32   key  = 4;
-    void *addr = (i32 *)cspd_vector_bsearch(&vec, &key, i32_cmp);
-    // printf("Key found at: %p\n", addr);
-    assert(addr != NULL);
-
-    // TODO: Shuffle the items instead
-    // Reverse the vector
-    cspd_vector_reverse(&vec);
-    // cspd_print_vector(i32, &vec);
-    // Output: { 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 -1 -2 -3 -4 -5
-    // -6 -7 -8 -9 -10 -11 -12 -13 -14 -15 -16 -17 }
-
-    sort_test();*/
-
-    cspd_vector_clear(&vec);
-    assert(vec.data == NULL);
 }
 
-static void sort_test(void)
+static void test_vec_clear(void)
 {
-    cspd_vector vec_a = setup();
+    {
+        //! [Delete vector]
+        cspd_vector vec;
+        cspd_vector_init(&vec, sizeof(i32));
+
+        for (usize i = 0; i < 10; ++i) {
+            cspd_vector_push(&vec, &i);
+        }
+
+        cspd_vector_clear(&vec);
+
+        cspd_assert(vec.size == 0);
+        cspd_assert(vec.capacity == 0);
+        cspd_assert(vec.data == NULL);
+        //! [Delete vector]
+    }
+
+    {
+        // Edge case: empty vector
+        cspd_vector vec;
+        cspd_vector_init(&vec, sizeof(i32));
+        cspd_vector_clear(&vec);
+    }
+}
+
+static void test_vec_copy(void)
+{
+    i32         values[] = {3, 5, 6, 1, 0, 1, 2, 3};
+    cspd_vector vec_a    = tv_from(values);
+
+    // cspd_print_vector(i32, &vec_a);
+    // Output: { 3 5 6 1 0 1 2 3 }
 
     cspd_vector vec_b;
-    cspd_vector vec_c;
     cspd_vector_init(&vec_b, sizeof(i32));
-    cspd_vector_init(&vec_c, sizeof(i32));
-
-    cspd_vector_copy(&vec_b, &vec_a);
-
-    i32 a = 6;
-    i32 b = 5;
-    i32 c = 3;
-    i32 d = 1;
-    i32 e = 8;
-    i32 f = 7;
-    i32 g = 2;
-    i32 h = 4;
-
-    cspd_vector_push(&vec_c, &a);
-    cspd_vector_push(&vec_c, &b);
-    cspd_vector_push(&vec_c, &c);
-    cspd_vector_push(&vec_c, &d);
-    cspd_vector_push(&vec_c, &e);
-    cspd_vector_push(&vec_c, &f);
-    cspd_vector_push(&vec_c, &g);
-    cspd_vector_push(&vec_c, &h);
+    cspd_vector_copy(&vec_a, &vec_b);
 
     // cspd_print_vector(i32, &vec_a);
-    // Output: { 7 8 7 4 10 3 5 }
-
-    // built-in quicksort
-    qsort(vec_a.data, vec_a.size, vec_a.data_size, i32_cmp);
-
-    // cspd_print_vector(i32, &vec_a);
-    // Output: { 3 4 5 7 7 8 10 }
-
-    assert(*(i32 *)cspd_vector_front(&vec_a) == 3);
-    assert(*(i32 *)cspd_vector_back(&vec_a) == 10);
-
-    // cspd_print_vector(i32, &vec_b);
-    // Output: { 7 8 7 4 10 3 5 }
-
-    cspd_vector_qsort(&vec_b, 0, vec_b.size - 1, i32_cmp);
-    // cspd_print_vector(i32, &vec_b);
-    // Output: { 3 4 5 7 7 8 10 }
-
-    assert(*(i32 *)cspd_vector_front(&vec_a) == 3);
-    assert(*(i32 *)cspd_vector_back(&vec_b) == 10);
-
-    // cspd_print_vector(i32, &vec_c);
-    // Output: { 1 2 3 4 5 6 7 8 }
-
-    cspd_vector_msort(&vec_c, vec_c.size, i32_cmp);
-    // cspd_print_vector(i32, &vec_c);
-    // Output: { 1 2 3 4 5 6 7 8 }
-
-    for (usize i = 0; i < vec_c.size - 1; i++) {
-        assert(*(i32 *)cspd_vector_get(&vec_c, i) <=
-               *(i32 *)cspd_vector_get(&vec_c, i + 1));
-    }
+    // Output: { 3 5 6 1 0 1 2 3 }
 
     cspd_vector_clear(&vec_a);
     cspd_vector_clear(&vec_b);
-    cspd_vector_clear(&vec_c);
-    assert(vec_a.data == NULL);
-    assert(vec_b.data == NULL);
-    assert(vec_c.data == NULL);
+}
+
+static void test_vec_reverse(void)
+{
+    i32         values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    cspd_vector vec      = tv_from(values);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 1 2 3 4 5 6 7 8 9 }
+
+    cspd_vector_reverse(&vec);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 9 8 7 6 5 4 3 2 1 }
+
+    i32 expected[] = {9, 8, 7, 6, 5, 4, 3, 2, 1};
+    tv_expect(i32, &vec, expected);
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_lsearch(void)
+{
+    i32         values[] = {3, 5, 6, 1, 0, 1, 2, 3};
+    cspd_vector vec      = tv_from(values);
+
+    //! [Linear search]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 3 5 6 1 0 1 2 3 }
+
+    i32         key = 6;
+    usize       idx = cspd_vector_lsearch(&vec, &key);
+
+    cspd_assert(idx == 2);
+    //! [Linear search]
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_bsearch(void)
+{
+    i32         values[] = {3, 5, 6, 1, 0, 1, 2, 3};
+    cspd_vector vec      = tv_from(values);
+
+    //! [Binary search]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 3 5 6 1 0 1 2 3 }
+
+    // Sort the vector before using binary search
+    cspd_vector_qsort(&vec, 0, vec.size - 1, i32_cmp);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 0 1 1 2 3 3 5 6 }
+
+    i32   key = 5;
+    usize idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
+    cspd_assert(idx == 6);
+    //! [Binary search]
+
+    cspd_vector_clear(&vec);
+
+    /* Edge cases */
+    {
+        // Edge case: unsorted vector
+        i32         values[] = {3, 5, 6, 1, 0, 1, 2, 3};
+        cspd_vector vec      = tv_from(values);
+
+        // cspd_print_vector(i32, &vec);
+        // Output: { 3 5 6 1 0 1 2 3 }
+
+        i32         key = 6;
+        usize       idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
+        cspd_assert(idx == SIZE_MAX);
+
+        cspd_vector_clear(&vec);
+    }
+}
+
+static void test_vec_bsort(void)
+{
+    i32         values[] = {15, 3, 8, 0, 4, 11, 6, 12, 1, 7};
+    cspd_vector vec      = tv_from(values);
+
+    //! [Bubble sort]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 15 3 8 0 4 11 6 12 1 7 }
+
+    cspd_vector_bsort(&vec, i32_cmp);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 0 1 3 4 6 7 8 11 12 15 }
+    //! [Bubble sort]
+
+    i32 expected[] = {0, 1, 3, 4, 6, 7, 8, 11, 12, 15};
+    tv_expect(i32, &vec, expected);
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_qsort(void)
+{
+    i32         values[] = {7, 8, 7, 4, 10, 3, 5};
+    cspd_vector vec      = tv_from(values);
+
+    //! [Quick sort]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 7 8 7 4 10 3 5 }
+
+    cspd_vector_qsort(&vec, 0, vec.size - 1, i32_cmp);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 7 8 7 4 10 3 5 }
+    //! [Quick sort]
+
+    i32 expected[] = {3, 4, 5, 7, 7, 8, 10};
+    tv_expect(i32, &vec, expected);
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_msort(void)
+{
+    i32         values[] = {7, 8, 7, 4, 10, 3, 5};
+    cspd_vector vec      = tv_from(values);
+
+    //! [Merge sort]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 7 8 7 4 10 3 5 }
+
+    cspd_vector_msort(&vec, vec.size, i32_cmp);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 3 4 5 7 7 8 10 }
+    //! [Merge sort]
+
+    i32 expected[] = {3, 4, 5, 7, 7, 8, 10};
+    tv_expect(i32, &vec, expected);
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_get(void)
+{
+    i32         values[] = {7, 8, 7, 4, 10, 3, 5};
+    cspd_vector vec      = tv_from(values);
+
+    //! [Get element]
+    // cspd_print_vector(i32, &vec);
+    // Output: { 7 8 7 4 10 3 5 }
+
+    cspd_assert(*(i32 *)cspd_vector_get(&vec, 0) == 7);
+    cspd_assert(*(i32 *)cspd_vector_back(&vec) == 5);
+    //! [Get element]
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_back(void)
+{
+    i32         values[] = {1, 2, 3};
+    cspd_vector vec      = tv_from(values);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 1 2 3 }
+
+    cspd_assert(*(i32 *)cspd_vector_back(&vec) == 3);
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_front(void)
+{
+    i32         values[] = {1, 2, 3};
+    cspd_vector vec      = tv_from(values);
+
+    // cspd_print_vector(i32, &vec);
+    // Output: { 1 2 3 }
+
+    cspd_assert(*(i32 *)cspd_vector_front(&vec) == 1);
+
+    cspd_vector_clear(&vec);
+}
+
+static void test_vec_pop(void)
+{
+    {
+        i32         values[] = {1, 2, 3};
+        cspd_vector vec      = tv_from(values);
+
+        //! [Pop element]
+        // cspd_print_vector(i32, &vec);
+        // Output: { 1 2 3 }
+
+        cspd_vector_pop(&vec);
+
+        cspd_assert(*(i32 *)cspd_vector_front(&vec) == 1);
+        cspd_assert(*(i32 *)cspd_vector_back(&vec) == 2);
+        //! [Pop element]
+
+        cspd_vector_clear(&vec);
+    }
+
+    /* Edge cases */
+    {
+        // Edge case: whole vector
+        i32         values[] = {3, 2, 1};
+        cspd_vector vec      = tv_from(values);
+
+        cspd_vector_pop(&vec);
+        cspd_vector_pop(&vec);
+        cspd_vector_pop(&vec);
+
+        cspd_assert(vec.size == 0);
+        cspd_assert(vec.capacity == 32);
+
+        cspd_vector_clear(&vec);
+    }
+
+    {
+        // Edge case: empty vector
+        cspd_vector vec;
+        cspd_vector_init(&vec, sizeof(i32));
+        cspd_vector_pop(&vec);
+
+        cspd_assert(vec.size == 0);
+
+        cspd_vector_clear(&vec);
+    }
+}
+
+/******************************************************************************
+ * Helper Definitions
+ *****************************************************************************/
+
+static cspd_vector tv_from_impl(const void *values, usize count,
+                                usize data_size)
+{
+    cspd_vector vec;
+
+    cspd_vector_init(&vec, data_size);
+    cspd_vector_addrange(&vec, count * data_size, values);
+
+    return vec;
 }

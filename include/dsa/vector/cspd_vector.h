@@ -47,7 +47,7 @@ typedef struct cspd_vector_t
  * @brief Initializes a new vector.
  *
  * Prepares a vector for first-time use by initializing all data structure
- * members to their initial values.
+ * members and reserving a starting capacity of 16 bytes.
  *
  * @remark Memory is not allocated on initialization.
  *
@@ -55,9 +55,9 @@ typedef struct cspd_vector_t
  * @param data_size The size of the data type in bytes.
  *
  * @b Example
- * @snippet cspd_vector.test.c Initialize
+ * @snippet cspd_vector.test.c Initialize vector
  */
-CSPD_API void cspd_vector_init(cspd_vector *vec, usize data_size);
+CSPD_API void  cspd_vector_init(cspd_vector *vec, usize data_size);
 
 /**
  * @brief Appends an element to the vector.
@@ -72,7 +72,7 @@ CSPD_API void cspd_vector_init(cspd_vector *vec, usize data_size);
  * @b Example
  * @snippet cspd_vector.test.c Push elements
  */
-CSPD_API void cspd_vector_push(cspd_vector *vec, const void *data);
+CSPD_API void  cspd_vector_push(cspd_vector *vec, const void *data);
 
 /**
  * @brief Adds a range of elements to the vector.
@@ -89,8 +89,8 @@ CSPD_API void cspd_vector_push(cspd_vector *vec, const void *data);
  * @b Example
  * @snippet cspd_vector.test.c Add range
  */
-CSPD_API void cspd_vector_addrange(cspd_vector *vec, usize size,
-                                   const void *data);
+CSPD_API void  cspd_vector_addrange(cspd_vector *vec, usize size,
+                                    const void *data);
 
 /**
  * @brief Inserts one or many elements at the specified index.
@@ -104,10 +104,10 @@ CSPD_API void cspd_vector_addrange(cspd_vector *vec, usize size,
  * @param data The data being inserted.
  *
  * @b Example
- * @snippet cspd_vector.test.c Inserting data
+ * @snippet cspd_vector.test.c Inserting elements
  */
-CSPD_API void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
-                                 const void *data);
+CSPD_API void  cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
+                                  const void *data);
 
 /**
  * @brief Erases one or many elements from a vector.
@@ -123,9 +123,9 @@ CSPD_API void cspd_vector_insert(cspd_vector *vec, usize idx, usize size,
  * @param end The end position of the erasure.
  *
  * @b Example
- * @snippet cspd_vector.test.c Erasing data
+ * @snippet cspd_vector.test.c Erasing elements
  */
-CSPD_API void cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
+CSPD_API void  cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
 
 /**
  * @brief Removes all items from a vector.
@@ -137,8 +137,11 @@ CSPD_API void cspd_vector_erase(cspd_vector *vec, usize begin, usize end);
  * required to prevent memory leaks.
  *
  * @param vec The vector to be deleted.
+ *
+ * @b Example
+ * @snippet cspd_vector.test.c Delete vector
  */
-CSPD_API void cspd_vector_clear(cspd_vector *vec);
+CSPD_API void  cspd_vector_clear(cspd_vector *vec);
 
 /**
  * @brief Copies data from one vector to the other.
@@ -148,7 +151,7 @@ CSPD_API void cspd_vector_clear(cspd_vector *vec);
  * @param dst The destination for the datasource to be copied to.
  * @param src The datasource for the copy.
  */
-CSPD_API void cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
+CSPD_API void  cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
 
 /**
  * @brief Reverses the order of elements in a vector
@@ -157,7 +160,7 @@ CSPD_API void cspd_vector_copy(cspd_vector *dst, cspd_vector *src);
  *
  * @param vec The vector to be reversed.
  */
-CSPD_API void cspd_vector_reverse(cspd_vector *vec);
+CSPD_API void  cspd_vector_reverse(cspd_vector *vec);
 
 /**
  * @brief Checks if an element exists in the vector.
@@ -192,7 +195,7 @@ CSPD_API usize cspd_vector_lsearch(cspd_vector *vec, const void *key);
  * not found.
  *
  * @b Example
- * @snippet cspd_vector.test.c Custom binary search
+ * @snippet cspd_vector.test.c Binary search
  *
  * @see https://en.wikipedia.org/wiki/Binary_search
  */
@@ -215,7 +218,7 @@ CSPD_API usize cspd_vector_bsearch(cspd_vector *vec, const void *key,
  * @see https://en.wikipedia.org/wiki/Bubble_sort
  */
 
-CSPD_API void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
+CSPD_API void  cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
 
 /**
  * @brief Sorts a vector using the quicksort algorithm.
@@ -228,10 +231,13 @@ CSPD_API void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp);
  * @param hi Index of the last element of in the vector
  * @param cmp Comparator function.
  *
+ * @b Example
+ * @snippet cspd_vector.test.c Quick sort
+ *
  * @see https://en.wikipedia.org/wiki/Quicksort
  */
-CSPD_API void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
-                                cspd_cmp cmp);
+CSPD_API void  cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
+                                 cspd_cmp cmp);
 
 /**
  * @brief Sorts a vector using the mergesort algorithm.
@@ -241,9 +247,12 @@ CSPD_API void cspd_vector_qsort(cspd_vector *vec, isize lo, isize hi,
  * @param vec The vector to be sorted.
  * @param cmp Comparator function.
  *
+ * @b Example
+ * @snippet cspd_vector.test.c Merge sort
+ *
  * @see https://en.wikipedia.org/wiki/Merge_sort
  */
-CSPD_API void cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
+CSPD_API void  cspd_vector_msort(cspd_vector *vec_a, usize size, cspd_cmp cmp);
 
 /**
  * @brief Retrieves an element from the vector.
@@ -294,9 +303,13 @@ static inline void *cspd_vector_front(const cspd_vector *vec)
  * a single element.
  *
  * @param vec The vector that requires the last element to be removed.
+ *
+ * @b Example
+ * @snippet cspd_vector.test.c Pop element
  */
 static inline void cspd_vector_pop(cspd_vector *vec)
 {
+    if (vec->size == 0) return;
     vec->size--;
 }
 
