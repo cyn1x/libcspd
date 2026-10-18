@@ -2,7 +2,6 @@
 
 #include "cspd_llist.h"
 #include "cspd_mem.h"
-#include <string.h>
 
 /**
  * @internal
