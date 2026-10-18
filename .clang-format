@@ -19,13 +19,13 @@ AlignConsecutiveBitFields:
 AlignConsecutiveDeclarations:
   Enabled:         true
   AcrossEmptyLines: true
-  AcrossComments:  false
+  AcrossComments:  true
   AlignCompound:   false
   PadOperators:    false
 AlignConsecutiveMacros:
   Enabled:         true
   AcrossEmptyLines: true
-  AcrossComments:  false
+  AcrossComments:  true
   AlignCompound:   false
   PadOperators:    false
 AlignEscapedNewlines: Right
