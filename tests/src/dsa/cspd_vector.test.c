@@ -1,5 +1,5 @@
-#include "cspd_vector.test.h"
 #include "cspd_cmp.test.h"
+#include "cspd_dsa.test.h"
 #include <cspd_assert.h>
 #include <cspd_print.h>
 #include <cspd_types.h>
@@ -384,25 +384,27 @@ static void test_vec_lsearch(void)
 
 static void test_vec_bsearch(void)
 {
-    i32         values[] = {3, 5, 6, 1, 0, 1, 2, 3};
-    cspd_vector vec      = tv_from(values);
+    {
+        i32         values[] = {3, 5, 6, 1, 0, 1, 2, 3};
+        cspd_vector vec      = tv_from(values);
 
-    //! [Binary search]
-    // cspd_print_vector(i32, &vec);
-    // Output: { 3 5 6 1 0 1 2 3 }
+        //! [Binary search]
+        // cspd_print_vector(i32, &vec);
+        // Output: { 3 5 6 1 0 1 2 3 }
 
-    // Sort the vector before using binary search
-    cspd_vector_qsort(&vec, 0, vec.size - 1, i32_cmp);
+        // Sort the vector before using binary search
+        cspd_vector_qsort(&vec, 0, vec.size - 1, i32_cmp);
 
-    // cspd_print_vector(i32, &vec);
-    // Output: { 0 1 1 2 3 3 5 6 }
+        // cspd_print_vector(i32, &vec);
+        // Output: { 0 1 1 2 3 3 5 6 }
 
-    i32   key = 5;
-    usize idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
-    cspd_assert(idx == 6);
-    //! [Binary search]
+        i32   key = 5;
+        usize idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
+        cspd_assert(idx == 6);
+        //! [Binary search]
 
-    cspd_vector_clear(&vec);
+        cspd_vector_clear(&vec);
+    }
 
     /* Edge cases */
     {

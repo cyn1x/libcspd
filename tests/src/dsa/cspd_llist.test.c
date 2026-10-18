@@ -1,5 +1,5 @@
-#include "cspd_linked_list.test.h"
 #include "cspd_cmp.test.h"
+#include "cspd_dsa.test.h"
 #include <assert.h>
 #include <cspd_linked_list.h>
 #include <cspd_print.h>
@@ -36,7 +36,7 @@ static cspd_llist setup(void)
     return llist;
 }
 
-void cspd_linked_list_test(void)
+void cspd_llist_test(void)
 {
     cspd_llist llist_a = setup();
     assert(*(i32 *)llist_a.head->data == 7);

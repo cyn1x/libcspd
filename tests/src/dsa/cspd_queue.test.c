@@ -1,4 +1,4 @@
-#include "cspd_queue.test.h"
+#include "cspd_dsa.test.h"
 #include <assert.h>
 #include <cspd_print.h>
 #include <cspd_queue.h>
@@ -19,11 +19,11 @@ void cspd_queue_test(void)
     cspd_queue queue = queue_setup();
 
     //! [Enqueue]
-    int a = 1;
-    int b = 4;
-    int c = 7;
-    int d = 9;
-    int e = 2;
+    int        a = 1;
+    int        b = 4;
+    int        c = 7;
+    int        d = 9;
+    int        e = 2;
 
     cspd_queue_enqueue(&queue, &a);
     cspd_queue_enqueue(&queue, &b);

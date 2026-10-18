@@ -1,4 +1,4 @@
-#include "cspd_btree.test.h"
+#include "cspd_dsa.test.h"
 #include <assert.h>
 #include <cspd_btree.h>
 #include <cspd_print.h>
@@ -13,17 +13,17 @@ cspd_btree cspd_btree_setup(void)
 
     cspd_btree_init(&btree, sizeof(i32));
 
-    i32 a = 7;
-    i32 b = 23;
-    i32 c = 5;
-    i32 d = 8;
-    i32 e = 14;
-    i32 f = 1;
-    i32 g = 9;
-    i32 h = 6;
-    i32 i = 2;
-    i32 j = 15;
-    i32 k = 4;
+    i32          a = 7;
+    i32          b = 23;
+    i32          c = 5;
+    i32          d = 8;
+    i32          e = 14;
+    i32          f = 1;
+    i32          g = 9;
+    i32          h = 6;
+    i32          i = 2;
+    i32          j = 15;
+    i32          k = 4;
 
     //                  (7)
     //         /--------------------\
@@ -66,7 +66,7 @@ void cspd_btree_test(void)
     cspd_btree btree = cspd_btree_setup();
 
     //! [Retrieving node count]
-    size_t count = cspd_btree_count(btree.root);
+    size_t     count = cspd_btree_count(btree.root);
     assert(count == 10);
     //! [Retrieving node count]
 

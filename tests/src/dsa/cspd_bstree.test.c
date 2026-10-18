@@ -1,4 +1,4 @@
-#include "cspd_bstree.test.h"
+#include "cspd_dsa.test.h"
 #include "cspd_types.h"
 #include <assert.h>
 #include <cspd_bstree.h>
@@ -38,4 +38,6 @@ void bstree_setup(void)
     //! [Adding nodes]
 }
 
-void cspd_bstree_test(void) {}
+void cspd_bstree_test(void)
+{
+}

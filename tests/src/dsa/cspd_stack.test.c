@@ -1,4 +1,4 @@
-#include "cspd_stack.test.h"
+#include "cspd_dsa.test.h"
 #include <assert.h>
 #include <cspd_print.h>
 #include <cspd_stack.h>
@@ -19,11 +19,11 @@ void cspd_stack_test(void)
     cspd_stack stack = stack_setup();
 
     //! [Push]
-    int a = 1;
-    int b = 4;
-    int c = 7;
-    int d = 9;
-    int e = 2;
+    int        a = 1;
+    int        b = 4;
+    int        c = 7;
+    int        d = 9;
+    int        e = 2;
 
     cspd_stack_push(&stack, &a);
     cspd_stack_push(&stack, &b);
