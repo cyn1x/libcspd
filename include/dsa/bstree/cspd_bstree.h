@@ -63,7 +63,7 @@ typedef struct cspd_bstree_t
  * @param bstree Pointer to the binary search tree to be initialized.
  * @param data_size The size of the data type in bytes.
  */
-CSPD_API void          cspd_bstree_init(cspd_bstree *bstree, usize data_size);
+CSPD_API void cspd_bstree_init(cspd_bstree *bstree, usize data_size);
 
 /**
  * @brief
@@ -84,7 +84,7 @@ CSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
  *
  * @param bstree
  */
-CSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
+CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
 
 /**
  * @brief Prints the contents of the binary search tree.
@@ -132,7 +132,7 @@ CSPD_API void          cspd_bstree_clear(cspd_bstree *bstree);
     typedef cspd_bstnode NAME##_bstnode;                                       \
     typedef cspd_bstree  NAME##_bstree;                                        \
                                                                                \
-    static inline void   NAME##_bstree_init(NAME##_bstree *bstree)             \
+    static inline void NAME##_bstree_init(NAME##_bstree *bstree)               \
     {                                                                          \
         cspd_bstree_init(bstree, sizeof(TYPE));                                \
     }                                                                          \

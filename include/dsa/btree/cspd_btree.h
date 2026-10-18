@@ -276,7 +276,7 @@ CSPD_API void cspd_btree_clear(cspd_btree *btree);
     typedef cspd_btnode NAME##_btnode;                                         \
     typedef cspd_btree  NAME##_btree;                                          \
                                                                                \
-    static inline void  NAME##_btree_init(NAME##_btree *btree)                 \
+    static inline void NAME##_btree_init(NAME##_btree *btree)                  \
     {                                                                          \
         cspd_btree_init(btree, sizeof(TYPE));                                  \
     }                                                                          \

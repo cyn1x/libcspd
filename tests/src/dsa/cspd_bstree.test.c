@@ -14,15 +14,15 @@ static cspd_bstree tb_setup(void);
  * Test Declarations
  *****************************************************************************/
 
-static void        test_bstree_init(void);
-static void        test_bstree_add(void);
-static void        test_bstree_clear(void);
+static void test_bstree_init(void);
+static void test_bstree_add(void);
+static void test_bstree_clear(void);
 
 /******************************************************************************
  * Test Runner
  *****************************************************************************/
 
-void               cspd_bstree_test(void)
+void cspd_bstree_test(void)
 {
     test_bstree_init();
     test_bstree_add();
@@ -86,11 +86,11 @@ static cspd_bstree tb_setup(void)
     cspd_bstree bst;
     cspd_bstree_init(&bst, sizeof(i32));
 
-    i32           v[] = {3, 1, 7, 2, 4, 6, 5};
+    i32 v[]         = {3, 1, 7, 2, 4, 6, 5};
 
-    cspd_bstnode *a   = cspd_bstree_add(&bst, &v[0]);
-    cspd_bstnode *b   = cspd_bstree_add(&bst, &v[1]);
-    cspd_bstnode *c   = cspd_bstree_add(&bst, &v[2]);
+    cspd_bstnode *a = cspd_bstree_add(&bst, &v[0]);
+    cspd_bstnode *b = cspd_bstree_add(&bst, &v[1]);
+    cspd_bstnode *c = cspd_bstree_add(&bst, &v[2]);
     cspd_bstree_add(&bst, &v[3]);
     cspd_bstree_add(&bst, &v[4]);
     cspd_bstnode *f = cspd_bstree_add(&bst, &v[5]);

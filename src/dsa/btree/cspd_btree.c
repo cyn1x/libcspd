@@ -2,7 +2,22 @@
 
 #include "cspd_btree.h"
 #include "cspd_mem.h"
-#include <string.h>
+
+/**
+ * @internal
+ *
+ * @brief Creates a new binary tree node.
+ *
+ * Creates a new binary tree node by allocating memory for the data before
+ * copying it to memory. Memory also allocated for the node itself, with its
+ * `left` and `right` pointers set to `NULL`.
+ *
+ * @param data The data to be copied to the new node.
+ * @param data_size The size in bytes of the data type.
+ *
+ * @returns New binary tree node.
+ */
+static cspd_btnode *new_node(void *data, usize data_size);
 
 /**
  * @internal
@@ -10,7 +25,8 @@
  * @brief Recursively deletes all nodes from the binary tree.
  *
  * Recursively deletes all nodes from the given node. All nodes are deleted
- * using depth-first search, where the nodes will be deleted from the bottom-up.
+ * using depth-first search, where the nodes will be deleted from the
+ * bottom-up.
  *
  * @param node Pointer to the node to recursively delete.
  */
@@ -28,28 +44,15 @@ static void recursive_delete(cspd_btnode *node);
  */
 static void delete_node(cspd_btnode *node);
 
-void        cspd_btree_init(cspd_btree *btree, usize data_size)
+void cspd_btree_init(cspd_btree *btree, usize data_size)
 {
     btree->root      = NULL;
     btree->data_size = data_size;
 }
 
-static cspd_btnode *btnode_init(void *data, usize data_size)
-{
-    cspd_btnode *node = cspd_malloc(sizeof(cspd_btnode));
-
-    node->data        = cspd_malloc(data_size);
-    node->left        = NULL;
-    node->right       = NULL;
-
-    memcpy(node->data, data, data_size);
-
-    return node;
-}
-
 cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf, void *data)
 {
-    cspd_btnode *node = btnode_init(data, btree->data_size);
+    cspd_btnode *node = new_node(data, btree->data_size);
 
     if (btree->root == NULL) {
         btree->root = node;
@@ -86,20 +89,20 @@ cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
 
         if (btnode == (*parent)) {
 
-            cspd_btnode *new_node = btnode_init(data, btree->data_size);
+            cspd_btnode *node = new_node(data, btree->data_size);
 
             if (!left) {
-                (*parent)->left = new_node;
+                (*parent)->left = node;
             } else if (!right) {
-                (*parent)->right = new_node;
+                (*parent)->right = node;
             } else {
                 // Insert left by default if parent has two children
-                new_node->left  = btnode->left;
-                (*parent)->left = new_node;
+                node->left      = btnode->left;
+                (*parent)->left = node;
             }
             cspd_queue_clear(&queue_t);
 
-            return new_node;
+            return node;
         }
 
         if (left) {
@@ -222,6 +225,19 @@ void cspd_btree_clear(cspd_btree *btree)
 
     btree->root      = NULL;
     btree->data_size = 0;
+}
+
+static cspd_btnode *new_node(void *data, usize data_size)
+{
+    cspd_btnode *node = cspd_malloc(sizeof(cspd_btnode));
+
+    node->data        = cspd_malloc(data_size);
+    node->left        = NULL;
+    node->right       = NULL;
+
+    memcpy(node->data, data, data_size);
+
+    return node;
 }
 
 static void recursive_delete(cspd_btnode *node)
