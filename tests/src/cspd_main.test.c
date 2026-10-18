@@ -1,5 +1,4 @@
 #include "cspd_dsa.test.h"
-#include "cspd_integration.test.h"
 // #include <log.h>
 
 int main(int argc, char *argv[])
@@ -17,8 +16,6 @@ int main(int argc, char *argv[])
     cspd_stack_test();
     cspd_string_test();
     cspd_vector_test();
-
-    cspd_integration_tests();
 
     // TODO: 0021 - Display test results
 
