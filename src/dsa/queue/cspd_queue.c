@@ -3,12 +3,11 @@
 #include "cspd_queue.h"
 #include "cspd_mem.h"
 
-void cspd_queue_init(cspd_queue *queue, size_t data_size)
+void cspd_queue_init(cspd_queue *queue, usize data_size)
 {
-    cspd_llist llist;
-    cspd_llist_init(&llist, data_size);
-
-    queue->llist = llist;
+    cspd_llist_init(&queue->llist, data_size);
+    queue->front = NULL;
+    queue->back  = NULL;
 }
 
 void cspd_queue_enqueue(cspd_queue *queue, void *data)
@@ -23,8 +22,7 @@ void cspd_queue_enqueue(cspd_queue *queue, void *data)
 
 void cspd_queue_deque(cspd_queue *queue)
 {
-    if (queue->front == NULL)
-        return;
+    if (queue->front == NULL) return;
 
     cspd_llnode *tmp = queue->front->next;
 

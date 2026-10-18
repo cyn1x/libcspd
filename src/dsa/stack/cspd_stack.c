@@ -5,12 +5,11 @@
 
 static void update_pointers(cspd_stack *stack);
 
-void        cspd_stack_init(cspd_stack *stack, usize data_size)
+void cspd_stack_init(cspd_stack *stack, usize data_size)
 {
-    cspd_llist llist;
-    cspd_llist_init(&llist, data_size);
-
-    stack->llist = llist;
+    cspd_llist_init(&stack->llist, data_size);
+    stack->top    = NULL;
+    stack->bottom = NULL;
 }
 
 void cspd_stack_push(cspd_stack *stack, void *data)
