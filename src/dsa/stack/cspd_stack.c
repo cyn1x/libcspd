@@ -7,34 +7,34 @@ static void update_pointers(cspd_stack *stack);
 
 void cspd_stack_init(cspd_stack *stack, usize data_size)
 {
-    cspd_llist_init(&stack->llist, data_size);
+    cspd_list_init(&stack->list, data_size);
     stack->top    = NULL;
     stack->bottom = NULL;
 }
 
 void cspd_stack_push(cspd_stack *stack, void *data)
 {
-    cspd_llist_prepend(&stack->llist, data);
+    cspd_list_prepend(&stack->list, data);
 
-    if (stack->llist.head == stack->llist.tail) {
-        stack->bottom = stack->llist.tail;
+    if (stack->list.head == stack->list.tail) {
+        stack->bottom = stack->list.tail;
     }
-    stack->top = stack->llist.head;
+    stack->top = stack->list.head;
 }
 
 void cspd_stack_pop(cspd_stack *stack)
 {
-    cspd_llnode *tmp = stack->top->next;
+    cspd_lnode *tmp = stack->top->next;
 
     cspd_free(stack->top->data);
     cspd_free(stack->top);
 
-    stack->llist.head = tmp;
+    stack->list.head = tmp;
 
-    if (stack->llist.head == stack->llist.tail) {
-        stack->bottom = stack->llist.tail;
+    if (stack->list.head == stack->list.tail) {
+        stack->bottom = stack->list.tail;
     }
-    stack->top = stack->llist.head;
+    stack->top = stack->list.head;
 }
 
 void *cspd_stack_peek(cspd_stack *stack)

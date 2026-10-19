@@ -30,10 +30,10 @@
  * without modifying the queue. */
 #define tb_expect_queue(TYPE, QUEUE, ARR)                                      \
     do {                                                                       \
-        const cspd_queue  *_q = (QUEUE);                                       \
-        const TYPE        *_e = (ARR);                                         \
-        usize              _n = sizeof(ARR) / sizeof((ARR)[0]);                \
-        const cspd_llnode *_c = _q->front;                                     \
+        const cspd_queue *_q = (QUEUE);                                        \
+        const TYPE       *_e = (ARR);                                          \
+        usize             _n = sizeof(ARR) / sizeof((ARR)[0]);                 \
+        const cspd_lnode *_c = _q->front;                                      \
                                                                                \
         for (usize _i = 0; _i < _n; ++_i) {                                    \
             cspd_assert(_c != NULL);                                           \

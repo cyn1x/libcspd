@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
     cspd_bstree_test();
     cspd_btree_test();
-    cspd_llist_test();
+    cspd_list_test();
     cspd_queue_test();
     cspd_stack_test();
     cspd_string_test();

@@ -12,7 +12,7 @@
 #define CSPD_STACK_H
 
 #include "cspd_exports.h"
-#include "cspd_llist.h"
+#include "cspd_list.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,21 +21,21 @@ extern "C" {
 /**
  * @brief Data structure for `cspd_stack` type.
  *
- * @var cspd_llist::cspd_llist
+ * @var cspd_list::cspd_list
  * Pointer to the underlying data structure.
  *
- * @var cspd_llist::top
+ * @var cspd_list::top
  * Pointer to the first node in the stack.
  *
- * @var cspd_llist::bottom
+ * @var cspd_list::bottom
  * Pointer to the last node in the stack.
  */
 typedef struct cspd_stack_t
 {
-    cspd_llist   llist;
+    cspd_list list;
 
-    cspd_llnode *top;
-    cspd_llnode *bottom;
+    cspd_lnode *top;
+    cspd_lnode *bottom;
 
 } cspd_stack;
 

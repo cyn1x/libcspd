@@ -80,7 +80,7 @@ cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
     cspd_queue queue_t;
     cspd_queue_init(&queue_t, sizeof(cspd_btnode *));
     cspd_queue_enqueue(&queue_t, &btree->root);
-    cspd_llnode *curr = queue_t.front;
+    cspd_lnode *curr = queue_t.front;
 
     while (curr) {
         cspd_btnode *btnode = *(cspd_btnode **)curr->data;
@@ -163,7 +163,7 @@ void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue_t)
 {
     cspd_queue_enqueue(queue_t, &node);
 
-    cspd_llnode *curr = queue_t->front;
+    cspd_lnode *curr = queue_t->front;
 
     while (curr) {
         cspd_btnode *btnode = *(cspd_btnode **)curr->data;

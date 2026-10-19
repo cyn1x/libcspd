@@ -3,7 +3,7 @@
 
 void cspd_bstree_test(void);
 void cspd_btree_test(void);
-void cspd_llist_test(void);
+void cspd_list_test(void);
 void cspd_queue_test(void);
 void cspd_stack_test(void);
 void cspd_string_test(void);

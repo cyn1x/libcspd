@@ -12,7 +12,7 @@
 #define CSPD_QUEUE_H
 
 #include "cspd_exports.h"
-#include "cspd_llist.h"
+#include "cspd_list.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,21 +21,21 @@ extern "C" {
 /**
  * @brief Data structure representation of a queue.
  *
- * @var cspd_llist::llist
+ * @var cspd_list::list
  * Pointer to the underlying data structure.
  *
- * @var cspd_llnode::front
+ * @var cspd_lnode::front
  * Pointer to the first node in the queue.
  *
- * @var cspd_llnode::back
+ * @var cspd_lnode::back
  * Pointer to the last node in the queue.
  */
 typedef struct cspd_queue_t
 {
-    cspd_llist   llist;
+    cspd_list list;
 
-    cspd_llnode *front;
-    cspd_llnode *back;
+    cspd_lnode *front;
+    cspd_lnode *back;
 
 } cspd_queue;
 
