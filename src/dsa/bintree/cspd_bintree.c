@@ -1,6 +1,6 @@
 #define CSPD_EXPORTS
 
-#include "cspd_btree.h"
+#include "cspd_bintree.h"
 #include "cspd_mem.h"
 
 /**
@@ -44,20 +44,21 @@ static void recursive_delete(cspd_btnode *node);
  */
 static void delete_node(cspd_btnode *node);
 
-void cspd_btree_init(cspd_btree *btree, usize data_size)
+void cspd_bintree_init(cspd_bintree *bintree, usize data_size)
 {
-    btree->root      = NULL;
-    btree->data_size = data_size;
+    bintree->root      = NULL;
+    bintree->data_size = data_size;
 }
 
-cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf, void *data)
+cspd_btnode *cspd_bintree_add(cspd_bintree *bintree, cspd_btnode **leaf,
+                              void *data)
 {
-    cspd_btnode *node = new_node(data, btree->data_size);
+    cspd_btnode *node = new_node(data, bintree->data_size);
 
-    if (btree->root == NULL) {
-        btree->root = node;
+    if (bintree->root == NULL) {
+        bintree->root = node;
 
-        return btree->root;
+        return bintree->root;
     }
 
     if (*leaf != NULL) {
@@ -71,15 +72,15 @@ cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf, void *data)
     return node;
 }
 
-cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
-                               void *data)
+cspd_btnode *cspd_bintree_insert(cspd_bintree *bintree, cspd_btnode **parent,
+                                 void *data)
 {
     (void)parent;
     (void)data;
 
     cspd_queue queue_t;
     cspd_queue_init(&queue_t, sizeof(cspd_btnode *));
-    cspd_queue_enqueue(&queue_t, &btree->root);
+    cspd_queue_enqueue(&queue_t, &bintree->root);
     cspd_lnode *curr = queue_t.front;
 
     while (curr) {
@@ -89,7 +90,7 @@ cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
 
         if (btnode == (*parent)) {
 
-            cspd_btnode *node = new_node(data, btree->data_size);
+            cspd_btnode *node = new_node(data, bintree->data_size);
 
             if (!left) {
                 (*parent)->left = node;
@@ -120,7 +121,7 @@ cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
     return NULL;
 }
 
-void cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec)
+void cspd_bintree_preorder(cspd_btnode *node, cspd_vector *vec)
 {
     if (!node) {
         return;
@@ -128,38 +129,38 @@ void cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec)
 
     cspd_vector_push(vec, &node);
 
-    cspd_btree_preorder(node->left, vec);
-    cspd_btree_preorder(node->right, vec);
+    cspd_bintree_preorder(node->left, vec);
+    cspd_bintree_preorder(node->right, vec);
 }
 
-void cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec)
+void cspd_bintree_inorder(cspd_btnode *node, cspd_vector *vec)
 {
     if (!node) {
         return;
     }
 
-    cspd_btree_inorder(node->left, vec);
+    cspd_bintree_inorder(node->left, vec);
     cspd_vector_push(vec, &node);
-    cspd_btree_inorder(node->right, vec);
+    cspd_bintree_inorder(node->right, vec);
 }
 
-void cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec)
+void cspd_bintree_postorder(cspd_btnode *node, cspd_vector *vec)
 {
     if (!node) {
         return;
     }
 
-    cspd_btree_postorder(node->left, vec);
-    cspd_btree_postorder(node->right, vec);
+    cspd_bintree_postorder(node->left, vec);
+    cspd_bintree_postorder(node->right, vec);
     cspd_vector_push(vec, &node);
 }
 
-void cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec)
+void cspd_bintree_dfs(cspd_btnode *node, cspd_vector *vec)
 {
-    cspd_btree_preorder(node, vec);
+    cspd_bintree_preorder(node, vec);
 }
 
-void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue_t)
+void cspd_bintree_bfs(cspd_btnode *node, cspd_queue *queue_t)
 {
     cspd_queue_enqueue(queue_t, &node);
 
@@ -181,37 +182,37 @@ void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue_t)
     }
 }
 
-void cspd_btree_invert(cspd_btnode *node)
+void cspd_bintree_invert(cspd_btnode *node)
 {
     if (node == NULL) {
         return;
     }
 
-    cspd_btree_invert(node->left);
-    cspd_btree_invert(node->right);
+    cspd_bintree_invert(node->left);
+    cspd_bintree_invert(node->right);
 
     cspd_btnode *tmp = node->left;
     node->left       = node->right;
     node->right      = tmp;
 }
 
-i32 cspd_btree_height(cspd_btnode *node)
+i32 cspd_bintree_height(cspd_btnode *node)
 {
     if (node == NULL) {
         return -1;
     }
 
-    int lh = cspd_btree_height(node->left);
-    int rh = cspd_btree_height(node->right);
+    int lh = cspd_bintree_height(node->left);
+    int rh = cspd_bintree_height(node->right);
 
     return (lh > rh ? lh : rh) + 1;
 }
 
-usize cspd_btree_count(cspd_btnode *node)
+usize cspd_bintree_count(cspd_btnode *node)
 {
     cspd_vector vec;
     cspd_vector_init(&vec, sizeof(cspd_btnode *));
-    cspd_btree_preorder(node, &vec);
+    cspd_bintree_preorder(node, &vec);
 
     usize size = vec.size;
     cspd_vector_clear(&vec);
@@ -219,12 +220,12 @@ usize cspd_btree_count(cspd_btnode *node)
     return size;
 }
 
-void cspd_btree_clear(cspd_btree *btree)
+void cspd_bintree_clear(cspd_bintree *bintree)
 {
-    recursive_delete(btree->root);
+    recursive_delete(bintree->root);
 
-    btree->root      = NULL;
-    btree->data_size = 0;
+    bintree->root      = NULL;
+    bintree->data_size = 0;
 }
 
 static cspd_btnode *new_node(void *data, usize data_size)

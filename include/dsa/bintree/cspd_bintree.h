@@ -1,12 +1,12 @@
 /**
- * @file cspd_btree.h
+ * @file cspd_bintree.h
  * @brief Binary tree data structures and algorithms.
  *
  * @see https://en.wikipedia.org/wiki/Binary_tree
  */
 
-#ifndef CSPD_BTREE_H
-#define CSPD_BTREE_H
+#ifndef CSPD_BINTREE_H
+#define CSPD_BINTREE_H
 
 #include "cspd_exports.h"
 #include "cspd_queue.h"
@@ -43,19 +43,19 @@ typedef struct cspd_btnode_t
 /**
  * @brief Data structure for binary tree.
  *
- * @var cspd_btree::data_size
+ * @var cspd_bintree::data_size
  * The size of the data in bytes being stored in the nodes that reside in the
  * binary tree.
  *
- * @var cspd_btree::root
+ * @var cspd_bintree::root
  * Pointer to the first node in the binary tree.
  */
-typedef struct cspd_btree_t
+typedef struct cspd_bintree_t
 {
     usize        data_size;
     cspd_btnode *root;
 
-} cspd_btree;
+} cspd_bintree;
 
 /**
  * @brief Initializes a new binary tree.
@@ -63,10 +63,10 @@ typedef struct cspd_btree_t
  * Sets `data_size` to the given parameter, and sets the `root` pointer to
  * `NULL`.
  *
- * @param btree Pointer to the binary search tree to be initialized.
+ * @param bintree Pointer to the binary search tree to be initialized.
  * @param data_size The size of the data type in bytes.
  */
-CSPD_API void cspd_btree_init(cspd_btree *btree, usize data_size);
+CSPD_API void cspd_bintree_init(cspd_bintree *bintree, usize data_size);
 
 /**
  * @brief Adds a node to the binary tree.
@@ -76,16 +76,16 @@ CSPD_API void cspd_btree_init(cspd_btree *btree, usize data_size);
  *
  * @warning The `leaf` pointer must be `NULL` as overwriting nodes is not valid.
  *
- * @param btree Pointer to the binary tree.
+ * @param bintree Pointer to the binary tree.
  * @param data Pointer to the data to be added.
  *
  * @returns Pointer to the node on success, or `NULL` on failure.
  *
  * @b Example
- * @snippet cspd_btree.test.c Adding nodes
+ * @snippet cspd_bintree.test.c Adding nodes
  */
-CSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
-                                     void *data);
+CSPD_API cspd_btnode *cspd_bintree_add(cspd_bintree *bintree,
+                                       cspd_btnode **leaf, void *data);
 
 /**
  * @brief Inserts a node into the binary tree.
@@ -97,16 +97,16 @@ CSPD_API cspd_btnode *cspd_btree_add(cspd_btree *btree, cspd_btnode **leaf,
  * `parent` by default. The new node's `left` or `right` pointer will then
  * reference the node that `parent` was pointing to prior to insertion.
  *
- * @param btree Pointer to the binary tree.
+ * @param bintree Pointer to the binary tree.
  * @param parent Pointer to the parent of the new node.
  *
  * @returns Pointer to the node on success, or `NULL` on failure.
  *
  * @b Example
- * @snippet cspd_btree.test.c Insertion
+ * @snippet cspd_bintree.test.c Insertion
  */
-CSPD_API cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
-                                        void *data);
+CSPD_API cspd_btnode *cspd_bintree_insert(cspd_bintree *bintree,
+                                          cspd_btnode **parent, void *data);
 
 /**
  * @brief Pre-order traversal of a binary tree.
@@ -119,7 +119,7 @@ CSPD_API cspd_btnode *cspd_btree_insert(cspd_btree *btree, cspd_btnode **parent,
  *
  * @see https://en.wikipedia.org/wiki/Tree_traversal#Pre-order,_NLR
  */
-CSPD_API void cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void cspd_bintree_preorder(cspd_btnode *node, cspd_vector *vec);
 
 /**
  * @brief Post-order traversal of a binary tree.
@@ -132,7 +132,7 @@ CSPD_API void cspd_btree_preorder(cspd_btnode *node, cspd_vector *vec);
  *
  * @see https://en.wikipedia.org/wiki/Tree_traversal#In-order,_LNR
  */
-CSPD_API void cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void cspd_bintree_inorder(cspd_btnode *node, cspd_vector *vec);
 
 /**
  * @brief Post-order traversal of a binary tree.
@@ -145,7 +145,7 @@ CSPD_API void cspd_btree_inorder(cspd_btnode *node, cspd_vector *vec);
  *
  * @see https://en.wikipedia.org/wiki/Tree_traversal#Post-order,_LRN
  */
-CSPD_API void cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void cspd_bintree_postorder(cspd_btnode *node, cspd_vector *vec);
 
 /**
  * @brief Depth-first search of a binary tree.
@@ -158,7 +158,7 @@ CSPD_API void cspd_btree_postorder(cspd_btnode *node, cspd_vector *vec);
  *
  * @see https://en.wikipedia.org/wiki/Tree_traversal#Breadth-first_search
  */
-CSPD_API void cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
+CSPD_API void cspd_bintree_dfs(cspd_btnode *node, cspd_vector *vec);
 
 /**
  * @brief Breadth-first search of a binary tree.
@@ -171,7 +171,7 @@ CSPD_API void cspd_btree_dfs(cspd_btnode *node, cspd_vector *vec);
  *
  * @see https://en.wikipedia.org/wiki/Tree_traversal#Depth-first_search
  */
-CSPD_API void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
+CSPD_API void cspd_bintree_bfs(cspd_btnode *node, cspd_queue *queue);
 
 /**
  * @brief Inverts a binary tree.
@@ -183,9 +183,9 @@ CSPD_API void cspd_btree_bfs(cspd_btnode *node, cspd_queue *queue);
  * @param node Pointer to the node of the binary tree to invert.
  *
  * @b Example
- * @snippet cspd_btree.test.c Inversion
+ * @snippet cspd_bintree.test.c Inversion
  */
-CSPD_API void cspd_btree_invert(cspd_btnode *node);
+CSPD_API void cspd_bintree_invert(cspd_btnode *node);
 
 /**
  * @brief Calculates the height of a binary tree.
@@ -200,11 +200,11 @@ CSPD_API void cspd_btree_invert(cspd_btnode *node);
  * @returns The height of the binary tree from the given `node` pointer.
  *
  * @b Example
- * @snippet cspd_btree.test.c Calculating height
+ * @snippet cspd_bintree.test.c Calculating height
  *
  * @see https://en.wikipedia.org/wiki/Binary_tree#Properties_of_binary_trees
  */
-CSPD_API i32 cspd_btree_height(cspd_btnode *node);
+CSPD_API i32 cspd_bintree_height(cspd_btnode *node);
 
 /**
  * @brief Counts the number of elements in a binary tree.
@@ -213,20 +213,20 @@ CSPD_API i32 cspd_btree_height(cspd_btnode *node);
  * vector. The size of the vector determines the total number of nodes in the
  * binary tree.
  *
- * @param btree The binary tree containing the nodes to be counted.
+ * @param bintree The binary tree containing the nodes to be counted.
  *
  * @returns The number of nodes in the binary tree.
  */
-CSPD_API usize cspd_btree_count(cspd_btnode *node);
+CSPD_API usize cspd_bintree_count(cspd_btnode *node);
 
 /**
  * @brief Clears a binary tree.
  *
  * Clears a binary tree by freeing the memory of each node.
  *
- * @param btree The binary tree to be cleared.
+ * @param bintree The binary tree to be cleared.
  */
-CSPD_API void cspd_btree_clear(cspd_btree *btree);
+CSPD_API void cspd_bintree_clear(cspd_bintree *bintree);
 
 /**
  * @brief Prints the contents of the binary tree.
@@ -237,7 +237,7 @@ CSPD_API void cspd_btree_clear(cspd_btree *btree);
  * @param TYPE Type of data to be casted.
  * @param VECTOR The vector of nodes to be printed out.
  */
-#define cspd_print_btree(TYPE, VEC)                                            \
+#define cspd_print_bintree(TYPE, VEC)                                          \
     {                                                                          \
         printf("{ ");                                                          \
         for (usize i = 0; i < (VEC)->size; ++i) {                              \
@@ -251,7 +251,7 @@ CSPD_API void cspd_btree_clear(cspd_btree *btree);
  * @brief Declares a typed binary tree and its associated functions for a
  * given type.
  *
- * Generates a typedef for a `NAME_btree` and `NAME_btnode` type, and the
+ * Generates a typedef for a `NAME_bintree` and `NAME_btnode` type, and the
  * functions defined in this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
@@ -261,90 +261,90 @@ CSPD_API void cspd_btree_clear(cspd_btree *btree);
  * @note This macro must be invoked at file scope, not inside a function.
  *
  * @warning A `NAME_vector` and `NAME_queue` must be declared before declaring a
- * `NAME_btree`.
+ * `NAME_bintree`.
  *
  * @par Example
  * @code
- *   cspd_btree_declare(i32, i32);
+ *   cspd_bintree_declare(i32, i32);
  *
- *   i32_btree t;
- *   i32_btree_init(&t);
+ *   i32_bintree t;
+ *   i32_bintree_init(&t);
  * @endcode
  */
-#define cspd_btree_declare(NAME, TYPE)                                         \
+#define cspd_bintree_declare(NAME, TYPE)                                       \
                                                                                \
-    typedef cspd_btnode NAME##_btnode;                                         \
-    typedef cspd_btree  NAME##_btree;                                          \
+    typedef cspd_btnode  NAME##_btnode;                                        \
+    typedef cspd_bintree NAME##_bintree;                                       \
                                                                                \
-    static inline void NAME##_btree_init(NAME##_btree *btree)                  \
+    static inline void NAME##_bintree_init(NAME##_bintree *bintree)            \
     {                                                                          \
-        cspd_btree_init(btree, sizeof(TYPE));                                  \
+        cspd_bintree_init(bintree, sizeof(TYPE));                              \
     }                                                                          \
                                                                                \
-    static inline NAME##_btnode *NAME##_btree_add(                             \
-        NAME##_btree *btree, NAME##_btnode **leaf, TYPE *data)                 \
+    static inline NAME##_btnode *NAME##_bintree_add(                           \
+        NAME##_bintree *bintree, NAME##_btnode **leaf, TYPE *data)             \
     {                                                                          \
-        return cspd_btree_add(btree, leaf, (void *)data);                      \
+        return cspd_bintree_add(bintree, leaf, (void *)data);                  \
     }                                                                          \
                                                                                \
-    static inline NAME##_btnode *NAME##_btree_insert(                          \
-        NAME##_btree *btree, NAME##_btnode **parent, TYPE *data)               \
+    static inline NAME##_btnode *NAME##_bintree_insert(                        \
+        NAME##_bintree *bintree, NAME##_btnode **parent, TYPE *data)           \
     {                                                                          \
-        return cspd_btree_insert(btree, parent, (void *)data);                 \
+        return cspd_bintree_insert(bintree, parent, (void *)data);             \
     }                                                                          \
                                                                                \
-    static inline void NAME##_btree_preorder(NAME##_btnode *node,              \
-                                             NAME##_vector *vec)               \
+    static inline void NAME##_bintree_preorder(NAME##_btnode *node,            \
+                                               NAME##_vector *vec)             \
     {                                                                          \
-        cspd_btree_preorder(node, vec);                                        \
+        cspd_bintree_preorder(node, vec);                                      \
     }                                                                          \
                                                                                \
-    static inline void NAME##_btree_inorder(NAME##_btnode *node,               \
-                                            NAME##_vector *vec)                \
-    {                                                                          \
-        cspd_btree_inorder(node, vec);                                         \
-    }                                                                          \
-                                                                               \
-    static inline void NAME##_btree_postorder(NAME##_btnode *node,             \
+    static inline void NAME##_bintree_inorder(NAME##_btnode *node,             \
                                               NAME##_vector *vec)              \
     {                                                                          \
-        cspd_btree_postorder(node, vec);                                       \
+        cspd_bintree_inorder(node, vec);                                       \
     }                                                                          \
                                                                                \
-    static inline void NAME##_btree_dfs(NAME##_btnode *node,                   \
-                                        NAME##_vector *vec)                    \
+    static inline void NAME##_bintree_postorder(NAME##_btnode *node,           \
+                                                NAME##_vector *vec)            \
     {                                                                          \
-        cspd_btree_dfs(node, vec);                                             \
+        cspd_bintree_postorder(node, vec);                                     \
     }                                                                          \
                                                                                \
-    static inline void NAME##_btree_bfs(NAME##_btnode *node,                   \
-                                        NAME##_queue  *queue)                  \
+    static inline void NAME##_bintree_dfs(NAME##_btnode *node,                 \
+                                          NAME##_vector *vec)                  \
     {                                                                          \
-        cspd_btree_bfs(node, queue);                                           \
+        cspd_bintree_dfs(node, vec);                                           \
     }                                                                          \
                                                                                \
-    static inline void NAME##_btree_invert(NAME##_btnode *node)                \
+    static inline void NAME##_bintree_bfs(NAME##_btnode *node,                 \
+                                          NAME##_queue  *queue)                \
     {                                                                          \
-        cspd_btree_invert(node);                                               \
+        cspd_bintree_bfs(node, queue);                                         \
     }                                                                          \
                                                                                \
-    static inline i32 NAME##_btree_height(NAME##_btnode *node)                 \
+    static inline void NAME##_bintree_invert(NAME##_btnode *node)              \
     {                                                                          \
-        return cspd_btree_height(node);                                        \
+        cspd_bintree_invert(node);                                             \
     }                                                                          \
                                                                                \
-    static inline usize NAME##_btree_count(NAME##_btnode *node)                \
+    static inline i32 NAME##_bintree_height(NAME##_btnode *node)               \
     {                                                                          \
-        return cspd_btree_count(node);                                         \
+        return cspd_bintree_height(node);                                      \
     }                                                                          \
                                                                                \
-    static inline void NAME##_btree_clear(NAME##_btree *btree)                 \
+    static inline usize NAME##_bintree_count(NAME##_btnode *node)              \
     {                                                                          \
-        cspd_btree_clear(btree);                                               \
+        return cspd_bintree_count(node);                                       \
+    }                                                                          \
+                                                                               \
+    static inline void NAME##_bintree_clear(NAME##_bintree *bintree)           \
+    {                                                                          \
+        cspd_bintree_clear(bintree);                                           \
     }
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // CSPD_BTREE_H
+#endif // CSPD_BINTREE_H

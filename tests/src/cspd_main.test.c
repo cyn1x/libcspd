@@ -9,8 +9,8 @@ int main(int argc, char *argv[])
     // TODO: 0020 - Dependency management
     // log_init(LOG_TRACE, stdout, NULL);
 
-    cspd_bstree_test();
-    cspd_btree_test();
+    cspd_bst_test();
+    cspd_bintree_test();
     cspd_list_test();
     cspd_queue_test();
     cspd_stack_test();

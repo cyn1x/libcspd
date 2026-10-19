@@ -1,12 +1,12 @@
 /**
- * @file cspd_bstree.h
+ * @file cspd_bst.h
  * @brief Binary search tree data structures and algorithms.
  *
  * @see https://en.wikipedia.org/wiki/Binary_search_tree
  */
 
-#ifndef CSPD_BSTREE_H
-#define CSPD_BSTREE_H
+#ifndef CSPD_BST_H
+#define CSPD_BST_H
 
 #include "cspd_exports.h"
 #include "cspd_types.h"
@@ -42,17 +42,17 @@ typedef struct cspd_bstnode_t
 /**
  * @brief Data structure for the binary search tree.
  *
- * @var cspd_bstree::data_size
+ * @var cspd_bst::data_size
  * The size of the data in bytes being stored in the binary search tree.
  *
- * @var cspd_bstree::root
+ * @var cspd_bst::root
  * Pointer to the first node in the binary tree.
  */
-typedef struct cspd_bstree_t
+typedef struct cspd_bst_t
 {
     usize         data_size;
     cspd_bstnode *root;
-} cspd_bstree;
+} cspd_bst;
 
 /**
  * @brief Initializes a new binary search tree.
@@ -60,31 +60,31 @@ typedef struct cspd_bstree_t
  * Sets `data_size` to the given parameter, and sets the `root` pointer to
  * `NULL`.
  *
- * @param bstree Pointer to the binary search tree to be initialized.
+ * @param bst Pointer to the binary search tree to be initialized.
  * @param data_size The size of the data type in bytes.
  */
-CSPD_API void cspd_bstree_init(cspd_bstree *bstree, usize data_size);
+CSPD_API void cspd_bst_init(cspd_bst *bst, usize data_size);
 
 /**
  * @brief
  *
  *
  *
- * @param bstree
+ * @param bst
  * @param data
  *
  * @returns
  */
-CSPD_API cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data);
+CSPD_API cspd_bstnode *cspd_bst_add(cspd_bst *bst, void *data);
 
 /**
  * @brief
  *
  *
  *
- * @param bstree
+ * @param bst
  */
-CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
+CSPD_API void cspd_bst_clear(cspd_bst *bst);
 
 /**
  * @brief Prints the contents of the binary search tree.
@@ -95,7 +95,7 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
  * @param type Type of data to be casted.
  * @param VECTOR The vector of nodes to be printed out.
  */
-#define cspd_print_bstree(TYPE, VECTOR)                                        \
+#define cspd_print_bst(TYPE, VECTOR)                                           \
     {                                                                          \
         printf("{ ");                                                          \
         for (usize i = 0; i < (VECTOR)->size; ++i) {                           \
@@ -110,7 +110,7 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
  * @brief Declares a typed binary search tree and its associated functions for a
  * given type.
  *
- * Generates a typedef for a `NAME_bstree` type and the functions defined in
+ * Generates a typedef for a `NAME_bst` type and the functions defined in
  * this header file.
  *
  * @param NAME  The name prefix used for the generated type and functions.
@@ -121,35 +121,34 @@ CSPD_API void cspd_bstree_clear(cspd_bstree *bstree);
  *
  * @par Example
  * @code
- *   cspd_bstree_declare(i32, i32)
+ *   cspd_bst_declare(i32, i32)
  *
- *   i32_bstree t;
- *   i32_bstree_init(&t);
+ *   i32_bst t;
+ *   i32_bst_init(&t);
  * @endcode
  */
-#define cspd_bstree_declare(NAME, TYPE)                                        \
+#define cspd_bst_declare(NAME, TYPE)                                           \
                                                                                \
-    typedef cspd_bstnode NAME##_bstnode;                                       \
-    typedef cspd_bstree  NAME##_bstree;                                        \
+    typedef cspd_bstnode NAME##_bst;                                           \
+    typedef cspd_bst     NAME##_bst;                                           \
                                                                                \
-    static inline void NAME##_bstree_init(NAME##_bstree *bstree)               \
+    static inline void NAME##_bst_init(NAME##_bst *bst)                        \
     {                                                                          \
-        cspd_bstree_init(bstree, sizeof(TYPE));                                \
+        cspd_bst_init(bst, sizeof(TYPE));                                      \
     }                                                                          \
                                                                                \
-    static inline NAME##_bstnode *NAME##_bstree_add(NAME##_bstree *bstree,     \
-                                                    TYPE          *data)       \
+    static inline NAME##_bstnode *NAME##_bst_add(NAME##_bst *bst, TYPE *data)  \
     {                                                                          \
-        return cspd_bstree_add(bstree, (void *)data);                          \
+        return cspd_bst_add(bst, (void *)data);                                \
     }                                                                          \
                                                                                \
-    static inline void cspd_bstree_clear(NAME##_bstree *bstree)                \
+    static inline void cspd_bst_clear(NAME##_bst *bst)                         \
     {                                                                          \
-        cspd_bstree_clear(bstree);                                             \
+        cspd_bst_clear(bst);                                                   \
     }
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // CSPD_BSTREE_H
+#endif // CSPD_BST_H

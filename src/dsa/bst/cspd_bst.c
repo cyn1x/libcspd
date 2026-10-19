@@ -1,6 +1,6 @@
 #define CSPD_EXPORTS
 
-#include "cspd_bstree.h"
+#include "cspd_bst.h"
 #include "cspd_mem.h"
 
 /**
@@ -21,7 +21,7 @@ static cspd_bstnode *new_node(void *data, usize data_size);
  *
  * @param
  */
-static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
+static void balance(cspd_bst *bst, cspd_bstnode *root, cspd_bstnode *node,
                     cspd_cmp cmp);
 
 /**
@@ -48,35 +48,35 @@ static void recursive_delete(cspd_bstnode *node);
  */
 static void delete_node(cspd_bstnode *node);
 
-void cspd_bstree_init(cspd_bstree *bstree, usize data_size)
+void cspd_bst_init(cspd_bst *bst, usize data_size)
 {
-    bstree->root      = NULL;
-    bstree->data_size = data_size;
+    bst->root      = NULL;
+    bst->data_size = data_size;
 }
 
-cspd_bstnode *cspd_bstree_add(cspd_bstree *bstree, void *data)
+cspd_bstnode *cspd_bst_add(cspd_bst *bst, void *data)
 {
-    cspd_bstnode *node = new_node(data, bstree->data_size);
+    cspd_bstnode *node = new_node(data, bst->data_size);
 
-    if (bstree->root == NULL) {
-        bstree->root = node;
+    if (bst->root == NULL) {
+        bst->root = node;
 
-        return bstree->root;
+        return bst->root;
     }
 
-    cspd_bstnode *leaf = bstree->root;
+    cspd_bstnode *leaf = bst->root;
 
     (void)leaf;
 
     return node;
 }
 
-void cspd_bstree_clear(cspd_bstree *bstree)
+void cspd_bst_clear(cspd_bst *bst)
 {
-    recursive_delete(bstree->root);
+    recursive_delete(bst->root);
 
-    bstree->root      = NULL;
-    bstree->data_size = 0;
+    bst->root      = NULL;
+    bst->data_size = 0;
 }
 
 static cspd_bstnode *new_node(void *data, usize data_size)
@@ -92,7 +92,7 @@ static cspd_bstnode *new_node(void *data, usize data_size)
     return node;
 }
 
-static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
+static void balance(cspd_bst *bst, cspd_bstnode *root, cspd_bstnode *node,
                     cspd_cmp cmp)
 {
     int result = cmp(root->data, node->data);
@@ -100,7 +100,7 @@ static void balance(cspd_bstree *bstree, cspd_bstnode *root, cspd_bstnode *node,
     // TODO: #0008 - Binary search tree implementation
 
     (void)result;
-    (void)bstree;
+    (void)bst;
 }
 
 static void recursive_delete(cspd_bstnode *node)

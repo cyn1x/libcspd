@@ -1,54 +1,54 @@
 #include "cspd_dsa.test.h"
 #include "cspd_types.h"
 #include <cspd_assert.h>
-#include <cspd_bstree.h>
+#include <cspd_bst.h>
 #include <cspd_print.h>
 
 /******************************************************************************
  * Helper Declarations
  *****************************************************************************/
 
-static cspd_bstree tb_setup(void);
+static cspd_bst tb_setup(void);
 
 /******************************************************************************
  * Test Declarations
  *****************************************************************************/
 
-static void test_bstree_init(void);
-static void test_bstree_add(void);
-static void test_bstree_clear(void);
+static void test_bst_init(void);
+static void test_bst_add(void);
+static void test_bst_clear(void);
 
 /******************************************************************************
  * Test Runner
  *****************************************************************************/
 
-void cspd_bstree_test(void)
+void cspd_bst_test(void)
 {
-    test_bstree_init();
-    test_bstree_add();
+    test_bst_init();
+    test_bst_add();
 }
 
 /******************************************************************************
  * Test Definitions
  *****************************************************************************/
 
-static void test_bstree_init(void)
+static void test_bst_init(void)
 {
-    cspd_bstree bst;
-    cspd_bstree_init(&bst, sizeof(i32));
+    cspd_bst bst;
+    cspd_bst_init(&bst, sizeof(i32));
 
     cspd_assert(bst.data_size == sizeof(i32));
     cspd_assert(bst.root == NULL);
 
-    cspd_bstree_clear(&bst);
+    cspd_bst_clear(&bst);
 }
 
-void test_bstree_add(void)
+void test_bst_add(void)
 {
     //! [Adding nodes]
-    // cspd_bstree bstree;
+    // cspd_bst bst;
 
-    // cspd_bstree_init(&bstree, sizeof(i32));
+    // cspd_bst_init(&bst, sizeof(i32));
 
     // i32 a = 3;
     // i32 b = 1;
@@ -66,13 +66,13 @@ void test_bstree_add(void)
     //      |       |       |           |
     //     (1)     (3)     (5)         (7)
 
-    // cspd_bstree_add(&bstree, &a);
-    // cspd_bstree_add(&bstree, &b);
-    // cspd_bstree_add(&bstree, &c);
-    // cspd_bstree_add(&bstree, &d);
-    // cspd_bstree_add(&bstree, &e);
-    // cspd_bstree_add(&bstree, &f);
-    // cspd_bstree_add(&bstree, &g);
+    // cspd_bst_add(&bst, &a);
+    // cspd_bst_add(&bst, &b);
+    // cspd_bst_add(&bst, &c);
+    // cspd_bst_add(&bst, &d);
+    // cspd_bst_add(&bst, &e);
+    // cspd_bst_add(&bst, &f);
+    // cspd_bst_add(&bst, &g);
 
     //! [Adding nodes]
 }
@@ -81,21 +81,21 @@ void test_bstree_add(void)
  * Helper Definitions
  *****************************************************************************/
 
-static cspd_bstree tb_setup(void)
+static cspd_bst tb_setup(void)
 {
-    cspd_bstree bst;
-    cspd_bstree_init(&bst, sizeof(i32));
+    cspd_bst bst;
+    cspd_bst_init(&bst, sizeof(i32));
 
     i32 v[]         = {3, 1, 7, 2, 4, 6, 5};
 
-    cspd_bstnode *a = cspd_bstree_add(&bst, &v[0]);
-    cspd_bstnode *b = cspd_bstree_add(&bst, &v[1]);
-    cspd_bstnode *c = cspd_bstree_add(&bst, &v[2]);
-    cspd_bstree_add(&bst, &v[3]);
-    cspd_bstree_add(&bst, &v[4]);
-    cspd_bstnode *f = cspd_bstree_add(&bst, &v[5]);
-    cspd_bstnode *g = cspd_bstree_add(&bst, &v[6]);
-    cspd_bstree_add(&bst, &v[7]);
+    cspd_bstnode *a = cspd_bst_add(&bst, &v[0]);
+    cspd_bstnode *b = cspd_bst_add(&bst, &v[1]);
+    cspd_bstnode *c = cspd_bst_add(&bst, &v[2]);
+    cspd_bst_add(&bst, &v[3]);
+    cspd_bst_add(&bst, &v[4]);
+    cspd_bstnode *f = cspd_bst_add(&bst, &v[5]);
+    cspd_bstnode *g = cspd_bst_add(&bst, &v[6]);
+    cspd_bst_add(&bst, &v[7]);
 
     (void)a;
     (void)b;
