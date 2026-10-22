@@ -25,9 +25,9 @@
 /*
  * Data Structures & Algorithms
  */
-#include "cspd_bstree.h"
-#include "cspd_btree.h"
-#include "cspd_llist.h"
+#include "cspd_bintree.h"
+#include "cspd_bst.h"
+#include "cspd_list.h"
 #include "cspd_queue.h"
 #include "cspd_stack.h"
 #include "cspd_string.h"
