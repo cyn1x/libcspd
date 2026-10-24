@@ -10,7 +10,6 @@
 #define CSPD_UTIL_H
 
 #include "cspd_assert.h"
-#include "cspd_exports.h"
 #include "cspd_types.h"
 
 #ifdef __clang__
@@ -55,17 +54,6 @@ static inline usize cspd_quant_up(usize size, usize quant)
     cspd_assert(quant != 0 && (quant & (quant - 1)) == 0);
     return (size + quant - 1) & ~(quant - 1);
 }
-
-/**
- * @brief Prints out the binary representation of the given data.
- *
- * Uses the data and the provided data size in bytes to print out a binary
- * respresentation of the given data.
- *
- * @param data The data to show the binary representation of.
- * @param size The size of the data type in bytes.
- */
-CSPD_API void cspd_print_binary(void *data, usize size);
 
 #ifdef __cplusplus
 }

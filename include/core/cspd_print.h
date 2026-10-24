@@ -8,6 +8,8 @@
 #ifndef CSPD_PRINT_H
 #define CSPD_PRINT_H
 
+#include "cspd_exports.h"
+#include "cspd_types.h"
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -75,6 +77,14 @@ static void cspd_print_fn(const char *format, ...)
     cspd_print_fn(cspd_print_any(VALUE), VALUE), cspd_print_fn(ARGS);
 
 #endif // __cplusplus
+
+/**
+ * @brief Prints out the binary representation of the given data.
+ *
+ * @param data The data to show the binary representation of.
+ * @param size The size of the data type in bytes.
+ */
+CSPD_API void cspd_print_binary(void *data, usize size);
 
 #ifdef __cplusplus
 }
