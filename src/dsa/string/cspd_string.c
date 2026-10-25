@@ -6,55 +6,78 @@
 #include "cspd_util.h"
 
 /**
- * @brief Minimum capacity of the string.
+ * @internal
  *
- * Any allocation smaller than this value is raised to this value.
- */
-#define MIN_SIZE 16
-
-/**
  * @brief Capacity granularity in bytes.
  *
  * Allocation sizes are rounded up to a multiple of this value.
  *
  * @note Must be a power of two, as the rounding uses a bitmask.
  */
-#define QUANT    16
+#define QUANT 16
 
 // Enforce the power-of-two requirement documented on QUANT.
 _Static_assert((QUANT & (QUANT - 1)) == 0, "QUANT must be a power of two");
+
+/**
+ * @internal
+ *
+ * @brief Resets to an empty inline string.
+ *
+ * Zero initializes the entire data structure and sets the flag bit to indicate
+ * it is an inline string.
+ *
+ * @note Does not free memory.
+ */
+static void reset(cspd_string *str);
+
+/**
+ * @internal
+ *
+ * @brief Copies the inline string to the heap.
+ *
+ * Copies the bytes consumed by the inline storage buffer to heap allocated
+ * memory.
+ *
+ * @param dst Pointer to the destination string.
+ * @param len Precalculated length in bytes of the string.
+ * @param amt Amount of bytes to copy to the heap.
+ */
+static void copy_inline_buffer_to_heap(cspd_string *dst, usize len, usize amt);
 
 void cspd_string_init(cspd_string *str)
 {
     cspd_assert(str != NULL);
 
-    str->capacity = 0;
-    str->length   = 0;
-    str->data     = NULL;
-
-    usize len     = MIN_SIZE - 1;
-    usize size    = (sizeof(char) * len) + 1;
-    str->data     = cspd_calloc(size, sizeof(char));
-
-    if (str->data) {
-        str->capacity = size;
-    }
+    reset(str);
 }
 
-cspd_string cspd_string_new(char *cstr)
+cspd_string cspd_string_new(const char *cstr)
 {
     cspd_string str;
 
     usize len  = strlen(cstr);
-    usize size = (sizeof(char) * len) + 1;
+    usize size = (sizeof(u8) * len) + 1;
 
-    if (len < MIN_SIZE) {
-        size = QUANT;
+    if (len < CSPD_STRING_INLINE_SIZE - 1) {
+        // Fits in the inline buffer, so no heap allocation
         cspd_string_init(&str);
-    } else {
-        size     = cspd_quant_up(size, QUANT);
-        str.data = cspd_malloc(size);
+
+        // Obtain the most significant bit (MSB) to store metadata
+        usize idx  = CSPD_STRING_META_BYTE;
+        u8   *byte = &(str.buffer[sizeof(u8) * idx]); // MSB
+        *byte |= 0x80;
+        *byte |= len;
+
+        // Copy the data to the buffer and set the NUL terminator
+        memcpy(str.buffer, cstr, size);
+        str.buffer[CSPD_STRING_INLINE_LEN] = '\0';
+
+        return str;
     }
+
+    size     = cspd_quant_up(size, QUANT);
+    str.data = cspd_calloc(size, sizeof(u8));
 
     if (str.data) {
         str.length   = len;
@@ -67,50 +90,79 @@ cspd_string cspd_string_new(char *cstr)
 
 void cspd_string_append(cspd_string *str, const char cstr[])
 {
-    usize len  = strlen(cstr);
-    usize size = (sizeof(char) * len) + 1;
-    usize idx  = str->length;
+    bool  inlined = cspd_string_is_inline(str);
+    usize idx     = cspd_string_length(str); // Length byte offset
+    usize amt     = strlen(cstr);
+    usize len     = idx + amt;
+    usize size    = (sizeof(char) * amt) + 1;
 
-    if (str->length + len >= str->capacity) {
+    if (inlined && len < CSPD_STRING_INLINE_SIZE - 1) {
+        // Still fits in the inline buffer, so no heap allocation required
+        usize meta = CSPD_STRING_META_BYTE;
+        u8   *byte = &(str->buffer[sizeof(u8) * meta]); // MSB
+
+        *byte += (u8)amt;
+        memcpy(str->buffer + idx, cstr, size);
+
+        return;
+    }
+
+    if (inlined && len >= CSPD_STRING_INLINE_SIZE - 1) {
+        // Inline buffer overflow detected
+        copy_inline_buffer_to_heap(str, idx, len);
+    }
+
+    if (str->length + amt >= str->capacity) {
         cspd_string_reserve(str, str->capacity + size);
     }
 
-    memcpy((char *)str->data + idx, cstr, size);
-    str->length += len;
-}
-
-void cspd_string_concat(cspd_string *str, const char *parts[], usize count)
-{
-    for (usize i = 0; i < count; ++i) {
-        cspd_string_append(str, parts[i]);
-    }
+    str->length += amt;
+    memcpy(str->data + idx, cstr, size);
 }
 
 void cspd_string_join(cspd_string *str, char delim, const char *parts[],
                       usize count)
 {
-    usize len = count - 1; // One delimiter between each pair
+    usize amt = count - 1; // One delimiter between each pair
     for (usize i = 0; i < count; ++i) {
-        len += strlen(parts[i]);
+        amt += strlen(parts[i]);
     }
 
-    usize size = (sizeof(char) * len) + 1;
-    if (str->length + len >= str->capacity) {
-        cspd_string_reserve(str, str->capacity + size);
+    bool  inlined = cspd_string_is_inline(str);
+    usize idx     = cspd_string_length(str); // Length byte offset
+    usize len     = idx + amt;               // Required length in bytes
+    u8   *dst     = NULL;
+
+    if (inlined && len < CSPD_STRING_INLINE_SIZE - 1) {
+        // Still fits in the inline buffer, so no heap allocation required
+        usize meta = CSPD_STRING_META_BYTE;
+        u8   *byte = &(str->buffer[sizeof(u8) * meta]); // MSB
+        *byte += (u8)amt;
+        dst = str->buffer;
+    }
+    else if (inlined && len >= CSPD_STRING_INLINE_SIZE - 1) {
+        // Inline buffer overflow detected
+        copy_inline_buffer_to_heap(str, idx, len);
+        dst = str->data + str->length;
+    }
+    else {
+        usize size = (sizeof(char) * amt) + 1;
+        if (str->length + amt >= str->capacity) {
+            cspd_string_reserve(str, str->capacity + size);
+        }
+        dst = str->data + str->length;
+        str->length += amt;
     }
 
-    char *dst = str->data + str->length;
     for (usize i = 0; i < count; ++i) {
         if (i > 0) {
             *dst++ = delim;
         }
-        usize amt = strlen(parts[i]);
+        amt = strlen(parts[i]);
         memcpy(dst, parts[i], amt);
         dst += amt;
     }
-
     *dst++ = '\0';
-    str->length += len;
 }
 
 void cspd_string_reserve(cspd_string *str, usize size)
@@ -120,9 +172,9 @@ void cspd_string_reserve(cspd_string *str, usize size)
     usize dbl = str->capacity * 2;
     if (size < dbl) size = dbl;
 
-    size      = cspd_quant_up(size, QUANT);
+    size    = cspd_quant_up(size, QUANT);
 
-    char *blk = cspd_realloc(str->data, size);
+    u8 *blk = cspd_realloc(str->data, size);
     if (!blk) {
         // TODO: #0034 - Error handling
         return;
@@ -133,8 +185,32 @@ void cspd_string_reserve(cspd_string *str, usize size)
 
 void cspd_string_clear(cspd_string *str)
 {
-    cspd_free(str->data);
-    str->capacity = 0;
-    str->length   = 0;
-    str->data     = NULL;
+    cspd_assert(str != NULL);
+
+    if (!cspd_string_is_inline(str)) {
+        cspd_free(str->data);
+    }
+
+    reset(str);
+}
+
+static void copy_inline_buffer_to_heap(cspd_string *dst, usize len, usize amt)
+{
+    usize size  = cspd_quant_up(amt, QUANT);
+    void *block = cspd_calloc(size, sizeof(u8));
+    if (!block) return;
+
+    // Copy inline buffer onto the heap
+    memcpy(block, dst->buffer, sizeof(u8) * amt + 1);
+
+    // Assign memory pointer to the string data structure
+    dst->data     = block;
+    dst->length   = len;
+    dst->capacity = size;
+}
+
+static void reset(cspd_string *str)
+{
+    memset(str, 0, sizeof *str);
+    str->buffer[CSPD_STRING_META_BYTE] = 0x80;
 }

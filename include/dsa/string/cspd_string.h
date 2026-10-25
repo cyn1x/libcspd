@@ -10,41 +10,95 @@
 
 #include "cspd_exports.h"
 #include "cspd_types.h"
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
 
+/*
+ * Inline layout: buffer[CSPD_STRING_INLINE_SIZE] is the flag/length byte.
+ *   bit 7 (0x80): set = inline, clear = heap
+ *   bits 0-6 (0x7F): inline length, max length of CSPD_STRING_INLINE_LEN
+ */
+
+/**
+ * @internal
+ *
+ * @brief Maximum size in bytes for an inline string.
+ */
+#define CSPD_STRING_INLINE_SIZE 24
+
 /**
  * @brief Data structure for the string.
  *
- * The `capacity` refers to the amount of bytes consumed by the string, i.e. the
- * memory consumed. The `length` refers to the actual length of the string, not
- * including the null terminator.
+ * Hybrid string data structure that supports inline and memory allocated
+ * strings.
  *
  * @var cspd_string::capacity
- * The size of the data in bytes, including the null terminator.
+ * The amount of bytes consumed by the string, including the null terminator.
  *
  * @var cspd_string::length
  * The length of the string, not including the null terminator.
  *
  * @var cspd_string::data
  * Memory which has been allocated for the string to store data.
+ *
+ * @var cspd_string::buffer
+ * Short string inline buffer for strings that do not require an alloc.
+ *
+ * @see https://en.wikipedia.org/wiki/Union_type
  */
-typedef struct cspd_string_t
+typedef union cspd_string_t
 {
-    usize capacity;
-    usize length;
-    char *data;
+    struct
+    {
+        usize capacity;
+        usize length;
+        u8   *data;
+    };
+    u8 buffer[CSPD_STRING_INLINE_SIZE];
 } cspd_string;
+
+_Static_assert(sizeof(cspd_string) == CSPD_STRING_INLINE_SIZE,
+               "cspd_string must stay 24 bytes (x64 SSO layout)");
+_Static_assert(offsetof(cspd_string, length) == 8,
+               "cspd_string: length must follow capacity (x64)");
+_Static_assert(offsetof(cspd_string, data) == 16,
+               "cspd_string: data must follow length (x64)");
+
+/**
+ * @internal
+ *
+ * @brief Index used to obtain the metadata byte in the inline string buffer.
+ */
+#define CSPD_STRING_META_BYTE (CSPD_STRING_INLINE_SIZE - 1)
+
+_Static_assert((CSPD_STRING_META_BYTE) == sizeof(cspd_string) - 1,
+               "flag/length byte must be the last byte of the inline buffer");
+
+/**
+ * @internal
+ *
+ * @brief Maximum length permitted for an inline string.
+ *
+ * @note Does not include the NUL terminator.
+ */
+#define CSPD_STRING_INLINE_LEN (CSPD_STRING_INLINE_SIZE - 2)
+
+_Static_assert(
+    (CSPD_STRING_INLINE_LEN) == CSPD_STRING_META_BYTE - 1,
+    "inline max length is 24 bytes minus the NUL and the flag/length byte");
+_Static_assert(CSPD_STRING_INLINE_LEN <= 0x7Fu,
+               "inline max length must fit in the length bits");
 
 /**
  * @brief Initializes an uninitialized string.
  *
- * Initializes a string by reserving a starting capacity of 16 bytes; an initial
- * length of 15 plus 1 byte for the null terminator.
+ * Zero initializes the entire data structure and sets the initial state to an
+ * empty inline string.
  *
- * @warning Should only be called once for an uninitialized string.
+ * @note Does not pre-emptively allocate memory.
  *
  * @param str The pointer to the string to initialize.
  *
@@ -72,7 +126,7 @@ CSPD_API void cspd_string_init(cspd_string *str);
  *   // Output: hello,world
  * @endcode
  */
-CSPD_API cspd_string cspd_string_new(char *cstr);
+CSPD_API cspd_string cspd_string_new(const char *cstr);
 
 /**
  * @brief Adds an array of characters to a string.
@@ -87,20 +141,6 @@ CSPD_API cspd_string cspd_string_new(char *cstr);
  * @snippet cspd_string.test.c Append string
  */
 CSPD_API void cspd_string_append(cspd_string *str, const char cstr[]);
-
-/**
- * @brief Joins strings together.
- *
- * Concatenates strings in the order they are specified.
- *
- * @param str Pointer to the destination string.
- * @param parts Pointer to the array of strings.
- * @param count The number of strings to concatenate.
- *
- * @snippet cspd_string.test.c Concat string
- */
-CSPD_API void cspd_string_concat(cspd_string *str, const char *parts[],
-                                 usize count);
 
 /**
  * @brief Joins strings together using a separator character.
@@ -144,6 +184,54 @@ CSPD_API void cspd_string_reserve(cspd_string *str, usize size);
 CSPD_API void cspd_string_clear(cspd_string *str);
 
 /**
+ * @brief Joins two or more strings together.
+ *
+ * Concatenates strings in the order they are specified.
+ *
+ * @param str Pointer to the destination string.
+ * @param parts Pointer to the array of strings.
+ * @param count The number of strings to concatenate.
+ *
+ * @snippet cspd_string.test.c Concat string
+ */
+static inline void cspd_string_concat(cspd_string *str, const char *parts[],
+                                      usize count)
+{
+    for (usize i = 0; i < count; ++i) {
+        cspd_string_append(str, parts[i]);
+    }
+}
+
+/**
+ * @brief Determines if the string is inlined.
+ *
+ * Checks whether the string is stored on the heap or inline, and returns the
+ * result.
+ *
+ * @returns `true` if the string is inline, otherwise `false`.
+ */
+static inline bool cspd_string_is_inline(const cspd_string *str)
+{
+    return str->buffer[CSPD_STRING_META_BYTE] & 0x80;
+}
+
+/**
+ * @brief Gets the length of the string.
+ *
+ * Retrieves the string length in bytes by checking the metadata byte if using
+ * the inline storage buffer, otherwise the assigned length via
+ * `cspd_string::length` if using heap storage.
+ *
+ * @returns The length of the string.
+ */
+static inline usize cspd_string_length(const cspd_string *str)
+{
+    return cspd_string_is_inline(str)
+               ? (usize)(str->buffer[CSPD_STRING_META_BYTE] & 0x7Fu)
+               : str->length;
+}
+
+/**
  * @brief Retrieves the character at the specified index.
  *
  * Returns a read-only (i.e. the value, not reference) copy of the character at
@@ -151,10 +239,13 @@ CSPD_API void cspd_string_clear(cspd_string *str);
  *
  * @param str Pointer to the string.
  * @param idx The index to retrieve.
+ *
+ * returns The character at the specified index.
  */
 static inline char cspd_string_at(cspd_string *str, u32 idx)
 {
-    return ((char *)str->data)[idx];
+    return cspd_string_is_inline(str) ? str->buffer[idx]
+                                      : ((char *)str->data)[idx];
 }
 
 #ifdef __cplusplus
