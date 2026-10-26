@@ -1,9 +1,9 @@
 #define CSPD_EXPORTS
 
 #include "cspd_string.h"
+#include "cspd_align.h"
 #include "cspd_assert.h"
 #include "cspd_mem.h"
-#include "cspd_util.h"
 
 /**
  * @internal
@@ -77,7 +77,7 @@ cspd_string cspd_string_new(const char *cstr)
     }
 
     size     = cspd_quant_up(size, QUANT);
-    str.data = cspd_calloc(size, sizeof(u8));
+    str.data = cspd_malloc(size * sizeof(u8));
 
     if (str.data) {
         str.length   = len;
@@ -197,7 +197,7 @@ void cspd_string_clear(cspd_string *str)
 static void copy_inline_buffer_to_heap(cspd_string *dst, usize len, usize amt)
 {
     usize size  = cspd_quant_up(amt, QUANT);
-    void *block = cspd_calloc(size, sizeof(u8));
+    void *block = cspd_malloc(size * sizeof(u8));
     if (!block) return;
 
     // Copy inline buffer onto the heap

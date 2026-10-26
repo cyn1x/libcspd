@@ -1,6 +1,7 @@
 #define CSPD_EXPORTS
 
 #include "cspd_vector.h"
+#include "cspd_assert.h"
 #include "cspd_mem.h"
 #include "cspd_util.h"
 
@@ -236,9 +237,11 @@ usize cspd_vector_bsearch(cspd_vector *vec, const void *key, cspd_cmp cmp)
 
         if (match == 0) {
             return m;
-        } else if (match > 0) {
+        }
+        else if (match > 0) {
             hi = m;
-        } else {
+        }
+        else {
             lo = m + 1;
         }
     } while (lo < hi);
@@ -359,7 +362,8 @@ static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
         if (i < mid && (j >= end || result != 1)) {
             cspd_swap(lrh, tmp, vec_b->data_size);
             i = i + 1;
-        } else {
+        }
+        else {
             cspd_swap(rrh, tmp, vec_b->data_size);
             j = j + 1;
         }
