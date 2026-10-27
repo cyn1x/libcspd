@@ -240,7 +240,7 @@ static inline usize cspd_string_length(const cspd_string *str)
  * @param str Pointer to the string.
  * @param idx The index to retrieve.
  *
- * returns The character at the specified index.
+ * @returns The character at the specified index.
  */
 static inline char cspd_string_at(cspd_string *str, u32 idx)
 {

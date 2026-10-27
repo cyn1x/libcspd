@@ -12,8 +12,15 @@
 /* Creates a string with values from the given char array. */
 #define ts_from(ARR) ts_from_impl((ARR), sizeof((ARR)[0]))
 
+/* Verifies a string holds the expected characters in order. */
+#define ts_expect(STR, ARR)                                                    \
+    const cspd_string *_s = &(STR);                                            \
+    const char        *_e = (ARR);                                             \
+    const u8          *_b = cspd_string_is_inline(_s) ? _s->buffer : _s->data; \
+    ts_expect_impl(_b, _e);
+
 static cspd_string ts_from_impl(const char *cstr, usize count);
-static void        ts_expect_impl(cspd_string *str, const char *actual);
+static void        ts_expect_impl(const u8 *storage, const char *actual);
 
 /******************************************************************************
  * Test Declarations
@@ -58,9 +65,10 @@ static void test_init(void)
 
     {
         // Create a new inlined string with length equal to 11
-        cspd_string str = cspd_string_new("hello,world");
+        cspd_string str      = cspd_string_new("hello,world");
+        char        actual[] = "hello,world";
 
-        u8 const *msb   = &str.buffer[CSPD_STRING_META_BYTE];
+        u8 const *msb        = &str.buffer[CSPD_STRING_META_BYTE];
 
         // Same value (11) declared three ways, for bit-notation reference
         cspd_assert((*msb & 0x7Fu) == 11u);
@@ -69,6 +77,8 @@ static void test_init(void)
 
         // Check string has a NUL character, i.e. is a null-terminated string
         cspd_assert(str.buffer[12] == '\0');
+
+        ts_expect(str, actual);
 
         // cspd_print_binary(&str.buffer[23], sizeof(u8));
         // Output: 10001011
@@ -141,6 +151,7 @@ static void test_append(void)
     cspd_assert(cspd_string_is_inline(&str));
     cspd_assert((*msb & 0x7Fu) == 11u);
 
+    // NUL terminator should no longer be idx == 5
     cspd_assert(cspd_string_at(&str, 5) == ',');
     cspd_assert(cspd_string_at(&str, 6) == 'w');
     cspd_assert(cspd_string_at(&str, 7) == 'o');
@@ -179,13 +190,12 @@ static void test_concat(void)
     cspd_assert(!cspd_string_is_inline(&str));
     cspd_assert(str.capacity == 48);
     cspd_assert(str.length == 44);
+    cspd_assert(str.buffer[45] == '\0');
 
     // cspd_print_fn("%s", str.data);
     // Output: the quick brown fox jumped over the lazy dog
 
-    for (usize i = 0; i < strlen(actual); ++i) {
-        cspd_assert(((char *)str.data)[i] == actual[i]);
-    }
+    ts_expect(str, actual);
 
     cspd_string_clear(&str);
     //! [Concat string]
@@ -211,9 +221,7 @@ static void test_join(void)
         cspd_string_clear(&tmp_a);
         cspd_string_clear(&tmp_b);
 
-        for (usize i = 0; i < strlen(actual); ++i) {
-            cspd_assert(((char *)str.buffer)[i] == actual[i]);
-        }
+        ts_expect(str, actual);
 
         // cspd_print_fn("%s", str.buffer);
         // Output: hello,world
@@ -237,9 +245,9 @@ static cspd_string ts_from_impl(const char *cstr, usize count)
     return str;
 }
 
-static void ts_expect_impl(cspd_string *str, const char *actual)
+static void ts_expect_impl(const u8 *storage, const char *actual)
 {
     for (usize i = 0; i < strlen(actual); ++i) {
-        cspd_assert(((char *)str->data)[i] == actual[i]);
+        cspd_assert(((char *)storage)[i] == actual[i]);
     }
 }
