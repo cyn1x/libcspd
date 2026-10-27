@@ -1,13 +1,10 @@
 /**
- * @file cspd_util
- * @brief General utilities and helpers.
- *
- * Contains general utilities that are not semantically suited to other
- * translation units in the library.
+ * @file cspd_bytes.h
+ * @brief Memory manipulation.
  */
 
-#ifndef CSPD_UTIL_H
-#define CSPD_UTIL_H
+#ifndef CSPD_BYTES_H
+#define CSPD_BYTES_H
 
 #include "cspd_types.h"
 
@@ -27,10 +24,10 @@ extern "C" {
  * @param pb Pointer to the second data type.
  * @param size The size of the data types in bytes.
  */
-void cspd_swap(void *pa, void *pb, usize size);
+void cspd_memswap(void *pa, void *pb, usize size);
 
 #ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif // CSPD_UTIL_H
+#endif // CSPD_BYTES_H

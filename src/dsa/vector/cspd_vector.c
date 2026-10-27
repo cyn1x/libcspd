@@ -2,8 +2,8 @@
 
 #include "cspd_vector.h"
 #include "cspd_assert.h"
+#include "cspd_bytes.h"
 #include "cspd_mem.h"
-#include "cspd_util.h"
 
 /**
  * @brief Minimum capacity of the vector.
@@ -207,7 +207,7 @@ void cspd_vector_reverse(cspd_vector *vec)
         void *src = cspd_vector_get(vec, i);
         void *dst = cspd_vector_get(vec, vec->size - 1 - i);
 
-        cspd_swap(src, dst, vec->data_size);
+        cspd_memswap(src, dst, vec->data_size);
     }
 }
 
@@ -258,7 +258,7 @@ void cspd_vector_bsort(cspd_vector *vec, cspd_cmp cmp)
             int   result = cmp(a, b);
 
             if (result != -1) {
-                cspd_swap(a, b, vec->data_size);
+                cspd_memswap(a, b, vec->data_size);
             }
         }
     }
@@ -320,13 +320,13 @@ static isize partition(cspd_vector *vec, isize lo, isize hi, cspd_cmp cmp)
         if (result != 1) {
             idx++;
             tmp = cspd_vector_get(vec, idx);
-            cspd_swap(curr, tmp, vec->data_size);
+            cspd_memswap(curr, tmp, vec->data_size);
         }
     }
 
     idx++;
     tmp = cspd_vector_get(vec, idx);
-    cspd_swap(tmp, pvt, vec->data_size);
+    cspd_memswap(tmp, pvt, vec->data_size);
 
     return idx;
 }
@@ -360,11 +360,11 @@ static void merge(cspd_vector *vec_b, usize begin, usize mid, usize end,
         void *tmp =
             cspd_vector_get(vec_b, k); // pointer to place sorted element
         if (i < mid && (j >= end || result != 1)) {
-            cspd_swap(lrh, tmp, vec_b->data_size);
+            cspd_memswap(lrh, tmp, vec_b->data_size);
             i = i + 1;
         }
         else {
-            cspd_swap(rrh, tmp, vec_b->data_size);
+            cspd_memswap(rrh, tmp, vec_b->data_size);
             j = j + 1;
         }
     }

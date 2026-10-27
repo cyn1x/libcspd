@@ -1,9 +1,9 @@
 #define CSPD_EXPORTS
 
-#include "cspd_util.h"
+#include "cspd_bytes.h"
 #include "cspd_types.h"
 
-void cspd_swap(void *pa, void *pb, usize size)
+void cspd_memswap(void *pa, void *pb, usize size)
 {
     u8  tmp;
     u8 *a = pa, *b = pb;
