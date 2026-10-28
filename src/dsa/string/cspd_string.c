@@ -83,6 +83,7 @@ cspd_string cspd_string_new(const char *cstr)
         str.length   = len;
         str.capacity = size;
         memcpy(str.data, cstr, size);
+        str.data[str.length + 1] = '\0';
     }
 
     return str;
@@ -118,6 +119,7 @@ void cspd_string_append(cspd_string *str, const char cstr[])
 
     str->length += amt;
     memcpy(str->data + idx, cstr, size);
+    str->data[str->length + 1] = '\0';
 }
 
 void cspd_string_join(cspd_string *str, char delim, const char *parts[],
@@ -140,18 +142,24 @@ void cspd_string_join(cspd_string *str, char delim, const char *parts[],
         *byte += (u8)amt;
         dst = str->buffer;
     }
-    else if (inlined && len >= CSPD_STRING_INLINE_SIZE - 1) {
-        // Inline buffer overflow detected
-        copy_inline_buffer_to_heap(str, idx, len);
-        dst = str->data + str->length;
-    }
     else {
-        usize size = (sizeof(char) * amt) + 1;
-        if (str->length + amt >= str->capacity) {
-            cspd_string_reserve(str, str->capacity + size);
+        // Heap allocation required
+        if (inlined && len >= CSPD_STRING_INLINE_SIZE - 1) {
+            // Inline buffer overflow detected
+            copy_inline_buffer_to_heap(str, idx, len);
+        }
+        else {
+            // Buffer is already on the heap
+            usize size = (sizeof(char) * amt) + 1;
+            if (str->length + amt >= str->capacity) {
+                cspd_string_reserve(str, str->capacity + size);
+            }
         }
         dst = str->data + str->length;
+
+        // Preset length and terminate before copy
         str->length += amt;
+        str->data[str->length + 1] = '\0';
     }
 
     for (usize i = 0; i < count; ++i) {
@@ -204,9 +212,10 @@ static void copy_inline_buffer_to_heap(cspd_string *dst, usize len, usize amt)
     memcpy(block, dst->buffer, sizeof(u8) * amt + 1);
 
     // Assign memory pointer to the string data structure
-    dst->data     = block;
-    dst->length   = len;
-    dst->capacity = size;
+    dst->data          = block;
+    dst->data[len + 1] = '\0';
+    dst->length        = len;
+    dst->capacity      = size;
 }
 
 static void reset(cspd_string *str)
