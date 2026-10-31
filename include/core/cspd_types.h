@@ -16,7 +16,6 @@
 #include <stddef.h>
 #endif
 
-#include <math.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -102,14 +101,14 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 /**
- * @brief Alias for type `float_t`.
+ * @brief Alias for type `float`.
  */
-typedef float_t f32;
+typedef float f32;
 
 /**
- * @brief Alias for type `double_t`.
+ * @brief Alias for type `double`.
  */
-typedef double_t f64;
+typedef double f64;
 
 /**
  * @brief Alias for type `size_t`.
