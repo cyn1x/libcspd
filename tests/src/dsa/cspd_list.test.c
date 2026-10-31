@@ -1,6 +1,6 @@
-#include "cspd_cmp.test.h"
 #include "cspd_dsa.test.h"
 #include <cspd_assert.h>
+#include <cspd_cmp.h>
 #include <cspd_list.h>
 #include <cspd_print.h>
 #include <cspd_types.h>
@@ -939,7 +939,7 @@ static void test_list_bsort(void)
         // cspd_print_list(i32, &list, false);
         // Output: { 7 8 7 3 10 4 5 }
 
-        cspd_list_bsort(&list, i32_cmp);
+        cspd_list_bsort(&list, cspd_i32_cmp);
 
         // cspd_print_list(i32, &list, false);
         // Output: { 3 4 5 7 7 8 10 }
@@ -962,7 +962,7 @@ static void test_list_bsort(void)
         i32       values[] = {5, 4, 7, 10, -1, 19, 4, 3, 33, 3, 7, 8, 7};
         cspd_list list     = tl_from(values);
 
-        cspd_list_bsort(&list, i32_cmp);
+        cspd_list_bsort(&list, cspd_i32_cmp);
 
         i32 expected[] = {-1, 3, 3, 4, 4, 5, 7, 7, 7, 8, 10, 19, 33};
         tl_expect(i32, &list, expected);
@@ -975,7 +975,7 @@ static void test_list_bsort(void)
         i32       values[] = {1, 2, 3, 4, 5};
         cspd_list list     = tl_from(values);
 
-        cspd_list_bsort(&list, i32_cmp);
+        cspd_list_bsort(&list, cspd_i32_cmp);
 
         tl_expect(i32, &list, values);
 
@@ -987,7 +987,7 @@ static void test_list_bsort(void)
         cspd_list list;
         cspd_list_init(&list, sizeof(i32));
 
-        cspd_list_bsort(&list, i32_cmp);
+        cspd_list_bsort(&list, cspd_i32_cmp);
 
         tl_expect_empty(&list);
 
@@ -1005,7 +1005,7 @@ static void test_list_qsort(void)
         // cspd_print_list(i32, &list, false);
         // Output: { 7 8 7 3 10 4 5 }
 
-        cspd_list_qsort(&list, list.head, list.tail, i32_cmp);
+        cspd_list_qsort(&list, list.head, list.tail, cspd_i32_cmp);
 
         // cspd_print_list(i32, &list, false);
         // Output: { 3 4 5 7 7 8 10 }
@@ -1028,7 +1028,7 @@ static void test_list_qsort(void)
         i32       values[] = {5, 4, 7, 10, -1, 19, 4, 3, 33, 3, 7, 8, 7};
         cspd_list list     = tl_from(values);
 
-        cspd_list_qsort(&list, list.head, list.tail, i32_cmp);
+        cspd_list_qsort(&list, list.head, list.tail, cspd_i32_cmp);
 
         i32 expected[] = {-1, 3, 3, 4, 4, 5, 7, 7, 7, 8, 10, 19, 33};
         tl_expect(i32, &list, expected);
@@ -1041,7 +1041,7 @@ static void test_list_qsort(void)
         i32       values[] = {1, 2, 3, 4, 5};
         cspd_list list     = tl_from(values);
 
-        cspd_list_qsort(&list, list.head, list.tail, i32_cmp);
+        cspd_list_qsort(&list, list.head, list.tail, cspd_i32_cmp);
 
         tl_expect(i32, &list, values);
 
@@ -1053,7 +1053,7 @@ static void test_list_qsort(void)
         i32       values[] = {5, 4, 3, 2, 1};
         cspd_list list     = tl_from(values);
 
-        cspd_list_qsort(&list, list.head, list.tail, i32_cmp);
+        cspd_list_qsort(&list, list.head, list.tail, cspd_i32_cmp);
 
         i32 expected[] = {1, 2, 3, 4, 5};
         tl_expect(i32, &list, expected);
@@ -1066,7 +1066,7 @@ static void test_list_qsort(void)
         i32       values[] = {1};
         cspd_list list     = tl_from(values);
 
-        cspd_list_qsort(&list, list.head, list.tail, i32_cmp);
+        cspd_list_qsort(&list, list.head, list.tail, cspd_i32_cmp);
 
         tl_expect(i32, &list, values);
 
@@ -1078,7 +1078,7 @@ static void test_list_qsort(void)
         cspd_list list;
         cspd_list_init(&list, sizeof(i32));
 
-        cspd_list_qsort(&list, list.head, list.tail, i32_cmp);
+        cspd_list_qsort(&list, list.head, list.tail, cspd_i32_cmp);
 
         tl_expect_empty(&list);
 

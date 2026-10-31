@@ -6,6 +6,8 @@
 #ifndef CSPD_CMP_H
 #define CSPD_CMP_H
 
+#include "cspd_types.h"
+
 /**
  * @brief Comparator function initializer.
  *
@@ -13,9 +15,6 @@
  * function with the `TYPE` parameter prefixed to the function name.
  *
  * @param TYPE Data type to initialized for use with the comparator function.
- *
- * @b Example
- * @snippet cspd_cmp.test.h Comparator type declaration
  */
 #define cspd_cmp(TYPE)                                                         \
     /**                                                                        \
@@ -28,7 +27,7 @@
      *                                                                         \
      * @returns `-1` if `a < b`, `1` if `a > b`, or `0` if `a == b`.           \
      */                                                                        \
-    static inline int TYPE##_cmp(const void *a, const void *b)                 \
+    static inline int cspd_##TYPE##_cmp(const void *a, const void *b)          \
     {                                                                          \
         TYPE arg1 = *(const TYPE *)a;                                          \
         TYPE arg2 = *(const TYPE *)b;                                          \
@@ -41,5 +40,16 @@
         }                                                                      \
         return 0;                                                              \
     }
+
+/* Declare comparator functions for fixed-width integer types */
+cspd_cmp(i8)
+cspd_cmp(i16)
+cspd_cmp(i32)
+cspd_cmp(i64)
+
+cspd_cmp(u8)
+cspd_cmp(u16)
+cspd_cmp(u32)
+cspd_cmp(u64)
 
 #endif // CSPD_CMP_H

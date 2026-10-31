@@ -36,14 +36,11 @@
  * #include <cspd_types.h>
  * #include <stdlib.h>
  *
- * // Declare comparator function of type `i32`
- * cspd_cmp(i32)
- *
  * int main(int argc, char *argv[])
  * {
  *     // Create an unsorted array and sort it using the built-in quicksort.
  *     i32 arr[] = {7, 8, 7, 4, 10, 3, 5};
- *     qsort(&arr, 7, sizeof(i32), i32_cmp);
+ *     qsort(&arr, 7, sizeof(i32), cspd_i32_cmp);
  *
  *     // Assert that the array is sorted
  *     i32 const *expected = (i32[]){3, 4, 5, 7, 7, 8, 10};

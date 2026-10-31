@@ -1,6 +1,6 @@
-#include "cspd_cmp.test.h"
 #include "cspd_dsa.test.h"
 #include <cspd_assert.h>
+#include <cspd_cmp.h>
 #include <cspd_print.h>
 #include <cspd_types.h>
 #include <cspd_vector.h>
@@ -398,13 +398,13 @@ static void test_vec_bsearch(void)
         // Output: { 3 5 6 1 0 1 2 3 }
 
         // Sort the vector before using binary search
-        cspd_vector_qsort(&vec, 0, vec.size - 1, i32_cmp);
+        cspd_vector_qsort(&vec, 0, vec.size - 1, cspd_i32_cmp);
 
         // cspd_print_vector(i32, &vec);
         // Output: { 0 1 1 2 3 3 5 6 }
 
         i32   key = 5;
-        usize idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
+        usize idx = cspd_vector_bsearch(&vec, &key, cspd_i32_cmp);
         cspd_assert(idx == 6);
         //! [Binary search]
 
@@ -421,7 +421,7 @@ static void test_vec_bsearch(void)
         // Output: { 3 5 6 1 0 1 2 3 }
 
         i32   key = 6;
-        usize idx = cspd_vector_bsearch(&vec, &key, i32_cmp);
+        usize idx = cspd_vector_bsearch(&vec, &key, cspd_i32_cmp);
         cspd_assert(idx == SIZE_MAX);
 
         cspd_vector_clear(&vec);
@@ -437,7 +437,7 @@ static void test_vec_bsort(void)
     // cspd_print_vector(i32, &vec);
     // Output: { 15 3 8 0 4 11 6 12 1 7 }
 
-    cspd_vector_bsort(&vec, i32_cmp);
+    cspd_vector_bsort(&vec, cspd_i32_cmp);
 
     // cspd_print_vector(i32, &vec);
     // Output: { 0 1 3 4 6 7 8 11 12 15 }
@@ -458,7 +458,7 @@ static void test_vec_qsort(void)
     // cspd_print_vector(i32, &vec);
     // Output: { 7 8 7 4 10 3 5 }
 
-    cspd_vector_qsort(&vec, 0, vec.size - 1, i32_cmp);
+    cspd_vector_qsort(&vec, 0, vec.size - 1, cspd_i32_cmp);
 
     // cspd_print_vector(i32, &vec);
     // Output: { 7 8 7 4 10 3 5 }
@@ -479,7 +479,7 @@ static void test_vec_msort(void)
     // cspd_print_vector(i32, &vec);
     // Output: { 7 8 7 4 10 3 5 }
 
-    cspd_vector_msort(&vec, vec.size, i32_cmp);
+    cspd_vector_msort(&vec, vec.size, cspd_i32_cmp);
 
     // cspd_print_vector(i32, &vec);
     // Output: { 3 4 5 7 7 8 10 }
