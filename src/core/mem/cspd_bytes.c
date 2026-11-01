@@ -14,3 +14,13 @@ void cspd_memswap(void *pa, void *pb, usize size)
         *b++ = tmp;
     }
 }
+
+void cspd_memcpy(void *dst, const void *src, usize size)
+{
+    u8       *d = dst;
+    const u8 *s = src;
+
+    while (size--) {
+        *d++ = *s++;
+    }
+}

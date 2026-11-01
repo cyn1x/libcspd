@@ -6,6 +6,7 @@
 #ifndef CSPD_BYTES_H
 #define CSPD_BYTES_H
 
+#include "cspd_exports.h"
 #include "cspd_types.h"
 
 #ifdef __cplusplus
@@ -25,6 +26,19 @@ extern "C" {
  * @param size The size of the data types in bytes.
  */
 void cspd_memswap(void *pa, void *pb, usize size);
+
+/**
+ * @brief Copies bytes between non-overlapping buffers.
+ *
+ * @warning The buffers must not overlap.
+ *
+ * @param dst Destination buffer.
+ * @param src Source buffer.
+ * @param size Number of bytes to copy.
+ *
+ * @returns @p dst, matching `memcpy`.
+ */
+CSPD_API void cspd_memcpy(void *dst, const void *src, usize size);
 
 #ifdef __cplusplus
 }
